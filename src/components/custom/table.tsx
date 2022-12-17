@@ -8,10 +8,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { GridColDef, DataGrid } from '@mui/x-data-grid';
-import { Box, IconButton, Stack, TablePagination } from '@mui/material';
+import { Avatar, Box, IconButton, Stack, TablePagination } from '@mui/material';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { Manufacturer } from 'models';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { ConfirmDialog } from 'components/productType/confirm-dialog'
+import ReportProblemIcon from '@mui/icons-material/ReportProblem'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -47,6 +49,8 @@ interface Props {
 
 export default function CustomTable(props: Props) {
    const { headers, rows, page, totalItems, rowsPerPage, handleChangePage, handleChangeRowsPerPage, onHandleEditButton, onHandleDeleteButton } = props
+   const [openConfirmDialog, setOpenConfirmDialog] = React.useState(false)
+   const [id, setId] = React.useState('')
 
    return (
       <TableContainer component={Paper}>
@@ -89,7 +93,7 @@ export default function CustomTable(props: Props) {
                               <IconButton onClick={() => { onHandleEditButton(rawData) }}>
                                  <ModeEditIcon/>
                               </IconButton>
-                              <IconButton onClick={() => { onHandleDeleteButton(rawData.id) }}>
+                              <IconButton onClick={() => { setId(rawData.id), setOpenConfirmDialog(true) }}>
                                  <DeleteIcon/>
                               </IconButton>
                            </Stack>
@@ -107,6 +111,18 @@ export default function CustomTable(props: Props) {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+         />
+         <ConfirmDialog
+            icon={
+               <Avatar sx={{ bgcolor: 'rgba(209, 67, 67, 0.08)', color: 'rgb(209, 67, 67)' }}>
+                  <ReportProblemIcon />
+               </Avatar>
+            }
+            isOpen={openConfirmDialog}
+            title="Are you sure?"
+            body="Are you sure to delete this customer?"
+            onSubmit={() => {onHandleDeleteButton(id); setOpenConfirmDialog(false)}}
+            onClose={() => setOpenConfirmDialog(false)}
          />
       </TableContainer>
    );

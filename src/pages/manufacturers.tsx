@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, CardHeader, Container, Divider, Typography } from '@mui/material'
+import { Avatar, Box, Button, Card, CardContent, CardHeader, Container, Divider, Typography } from '@mui/material'
 import { DashboardLayout } from 'components/layouts'
 import Head from 'next/head'
 import CustomTable from 'components/custom/table'
@@ -14,6 +14,8 @@ import CREATE_MANUFACTURER from 'graphql/mutation/createManufacturer'
 import UPDATE_MANUFACTURER from 'graphql/mutation/updateManufacturer'
 import { useSnackbar } from 'notistack'
 import DELETE_MANUFACTURER from 'graphql/mutation/deleteManufacturer'
+import { ConfirmDialog } from 'components/productType/confirm-dialog'
+import ReportProblemIcon from '@mui/icons-material/ReportProblem'
 
 interface ManufacturersDataTable {
    name: string,
@@ -27,6 +29,7 @@ const Manufacturers = () => {
    const [rows, setRows] = useState<ManufacturersDataTable[]>([])
    
    const [dataModal, setDataModal] = useState<Manufacturer | undefined>()
+   const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
    const [isOpen, setIsOpen] = useState(false)
 
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
