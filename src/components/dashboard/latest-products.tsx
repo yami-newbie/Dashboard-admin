@@ -52,10 +52,10 @@ export const LatestProducts = (props: any) => {
          {products ? (
             <List>
                {products.map((product: Product, i: number) => (
-                  <ListItem divider={i < products.length - 1} key={product._id}>
+                  <ListItem divider={i < products.length - 1} key={product.id}>
                      <ListItemAvatar>
                         <img
-                           alt={product.title}
+                           alt={product.description}
                            src={product.img}
                            style={{
                               height: 48,
@@ -64,7 +64,7 @@ export const LatestProducts = (props: any) => {
                         />
                      </ListItemAvatar>
                      <ListItemText
-                        primary={product.title}
+                        primary={product.description}
                         secondary={`Updated ${formatDistance(
                            parseISO(product.updatedAt),
                            new Date(),

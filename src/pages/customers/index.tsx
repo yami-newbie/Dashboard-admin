@@ -12,12 +12,13 @@ import {
 } from '@mui/material'
 import { ChangeEvent, MouseEvent, useState } from 'react'
 import { CustomerQueryParams, PaginationParams, ResponseListData, User } from 'models'
-import axiosClient from 'api-client/axios-client'
 import useSWR from 'swr'
 import queryString from 'query-string'
 import { Download as DownloadIcon } from '../../icons/download'
 import { CustomerListResults, CustomerListToolbar } from 'components/customer'
 import { DashboardLayout } from 'components/layouts'
+import { useQuery } from '@apollo/client'
+import USERS_QUERY from 'graphql/users'
 
 const DEFAULT_PAGINATION = {
    totalItems: 10,
@@ -35,24 +36,10 @@ const Customers = () => {
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
 
    const fetcher = (url: string) => {
-      return axiosClient
-         .get<any, ResponseListData<User>>(url)
-         .then((res: ResponseListData<User>) => {
-            setPagination(res.pagination)
-            return res.data
-         })
+      
    }
 
-   const { data: customerList } = useSWR(
-      `users?page=${pagination.currentPage}&pageSize=${pagination.pageSize}&${queryString.stringify(
-         filters,
-         { skipEmptyString: true }
-      )}`,
-      fetcher,
-      {
-         revalidateOnFocus: true
-      }
-   )
+   const { data: customerList } = useQuery(USERS_QUERY)
 
    const handleLimitChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
       setPagination({ ...pagination, pageSize: Number.parseInt(event.target.value) })
@@ -136,7 +123,7 @@ const Customers = () => {
                      />
                      <TablePagination
                         component="div"
-                        count={pagination.totalItems}
+                        count={pagination.totalCount}
                         onPageChange={handlePageChange}
                         onRowsPerPageChange={handleLimitChange}
                         page={pagination.currentPage - 1}

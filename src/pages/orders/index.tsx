@@ -1,3 +1,4 @@
+import { useQuery } from '@apollo/client'
 import {
    Box,
    Card,
@@ -8,11 +9,10 @@ import {
    Tabs,
    Typography
 } from '@mui/material'
-import { orderApi } from 'api-client'
-import axiosClient from 'api-client/axios-client'
 import { DashboardLayout } from 'components/layouts'
 import { OrderDetailModal } from 'components/order/order-detail'
 import { OrderListResults } from 'components/order/order-list-results'
+import USERS_QUERY from 'graphql/query/users'
 import { Order, PaginationParams, ResponseListData } from 'models'
 import Head from 'next/head'
 import queryString from 'query-string'
@@ -31,24 +31,8 @@ const Orders = () => {
    const [filters, setFilters] = useState({ status: '', orderBy: 'updatedAt-desc' })
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
 
-   const fetcher = (url: string) => {
-      return axiosClient
-         .get<any, ResponseListData<Order>>(url)
-         .then((res: ResponseListData<Order>) => {
-            setPagination(res.pagination)
-            return res.data
-         })
-   }
-
-   const { data: orderList, mutate } = useSWR(
-      `orders?page=${pagination.currentPage}&pageSize=${
-         pagination.pageSize
-      }&${queryString.stringify(filters, { skipEmptyString: true })}`,
-      fetcher,
-      {
-         revalidateOnFocus: true
-      }
-   )
+   
+   const { data: orderList } = useQuery(USERS_QUERY)
 
    const handleLimitChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
       setPagination({ ...pagination, pageSize: Number.parseInt(event.target.value) })
@@ -121,7 +105,7 @@ const Orders = () => {
                      </PerfectScrollbar>
                      <TablePagination
                         component="div"
-                        count={pagination.totalItems}
+                        count={pagination.totalCount}
                         onPageChange={handlePageChange}
                         onRowsPerPageChange={handleLimitChange}
                         page={pagination.currentPage - 1}

@@ -14,20 +14,19 @@ import {
    Tooltip,
    Typography
 } from '@mui/material'
-import { Product } from 'models'
-import PropTypes from 'prop-types'
+import { ProductType } from 'models'
 import { useState } from 'react'
 import { ConfirmDialog } from './confirm-dialog'
 import ReportProblemIcon from '@mui/icons-material/ReportProblem'
 
 interface ProductCardProps {
-   product?: Product
+   productType?: ProductType
    onEditClick?: Function
    onDeleteClick?: Function
 }
-export const ProductCard = ({ product, onEditClick, onDeleteClick, ...rest }: ProductCardProps) => {
+export const ProductTypeCard = ({ productType, onEditClick, onDeleteClick, ...rest }: ProductCardProps) => {
    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
-   return product ? (
+   return productType ? (
       <Card
          sx={{
             display: 'flex',
@@ -37,14 +36,14 @@ export const ProductCard = ({ product, onEditClick, onDeleteClick, ...rest }: Pr
          {...rest}
          elevation={6}
       >
-         <CardMedia component="img" height="220" image={product.img} alt={product.title} />
+         <CardMedia component="img" height="220" image={productType.medias?.[0].filePath} alt={productType.description} />
          <CardContent>
             <Typography align="center" color="textPrimary" gutterBottom variant="h5">
-               {product.title}
+               {productType.name}
             </Typography>
-            <Tooltip title={product.desc || false} placement="top">
+            <Tooltip title={productType.description || false} placement="top">
                <Typography noWrap align="center" color="textPrimary" variant="body1">
-                  {product.desc}
+                  {productType.description}
                </Typography>
             </Tooltip>
          </CardContent>
@@ -61,9 +60,9 @@ export const ProductCard = ({ product, onEditClick, onDeleteClick, ...rest }: Pr
                   }}
                >
                   <Inventory2Icon color="action" />
-                  <Typography color="textSecondary" display="inline" sx={{ pl: 1 }} variant="body2">
+                  {/* <Typography color="textSecondary" display="inline" sx={{ pl: 1 }} variant="body2">
                      {product.quantity} In Stocks
-                  </Typography>
+                  </Typography> */}
                </Grid>
                <Grid
                   item
@@ -73,14 +72,13 @@ export const ProductCard = ({ product, onEditClick, onDeleteClick, ...rest }: Pr
                   }}
                >
                   <Tooltip title="Edit" placement="top">
-                     <IconButton
-                        color="primary"
-                        onClick={() => {
-                           if (onEditClick) onEditClick(product)
-                        }}
-                     >
-                        <EditIcon />
-                     </IconButton>
+                     {/* <Link href={`/productTypes/${productType.id}`} passHref> */}
+                        <IconButton
+                           onClick={() => { if(onEditClick) onEditClick(productType)}}
+                           color="primary">
+                           <EditIcon />
+                        </IconButton>
+                     {/* </Link> */}
                   </Tooltip>
                   <Tooltip title="Delete" placement="top">
                      <IconButton color="error" onClick={() => setIsDeleteDialogOpen(true)}>
@@ -94,10 +92,10 @@ export const ProductCard = ({ product, onEditClick, onDeleteClick, ...rest }: Pr
          <ConfirmDialog
             isOpen={isDeleteDialogOpen}
             title="Are you sure?"
-            body="Are you sure to delete this order?"
+            body="Are you sure to delete this product type?"
             onClose={() => setIsDeleteDialogOpen(false)}
             onSubmit={async () => {
-               if (onDeleteClick) await onDeleteClick(product._id)
+               if (onDeleteClick) await onDeleteClick(productType.id)
                setIsDeleteDialogOpen(false)
             }}
             icon={
@@ -134,8 +132,4 @@ export const ProductCard = ({ product, onEditClick, onDeleteClick, ...rest }: Pr
          </Box>
       </Card>
    )
-}
-
-ProductCard.propTypes = {
-   product: PropTypes.object.isRequired
 }

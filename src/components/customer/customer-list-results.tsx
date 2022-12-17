@@ -178,14 +178,14 @@ export const CustomerListResults = ({
                                 </Typography>
                              </TableCell>
                              <TableCell align="center">
-                                <Link href={`/customers/${customer._id}/edit`} passHref legacyBehavior>
+                                <Link href={`/customers/${customer._id}/edit`} passHref>
                                    <Tooltip title="Edit Customer" placement="top">
                                       <IconButton size="small">
                                          <PencilIcon width={20} />
                                       </IconButton>
                                    </Tooltip>
                                 </Link>
-                                <Link href={`/customers/${customer._id}`} passHref legacyBehavior>
+                                <Link href={`/customers/${customer._id}`} passHref>
                                    <Tooltip title="View Details" placement="top">
                                       <IconButton size="small">
                                          <ArrowForwardIcon fontSize="small" />

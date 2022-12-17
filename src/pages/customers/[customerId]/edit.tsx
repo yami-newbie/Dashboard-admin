@@ -1,7 +1,5 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Avatar, Box, Button, Chip, Container, Grid, Skeleton, Typography } from '@mui/material'
-import { customerApi } from 'api-client'
-import axiosClient from 'api-client/axios-client'
 import { CustomerBasicInfoCardEdit } from 'components/customer'
 import { DashboardLayout } from 'components/layouts'
 import { ResponseData, User } from 'models'
@@ -13,34 +11,25 @@ import { getInitials } from 'utils'
 import Head from 'next/head'
 import { useSnackbar } from 'notistack'
 import { AxiosError } from 'axios'
+import { useQuery } from '@apollo/client'
+import USERS_QUERY from 'graphql/users'
 
 export interface EditCustomerPageProps {}
 
 const fetcher = (url: string) => {
-   return axiosClient.get<any, ResponseData<User>>(url).then((res: ResponseData<User>): User => {
-      return res.data
-   })
+   
 }
 const EditCustomerPage = (props: EditCustomerPageProps) => {
    const { enqueueSnackbar } = useSnackbar()
    const router = useRouter()
    const { customerId } = router.query
 
-   const { data: customer, mutate } = useSWR(`users/${customerId}`, fetcher, {
-      revalidateOnFocus: false
-   })
+   const { data: customer } = useQuery(USERS_QUERY)
 
    const handleUpdateBasicInfo = async (payload: Partial<User>) => {
       if (typeof customerId === 'string') {
          try {
-            await customerApi.update(customerId, payload).then(res => {
-               console.log(res)
-               mutate(res.data, true)
-               router.push(`/customers/${customerId}`)
-               enqueueSnackbar(res.message, {
-                  variant: 'success'
-               })
-            })
+            
          } catch (error: any) {
             enqueueSnackbar(error.message, {
                variant: 'error'
@@ -52,13 +41,7 @@ const EditCustomerPage = (props: EditCustomerPageProps) => {
    const handleDeleteCustomer = async () => {
       if (typeof customerId === 'string') {
          try {
-            await customerApi.delete(customerId).then(res => {
-               console.log(res)
-               router.push('/customers')
-               enqueueSnackbar(res.message, {
-                  variant: 'success'
-               })
-            })
+            
          } catch (error: any) {
             enqueueSnackbar(error.message, {
                variant: 'error'
@@ -89,7 +72,7 @@ const EditCustomerPage = (props: EditCustomerPageProps) => {
                   flexWrap: 'wrap'
                }}
             >
-               <Link href="/customers" passHref legacyBehavior>
+               <Link href="/customers" passHref>
                   <Button variant="text" startIcon={<ArrowBackIcon />}>
                      Customers
                   </Button>

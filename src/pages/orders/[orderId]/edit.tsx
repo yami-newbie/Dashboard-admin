@@ -1,8 +1,6 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import EventAvailableRoundedIcon from '@mui/icons-material/EventAvailableRounded'
 import { Box, Button, Container, Grid, Skeleton, Typography } from '@mui/material'
-import { orderApi } from 'api-client'
-import axiosClient from 'api-client/axios-client'
 import { DashboardLayout } from 'components/layouts'
 import { OrderBasicInfoCardEdit } from 'components/order/order-basic-info-card-edit'
 import { format, parseISO } from 'date-fns'
@@ -13,33 +11,21 @@ import React from 'react'
 import useSWR from 'swr'
 import Head from 'next/head'
 import { useSnackbar } from 'notistack'
+import { useQuery } from '@apollo/client'
+import USERS_QUERY from 'graphql/users'
 
 export interface EditOrderPageProps {}
 
-const fetcher = (url: string) => {
-   return axiosClient.get<any, ResponseData<Order>>(url).then((res: ResponseData<Order>): Order => {
-      return res.data
-   })
-}
 const EditOrderPage = (props: EditOrderPageProps) => {
    const { enqueueSnackbar } = useSnackbar()
    const router = useRouter()
    const { orderId } = router.query
-   const { data: order, mutate } = useSWR(`orders/${orderId}`, fetcher, {
-      revalidateOnFocus: false
-   })
+   const { data: order } = useQuery(USERS_QUERY)
 
    const handleUpdateBasicInfo = async (payload: Partial<Order>) => {
       if (typeof orderId === 'string') {
          try {
-            await orderApi.update(orderId, payload).then(res => {
-               console.log(res)
-               mutate(res.data, true)
-               router.push(`/orders/${orderId}`)
-               enqueueSnackbar(res.message, {
-                  variant: 'success'
-               })
-            })
+            
          } catch (error: any) {
             enqueueSnackbar(error.message, {
                variant: 'error'
@@ -50,13 +36,7 @@ const EditOrderPage = (props: EditOrderPageProps) => {
    const handleDeleteOrder = async () => {
       if (typeof orderId === 'string') {
          try {
-            await orderApi.delete(orderId).then(res => {
-               console.log(res)
-               router.push('/orders')
-               enqueueSnackbar(res.message, {
-                  variant: 'success'
-               })
-            })
+            
          } catch (error: any) {
             enqueueSnackbar(error.message, {
                variant: 'error'
@@ -87,7 +67,7 @@ const EditOrderPage = (props: EditOrderPageProps) => {
                   flexWrap: 'wrap'
                }}
             >
-               <Link href="/orders" passHref legacyBehavior>
+               <Link href="/orders" passHref>
                   <Button variant="text" startIcon={<ArrowBackIcon />}>
                      Orders
                   </Button>

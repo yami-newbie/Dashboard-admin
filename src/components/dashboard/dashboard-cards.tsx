@@ -1,5 +1,4 @@
 import { Grid } from '@mui/material'
-import axiosClient from 'api-client/axios-client'
 import { ResponseData } from 'models'
 import * as React from 'react'
 import useSWR from 'swr'
@@ -13,24 +12,9 @@ export interface CardData {
    compareLastMonth: number
 }
 export function DashboardCards(props: DashboardCardsProps) {
-   const fetcher = (url: string) => {
-      return axiosClient
-         .get<any, ResponseData<{ dataMenu: CardData[] }>>(url)
-         .then((res: ResponseData<{ dataMenu: CardData[] }>): CardData[] => {
-            if (res.data) {
-               const lisCardData: CardData[] = res.data.dataMenu.map(data => ({
-                  label: data.label,
-                  value: data.value,
-                  compareLastMonth: data.compareLastMonth
-               }))
-               return lisCardData
-            }
-            return []
-         })
-   }
-   const { data } = useSWR(`orders/stats/card`, fetcher, {
-      revalidateOnFocus: true
-   })
+   
+   const data: any[] = []
+
    return (
       <Grid item container spacing={3}>
          {/* <Grid item lg={3} sm={6} xl={3} xs={12}>

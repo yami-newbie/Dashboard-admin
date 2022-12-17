@@ -1,61 +1,36 @@
-import { Grid, Typography } from '@mui/material'
-import { Box } from '@mui/system'
-import { PaginationParams, Product } from 'models'
+import { Card, CardHeader, CardContent, CardActions, Box, Divider, Stack, Button, IconButton } from '@mui/material'
+import { Product } from 'models'
 import React from 'react'
-import { renderPaginationText } from 'utils'
-import { ProductCard } from '.'
+import ProductItem from './product-item'
+import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 
-export interface ProductListProps {
-   products?: Product[]
-   pagination: PaginationParams
-   onEditClick: Function
-   onDeleteClick: Function
+type Props = {
+  data: Product[]
 }
 
-export function ProductList({
-   products,
-   pagination,
-   onEditClick,
-   onDeleteClick
-}: ProductListProps) {
-   return (
-      <Box sx={{ pt: 3 }}>
-         {products &&
-            (products.length > 0 ? (
-               <Typography variant="body1" sx={{ mb: 2 }}>
-                  {renderPaginationText(pagination)}
-               </Typography>
-            ) : (
-               <Box
-                  sx={{
-                     my: 20,
-                     display: 'flex',
-                     alignItems: 'center',
-                     justifyContent: 'center'
-                  }}
-               >
-                  <Typography variant="h5">
-                     No product found. Please try again with new filters and search keyword.
-                  </Typography>
-               </Box>
-            ))}
-         <Grid container spacing={3}>
-            {products
-               ? products.map(product => (
-                    <Grid item key={product._id} lg={3} md={4} sm={6} xs={12}>
-                       <ProductCard
-                          product={product}
-                          onEditClick={onEditClick}
-                          onDeleteClick={onDeleteClick}
-                       />
-                    </Grid>
-                 ))
-               : Array.from(new Array(pagination.pageSize)).map((item, idx) => (
-                    <Grid item key={idx} lg={3} md={4} sm={6} xs={12}>
-                       <ProductCard />
-                    </Grid>
-                 ))}
-         </Grid>
-      </Box>
-   )
+const ProductList = (props: Props) => {
+  const { data } = props
+  return (
+    <Card>
+      <CardHeader title="Product List" 
+        action={
+          <IconButton size='small' aria-label="Add Product">
+            <AddCircleOutlineRoundedIcon color='primary' fontSize='medium'/>
+          </IconButton>
+        }
+      />
+
+      <Divider />
+      <CardContent style={{ maxHeight: '100vh', overflowY: "auto" }}>
+        <Stack spacing={2}>
+          {(data || []).map(item => (
+            <ProductItem key={item.id} data={item} />
+          ))}
+        </Stack>
+      </CardContent>
+      <CardActions></CardActions>
+    </Card>
+  )
 }
+
+export default ProductList

@@ -14,8 +14,6 @@ import {
    Skeleton,
    Typography
 } from '@mui/material'
-import { customerApi } from 'api-client'
-import axiosClient from 'api-client/axios-client'
 import { CustomerBasicInfoCard, CustomerOrderListCard } from 'components/customer'
 import { DashboardLayout } from 'components/layouts'
 import PencilIcon from 'icons/pencil'
@@ -27,15 +25,15 @@ import useSWR from 'swr'
 import { getInitials } from 'utils'
 import Head from 'next/head'
 import { useSnackbar } from 'notistack'
-import { ConfirmDialog } from 'components/product/confirm-dialog'
+import { ConfirmDialog } from 'components/productType/confirm-dialog'
 import ReportProblemIcon from '@mui/icons-material/ReportProblem'
+import { useQuery } from '@apollo/client'
+import USERS_QUERY from 'graphql/users'
 
 export interface CustomerDetailPageProps {}
 
 const fetcher = (url: string) => {
-   return axiosClient.get<any, ResponseData<User>>(url).then((res: ResponseData<User>): User => {
-      return res.data
-   })
+   
 }
 function CustomerDetailPage(props: CustomerDetailPageProps) {
    const { enqueueSnackbar } = useSnackbar()
@@ -43,19 +41,12 @@ function CustomerDetailPage(props: CustomerDetailPageProps) {
    const router = useRouter()
    const { customerId } = router.query
 
-   const { data: customer } = useSWR(`users/${customerId}`, fetcher, {
-      revalidateOnFocus: false
-   })
+   const { data: customer } = useQuery(USERS_QUERY)
 
    const handleDeleteCustomer = async () => {
       if (typeof customerId === 'string') {
          try {
-            await customerApi.delete(customerId).then(res => {
-               router.push('/customers')
-               enqueueSnackbar(res.message, {
-                  variant: 'success'
-               })
-            })
+            
          } catch (error: any) {
             enqueueSnackbar(error.message, {
                variant: 'error'
@@ -86,7 +77,7 @@ function CustomerDetailPage(props: CustomerDetailPageProps) {
                   flexWrap: 'wrap'
                }}
             >
-               <Link href="/customers" passHref legacyBehavior>
+               <Link href="/customers" passHref>
                   <Button variant="text" startIcon={<ArrowBackIcon />}>
                      Customers
                   </Button>
@@ -128,7 +119,7 @@ function CustomerDetailPage(props: CustomerDetailPageProps) {
                   </Grid>
                )}
                <Grid item sx={{ display: 'flex', gap: 2 }}>
-                  <Link href={`/customers/${customerId}/edit`} passHref legacyBehavior>
+                  <Link href={`/customers/${customerId}/edit`} passHref>
                      <Button variant="outlined" endIcon={<PencilIcon width={20} />}>
                         Edit
                      </Button>

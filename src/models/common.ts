@@ -3,6 +3,14 @@ import { AppProps } from 'next/app'
 import { ReactElement, ReactNode } from 'react'
 import { EmotionCache } from '@emotion/react'
 
+
+export const DEFAULT_PAGINATION = {
+   totalItems: 10,
+   totalPages: 1,
+   currentPage: 0,
+   pageSize: 10
+}
+
 export interface ResponseData<T> {
    data: T
    errorCode: number
@@ -42,12 +50,35 @@ export type AppPropsWithLayout = AppProps & {
 }
 
 //API
+
+export interface Edges {
+   node: any,
+   cursor: string
+}
 export interface PaginationParams {
-   totalItems: number
-   totalPages: number
-   currentPage: number
+   totalItems: number,
+   totalPages: number,
+   currentPage: number,
    pageSize: number
 }
+
+export interface PageInfo {
+   endCursor: string,
+   hasNextPage: boolean,
+   hasPreviousPage: boolean,
+   startCursor: string
+}
+
+export interface FilterInput {}
+
+export interface Variables_Graphql {
+   input?: FilterInput | null,
+   first?: number | null,
+   last?: number | null,
+   after?: string | null,
+   before?: string | null,
+}
+
 export interface ListParams {
    page?: number
    pageSize?: number

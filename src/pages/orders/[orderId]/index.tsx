@@ -1,8 +1,6 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import EventAvailableRoundedIcon from '@mui/icons-material/EventAvailableRounded'
 import { Box, Button, Container, Grid, MenuItem, Skeleton, Typography } from '@mui/material'
-import { orderApi } from 'api-client'
-import axiosClient from 'api-client/axios-client'
 import { ButtonDropdownMenu } from 'components/button-dropdown-menu'
 import { DashboardLayout } from 'components/layouts'
 import { OrderBasicInfoCard } from 'components/order/order-basic-info-card'
@@ -17,34 +15,21 @@ import useSWR from 'swr'
 import { downloadFile } from 'utils'
 import Head from 'next/head'
 import { useSnackbar } from 'notistack'
+import { useQuery } from '@apollo/client'
+import USERS_QUERY from 'graphql/query/users'
 
 export interface OrderDetailPageProps {}
-
-const fetcher = (url: string) => {
-   return axiosClient.get<any, ResponseData<Order>>(url).then((res: ResponseData<Order>): Order => {
-      console.log(res.data)
-      return res.data
-   })
-}
 function OrderDetailPage(props: OrderDetailPageProps) {
    const { enqueueSnackbar } = useSnackbar()
    const router = useRouter()
    const { orderId } = router.query
 
-   const { data: order, mutate } = useSWR(`orders/${orderId}`, fetcher, {
-      revalidateOnFocus: false
-   })
+   const { data: order } = useQuery(USERS_QUERY)
 
    const handleUpdateOrder = async (payload: Partial<Order>) => {
       if (typeof orderId === 'string') {
          try {
-            await orderApi.update(orderId, payload).then(res => {
-               console.log(res)
-               mutate(res.data, true)
-               enqueueSnackbar(res.message, {
-                  variant: 'success'
-               })
-            })
+            
          } catch (error: any) {
             enqueueSnackbar(error.message, {
                variant: 'error'
@@ -63,10 +48,7 @@ function OrderDetailPage(props: OrderDetailPageProps) {
    const handleExportInvoice = async () => {
       if (typeof orderId === 'string') {
          try {
-            await orderApi.exportBill(orderId).then(res => {
-               console.log(res.data)
-               downloadFile(res.data, `Invoice-${orderId}.pdf`, 'application/pdf')
-            })
+            
          } catch (error: any) {
             enqueueSnackbar(error.message, {
                variant: 'error'
@@ -97,7 +79,7 @@ function OrderDetailPage(props: OrderDetailPageProps) {
                   flexWrap: 'wrap'
                }}
             >
-               <Link href="/orders" passHref legacyBehavior>
+               <Link href="/orders" passHref>
                   <Button variant="text" startIcon={<ArrowBackIcon />}>
                      Orders
                   </Button>
@@ -136,7 +118,7 @@ function OrderDetailPage(props: OrderDetailPageProps) {
                )}
                {order && (
                   <Grid item sx={{ display: 'flex', gap: 2 }}>
-                     <Link href={`/orders/${orderId}/edit`} passHref legacyBehavior>
+                     <Link href={`/orders/${orderId}/edit`} passHref>
                         <Button variant="outlined" endIcon={<PencilIcon width={20} />}>
                            Edit
                         </Button>

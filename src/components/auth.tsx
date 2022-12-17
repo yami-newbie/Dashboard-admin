@@ -11,13 +11,15 @@ export function Auth({ children }: AuthProps) {
    const router = useRouter()
    const { profile, firstLoading } = useAuth()
 
+   console.log(profile, firstLoading)
+
    useEffect(() => {
-      if (!firstLoading && !profile?.username) {
+      if (!firstLoading && !profile?.email) {
          router.push('/login')
       }
    }, [router, profile, firstLoading])
 
-   if (!profile?.username) return <LoadingBackdrop />
+   if (!profile?.email) return <LoadingBackdrop open={true}/>
 
    return <div>{children}</div>
 }

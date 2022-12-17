@@ -9,8 +9,9 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { useAuth } from '../hooks'
 import { LoginPayload } from '../models'
-import LOGIN_QUERY from 'graphql/login'
+import LOGIN_QUERY from 'graphql/query/login'
 import { useLazyQuery } from '@apollo/client';
+import { useEffect } from 'react'
 
 const schema = yup.object({
    email: yup.string().max(255).required('Email is required'),
@@ -21,11 +22,13 @@ const Login = () => {
    const { enqueueSnackbar } = useSnackbar()
    const router = useRouter()
 
-   const [_login, { loading, error, data }] = useLazyQuery(LOGIN_QUERY, { fetchPolicy: "network-only" });
+   // useEffect(() => {
+   //    if(data) {
+   //       window.localStorage.setItem('token', data.login)
+   //    }
+   // }, [data])
 
-   const { login } = useAuth({
-      revalidateOnMount: false
-   })
+   const { login } = useAuth()
    const form = useForm<LoginPayload>({
       defaultValues: {
          email: '',
@@ -40,9 +43,7 @@ const Login = () => {
 
    const handleClickLogin = async (_data: LoginPayload) => {
       try {
-         // await login(_data)
-
-         await _login({ variables: { input: { email: _data.email, password: _data.password } } })
+         await login(_data)
 
          router.push('/')
       } catch (error: any) {

@@ -36,14 +36,19 @@ const items = [
       title: 'Orders'
    },
    {
-      href: '/products',
+      href: '/productTypes',
       icon: <ShoppingBagIcon fontSize="small" />,
-      title: 'Products'
+      title: 'Product Types'
    },
    {
       href: '/account',
       icon: <UserIcon fontSize="small" />,
       title: 'Account'
+   },
+   {
+      href: '/manufacturers',
+      icon: <UserIcon fontSize="small" />,
+      title: 'Manufacturers'
    }
 ]
 

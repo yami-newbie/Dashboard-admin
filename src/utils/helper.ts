@@ -44,8 +44,8 @@ export function downloadFile(data: any, filename: string, mime?: string) {
 export const renderPaginationText = (pagination: PaginationParams) => {
    const isLastIndex = pagination.currentPage === pagination.totalPages
    return `Showing ${
-      pagination.totalItems > 0 ? (pagination.currentPage - 1) * pagination.pageSize + 1 : 0
-   }–${!isLastIndex ? pagination.currentPage * pagination.pageSize : pagination.totalItems} of ${
-      pagination.totalItems
+      pagination.totalCount > 0 ? (pagination.currentPage - 1) * pagination.pageSize + 1 : 0
+   }–${!isLastIndex ? pagination.currentPage * pagination.pageSize : pagination.totalCount} of ${
+      pagination.totalCount
    } results`
 }

@@ -3,7 +3,6 @@ import { Box, Container, Grid, Typography } from '@mui/material'
 import { AccountProfile, AccountProfileDetails } from 'components/account'
 import { useAuth } from 'hooks'
 import { ChangePasswordFormValues, User } from 'models'
-import { authApi } from 'api-client'
 import { SettingsPassword } from 'components/settings/settings-password'
 import { DashboardLayout } from 'components/layouts'
 
@@ -19,9 +18,7 @@ const Account = () => {
    }
    const handleChangePassword = async (payload: ChangePasswordFormValues) => {
       try {
-         await authApi.changePassword(payload).then(res => {
-            console.log(res)
-         })
+         
       } catch (error) {
          console.log('error to update profile', error)
       }

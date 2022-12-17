@@ -6,13 +6,12 @@ import { Button, CssBaseline } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import { createEmotionCache } from '../utils'
 import { theme } from '../theme'
-import { SWRConfig } from 'swr'
-import axiosClient from '../api-client/axios-client'
 import { AppPropsWithLayout } from 'models'
 import { EmptyLayout } from 'components/layouts'
 import { SnackbarProvider } from 'notistack'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
+import { createUploadLink } from 'apollo-upload-client';
 import { setContext } from '@apollo/client/link/context';
 
 import Router from 'next/router'
@@ -41,13 +40,13 @@ if (typeof window !== 'undefined') {
 const clientSideEmotionCache = createEmotionCache()
 
 const App = (props: AppPropsWithLayout) => {
-   const httpLink = createHttpLink({
+    const uploadLink = createUploadLink({
       uri: 'https://cheems-store.onrender.com/graphql',
-    });
+    })
     
     const authLink = setContext((_, { headers }) => {
       // get the authentication token from local storage if it exists
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('accessToken');
       // return the headers to the context so httpLink can read them
       return {
         headers: {
@@ -58,7 +57,7 @@ const App = (props: AppPropsWithLayout) => {
     });
     
     const client = new ApolloClient({
-      link: authLink.concat(httpLink),
+      link: authLink.concat(uploadLink),
       cache: new InMemoryCache()
     });
    // const notistackRef = createRef<HTMLElement>()
@@ -95,17 +94,10 @@ const App = (props: AppPropsWithLayout) => {
                         // variantInfo: classes.info,
                      }}
                   >
-                     <SWRConfig
-                        value={{
-                           fetcher: (url: string) => axiosClient.get(url).then(res => res.data),
-                           shouldRetryOnError: false
-                        }}
-                     >
-                        <CssBaseline />
-                        <Layout>
-                           <Component {...pageProps} />
-                        </Layout>
-                     </SWRConfig>
+                     <CssBaseline />
+                     <Layout>
+                        <Component {...pageProps} />
+                     </Layout>
                   </SnackbarProvider>
                </ThemeProvider>
             </LocalizationProvider>

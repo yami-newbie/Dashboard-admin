@@ -15,7 +15,6 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 import IconReport from 'assets/IconReport'
 import { useState } from 'react'
-import axiosClient from 'api-client/axios-client'
 import { IncomePeriod, ResponseData } from 'models'
 import useSWR from 'swr'
 import { ChartOptions } from 'chart.js'
@@ -36,30 +35,8 @@ export const Sales = (props: any) => {
    const theme = useTheme()
    const [period, setPeriod] = useState('week')
 
-   const fetcher = (url: string) => {
-      return axiosClient
-         .get<any, ResponseData<IncomePeriod>>(url)
-         .then((res: ResponseData<IncomePeriod>): ChartData | null => {
-            if (res.data) {
-               const newDatasets: Dataset[] = res.data.datasets.map(dataset => ({
-                  backgroundColor: parseInt(dataset.ordinal) === 1 ? '#3F51B5' : '#db5446',
-                  borderColor: parseInt(dataset.ordinal) === 1 ? '#3F51B5' : '#db5446',
-                  data: dataset.data,
-                  label: dataset.label,
-                  cubicInterpolationMode: 'monotone'
-                  // tension: 0.6
-               }))
-               return {
-                  datasets: newDatasets,
-                  labels: res.data.labels
-               }
-            }
-            return null
-         })
-   }
-   const { data } = useSWR(`orders/stats/income?type=${period}`, fetcher, {
-      revalidateOnFocus: true
-   })
+   
+   const data = { datasets: [], labels: [] }
 
    const options: ChartOptions<'line'> = {
       interaction: {
