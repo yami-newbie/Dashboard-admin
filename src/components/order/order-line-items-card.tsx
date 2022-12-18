@@ -13,7 +13,7 @@ import {
    Typography
 } from '@mui/material'
 import { Box } from '@mui/system'
-import { Order, ProductOrder } from 'models'
+import { Order } from 'models'
 import React from 'react'
 
 export interface OrderLineItemsCardProps {
@@ -34,7 +34,7 @@ export function OrderLineItemsCard({ order }: OrderLineItemsCardProps) {
                      <TableCell align="center">AMOUNT</TableCell>
                   </TableRow>
                </TableHead>
-               <TableBody>
+               {/* <TableBody>
                   {order
                      ? order.products.map(item => (
                           <TableRow hover key={item.productId}>
@@ -61,7 +61,7 @@ export function OrderLineItemsCard({ order }: OrderLineItemsCardProps) {
                              </TableCell>
                           </TableRow>
                        ))}
-               </TableBody>
+               </TableBody> */}
             </Table>
          </CardContent>
       </Card>

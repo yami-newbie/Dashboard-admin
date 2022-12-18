@@ -1,10 +1,8 @@
 import {
-   Avatar,
    Box,
    Button,
    Card,
    CardContent,
-   CardHeader,
    Container,
    Divider,
    Stack,
@@ -13,9 +11,8 @@ import {
 import { DashboardLayout } from 'components/layouts'
 import Head from 'next/head'
 import CustomTable from 'components/custom/table'
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import {
    Category,
    CategoryPayLoad,
@@ -24,10 +21,7 @@ import {
    PaginationParams,
    Variables_Graphql
 } from 'models'
-import { ProductTypesFilterInput } from 'graphql/query/productTypes'
 import { useSnackbar } from 'notistack'
-import { ConfirmDialog } from 'components/productType/confirm-dialog'
-import ReportProblemIcon from '@mui/icons-material/ReportProblem'
 import CATEGORIES_QUERY from 'graphql/query/categories'
 import UPDATE_CATEGORY from 'graphql/mutation/updateCategory'
 import DELETE_CATEGORY from 'graphql/mutation/deleteCategory'
@@ -53,7 +47,7 @@ const Categories = () => {
    const [paginationQuery, setPaginationQuery] = useState<Variables_Graphql>({ take: rowsPerPage })
    const [pageInfo, setPageInfo] = useState<PageInfo>()
 
-   const [fetch, { data, refetch, loading }] = useLazyQuery(CATEGORIES_QUERY, {
+   const { data, refetch, loading } = useQuery(CATEGORIES_QUERY, {
       variables: { ...paginationQuery }
    })
 
@@ -68,14 +62,10 @@ const Categories = () => {
    ]
 
    useEffect(() => {
-      fetch()
-   }, [])
-
-   useEffect(() => {
       if (paginationQuery) {
          refetch(paginationQuery)
       }
-   }, [paginationQuery])
+   }, [paginationQuery, refetch])
 
    useEffect(() => {
       if (data) {

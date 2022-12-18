@@ -6,7 +6,7 @@ import { CustomSelectField, CustomTextField } from 'components/form-controls'
 import { ConfirmDialog } from 'components/productType/confirm-dialog'
 import { OrderStatus } from 'constants/enums/order-status'
 import { regexVietnamesePhoneNumber } from 'constants/regexes'
-import { EditOrderFormValues, Order } from 'models'
+import { Order } from 'models'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -43,27 +43,17 @@ export function EditOrderForm({ order, onSave, onCancel, onDelete }: EditOrderFo
    const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
 
    const defaultValues = {
-      customerName: order?.deliveryInfo.name,
-      street: order?.deliveryInfo.address.street,
-      ward: order?.deliveryInfo.address.ward,
-      district: order?.deliveryInfo.address.district,
-      province: order?.deliveryInfo.address.province,
-      notes: order?.notes,
-      phone: order?.deliveryInfo.phone,
-      email: order?.deliveryInfo.email,
-      amount: order?.amount,
-      status: order?.status
    }
    const {
       control,
       formState: { isSubmitting, errors },
       handleSubmit
-   } = useForm<EditOrderFormValues>({
+   } = useForm<any>({
       defaultValues,
       resolver: yupResolver(schema)
    })
 
-   const handleSave = async (values: EditOrderFormValues) => {
+   const handleSave = async (values: any) => {
       console.log(values)
       if (onSave) {
          const payload = {

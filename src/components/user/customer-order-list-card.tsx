@@ -54,13 +54,13 @@ export function CustomerOrderListCard(props: CustomerOrderListCardProps) {
                      <TableBody>
                         {orders
                            ? orders.map((order: Order) => (
-                                <TableRow hover key={order._id}>
+                                <TableRow hover key={order.id}>
                                    <TableCell align="center">
                                       {format(parseISO(order.createdAt), 'dd/MM/yyyy')}
                                    </TableCell>
                                    <TableCell align="left">
                                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                         {order.products.slice(0, 3).map(product => (
+                                         {/* {order.products.slice(0, 3).map(product => (
                                             <Tooltip
                                                key={product.productId}
                                                title={product.title}
@@ -75,11 +75,11 @@ export function CustomerOrderListCard(props: CustomerOrderListCardProps) {
                                                   <Typography>...</Typography>
                                                </Box>
                                             </Tooltip>
-                                         )}
+                                         )} */}
                                       </Box>
                                    </TableCell>
-                                   <TableCell align="center">${order.amount.toFixed(2)}</TableCell>
-                                   <TableCell align="center">{order.payment}</TableCell>
+                                   {/* <TableCell align="center">${order.amount.toFixed(2)}</TableCell>
+                                   <TableCell align="center">{order.payment}</TableCell> */}
                                    <TableCell align="center" sx={{ minWidth: 200 }}>
                                       <SeverityPill
                                          color={
@@ -97,9 +97,8 @@ export function CustomerOrderListCard(props: CustomerOrderListCardProps) {
                                    </TableCell>
                                    <TableCell align="center">
                                       <Link
-                                         href={`/orders/${order._id}/edit`}
+                                         href={`/orders/${order.id}/edit`}
                                          passHref
-                                         legacyBehavior
                                       >
                                          <Tooltip title="Edit Order" placement="top">
                                             <IconButton size="small">
@@ -107,7 +106,7 @@ export function CustomerOrderListCard(props: CustomerOrderListCardProps) {
                                             </IconButton>
                                          </Tooltip>
                                       </Link>
-                                      <Link href={`/orders/${order._id}`} passHref legacyBehavior>
+                                      <Link href={`/orders/${order.id}`} passHref>
                                          <Tooltip title="View Details" placement="top">
                                             <IconButton size="small">
                                                <ArrowForwardIcon fontSize="small" />

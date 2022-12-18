@@ -50,6 +50,7 @@ export class ProductType {
       public metaDatas: MetaData[] = [],
       public deletedAt: string = '',
       public createdAt: string = '',
+      public updatedAt: string = '',
       public medias: Media[] = []
    ) {}
 }

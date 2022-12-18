@@ -11,7 +11,7 @@ import {
 import { DashboardLayout } from 'components/layouts'
 import Head from 'next/head'
 import CustomTable from 'components/custom/table'
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import {
    PaymentMethod,
@@ -46,7 +46,7 @@ const PaymentMethods = () => {
    const [paginationQuery, setPaginationQuery] = useState<Variables_Graphql>({ take: rowsPerPage })
    const [pageInfo, setPageInfo] = useState<PageInfo>()
 
-   const [fetch, { data, refetch, loading }] = useLazyQuery(PAYMENT_METHODS_QUERY, {
+   const { data, refetch, loading } = useQuery(PAYMENT_METHODS_QUERY, {
       variables: { ...paginationQuery }
    })
 
@@ -59,10 +59,6 @@ const PaymentMethods = () => {
       // { field: 'address', headerName: 'Address' },
       { field: 'currency', headerName: 'Currency' }
    ]
-
-   useEffect(() => {
-      fetch()
-   }, [])
 
    useEffect(() => {
       if (paginationQuery) {

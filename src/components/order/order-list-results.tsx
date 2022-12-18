@@ -132,7 +132,7 @@ export const OrderListResults = ({
                        </TableCell>
                        <TableCell align="left">
                           <Box sx={{ display: 'flex', alignItems: 'end', gap: 1 }}>
-                             {order.slice(0, 3).map(product => (
+                             {/* {order.slice(0, 3).map(product => (
                                 <Tooltip
                                    key={product.productId}
                                    title={product.title}
@@ -147,16 +147,16 @@ export const OrderListResults = ({
                                       <Typography>...</Typography>
                                    </Box>
                                 </Tooltip>
-                             )}
+                             )} */}
                           </Box>
                        </TableCell>
                        <TableCell align="center" sx={{ pr: 5 }}>
                           {format(parseISO(order.createdAt), 'dd/MM/yyyy')}
                        </TableCell>
-                       <TableCell align="center" sx={{ pr: 5 }}>
+                       {/* <TableCell align="center" sx={{ pr: 5 }}>
                           ${order.amount.toFixed(2)}
                        </TableCell>
-                       <TableCell align="center">{order.payment}</TableCell>
+                       <TableCell align="center">{order.payment}</TableCell> */}
                        <TableCell align="center" sx={{ minWidth: 200 }}>
                           <SeverityPill
                              color={
@@ -174,14 +174,14 @@ export const OrderListResults = ({
                        </TableCell>
                        <TableCell align="center">
                           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                             <Link href={`/orders/${order._id}/edit`} passHref legacyBehavior>
+                             <Link href={`/orders/${order.id}/edit`} passHref>
                                 <Tooltip title="Edit Order" placement="top">
                                    <IconButton size="small">
                                       <PencilIcon width={20} />
                                    </IconButton>
                                 </Tooltip>
                              </Link>
-                             <Link href={`/orders/${order._id}`} passHref legacyBehavior>
+                             <Link href={`/orders/${order.id}`} passHref>
                                 <Tooltip title="View Details" placement="top">
                                    <IconButton size="small">
                                       <ArrowForwardIcon fontSize="small" />

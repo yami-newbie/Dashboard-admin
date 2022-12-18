@@ -1,10 +1,8 @@
 import {
-   Avatar,
    Box,
    Button,
    Card,
    CardContent,
-   CardHeader,
    Container,
    Divider,
    Stack,
@@ -13,7 +11,7 @@ import {
 import { DashboardLayout } from 'components/layouts'
 import Head from 'next/head'
 import CustomTable from 'components/custom/table'
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import { useLazyQuery, useMutation } from '@apollo/client'
 import MANUFACTURERS_QUERY from 'graphql/query/manufacturers'
 import { useEffect, useState } from 'react'
 import {
@@ -22,16 +20,12 @@ import {
    Manufacturer,
    ManufacturerPayLoad
 } from 'models/manufacturer'
-import { useRouter } from 'next/router'
 import { DEFAULT_PAGINATION, PageInfo, PaginationParams, Variables_Graphql } from 'models'
-import { ProductTypesFilterInput } from 'graphql/query/productTypes'
 import ManufacturerCreateEditModal from 'components/manufacturer/modal-manufacturer'
 import CREATE_MANUFACTURER from 'graphql/mutation/createManufacturer'
 import UPDATE_MANUFACTURER from 'graphql/mutation/updateManufacturer'
 import { useSnackbar } from 'notistack'
 import DELETE_MANUFACTURER from 'graphql/mutation/deleteManufacturer'
-import { ConfirmDialog } from 'components/productType/confirm-dialog'
-import ReportProblemIcon from '@mui/icons-material/ReportProblem'
 import ManufacturerInfoCreateEditModal from 'components/manufacturer/modal-manufacturer-info'
 import CREATE_MANUFACTURE_INFO from 'graphql/mutation/createManufactureInfo'
 

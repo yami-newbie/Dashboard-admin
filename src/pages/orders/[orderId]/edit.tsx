@@ -12,7 +12,7 @@ import useSWR from 'swr'
 import Head from 'next/head'
 import { useSnackbar } from 'notistack'
 import { useQuery } from '@apollo/client'
-import USERS_QUERY from 'graphql/users'
+import USERS_QUERY from 'graphql/query/users'
 
 export interface EditOrderPageProps {}
 

@@ -52,9 +52,9 @@ export const LatestOrders = (props: any) => {
                   <TableBody>
                      {orders
                         ? orders.map((order: Order) => (
-                             <TableRow hover key={order._id}>
+                             <TableRow hover key={order.id}>
                                 <TableCell align="left">
-                                   <Link href={`customers/${order.user._id}`} passHref>
+                                   <Link href={`customers/${order.user.id}`} passHref>
                                       <Typography
                                          sx={{
                                             cursor: 'pointer',
@@ -64,7 +64,7 @@ export const LatestOrders = (props: any) => {
                                          }}
                                          variant="body2"
                                       >
-                                         {order.user.name}
+                                         {order.user.fullname}
                                       </Typography>
                                    </Link>
                                 </TableCell>
@@ -76,7 +76,7 @@ export const LatestOrders = (props: any) => {
                                          gap: 1
                                       }}
                                    >
-                                      {order.products.slice(0, 3).map(product => (
+                                      {/* {order.products.slice(0, 3).map(product => (
                                          <Tooltip
                                             key={product.productId}
                                             title={product.title}
@@ -91,10 +91,10 @@ export const LatestOrders = (props: any) => {
                                                <Typography>...</Typography>
                                             </Box>
                                          </Tooltip>
-                                      )}
+                                      )} */}
                                    </Box>
                                 </TableCell>
-                                <TableCell align="center">${order.amount.toFixed(2)}</TableCell>
+                                {/* <TableCell align="center">${order.amount.toFixed(2)}</TableCell> */}
                                 <TableCell align="center">
                                    <SeverityPill
                                       color={
@@ -112,14 +112,14 @@ export const LatestOrders = (props: any) => {
                                 </TableCell>
                                 <TableCell align="center">
                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                      <Link href={`/orders/${order._id}/edit`} passHref>
+                                      <Link href={`/orders/${order.id}/edit`} passHref>
                                          <Tooltip title="Edit Order" placement="top">
                                             <IconButton size="small">
                                                <PencilIcon width={20} />
                                             </IconButton>
                                          </Tooltip>
                                       </Link>
-                                      <Link href={`/orders/${order._id}`} passHref>
+                                      <Link href={`/orders/${order.id}`} passHref>
                                          <Tooltip title="View Details" placement="top">
                                             <IconButton size="small">
                                                <ArrowForwardIcon fontSize="small" />

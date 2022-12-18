@@ -19,42 +19,7 @@ export interface OrderBasicInfoCardProps {
    order?: Order
 }
 
-function fetcher<T>(url: string) {
-   return axios.get<any, AxiosResponse<T>>(url).then((res: AxiosResponse<T>): T => {
-      return res.data
-   })
-}
 export function OrderBasicInfoCard({ order }: OrderBasicInfoCardProps) {
-   const { data: orderProvince } = useSWR<Province>(
-      () =>
-         order && order?.deliveryInfo.address.province
-            ? `https://provinces.open-api.vn/api/p/${order?.deliveryInfo.address.province}`
-            : null,
-      fetcher,
-      {
-         revalidateOnFocus: false
-      }
-   )
-   const { data: orderDistrict } = useSWR<District>(
-      () =>
-         order && order?.deliveryInfo.address.province
-            ? `https://provinces.open-api.vn/api/d/${order?.deliveryInfo.address.district}`
-            : null,
-      fetcher,
-      {
-         revalidateOnFocus: false
-      }
-   )
-   const { data: orderWard } = useSWR<Ward>(
-      () =>
-         order && order?.deliveryInfo.address.province
-            ? `https://provinces.open-api.vn/api/w/${order?.deliveryInfo.address.ward}`
-            : null,
-      fetcher,
-      {
-         revalidateOnFocus: false
-      }
-   )
 
    return (
       <Card>
@@ -74,23 +39,12 @@ export function OrderBasicInfoCard({ order }: OrderBasicInfoCardProps) {
                      <Box sx={{ flex: 1 }}>
                         <Typography variant="body2" color="primary">
                            {order.user && (
-                              <Link href={`/customers/${order.user._id}`} passHref legacyBehavior>
-                                 {order.user?.name}
+                              <Link href={`/customers/${order.user.id}`} passHref>
+                                 {order.user?.fullname}
                               </Link>
                            )}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                           {order.deliveryInfo.address.street}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                           {orderWard?.name}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                           {orderDistrict?.name}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                           {orderProvince?.name}
-                        </Typography>
+                        
                      </Box>
                   </ListItem>
                   <Divider />
@@ -105,7 +59,7 @@ export function OrderBasicInfoCard({ order }: OrderBasicInfoCardProps) {
                      </Typography>
                      <Box sx={{ flex: 1 }}>
                         <Typography variant="body2" color="text.secondary">
-                           {order._id}
+                           {order.id}
                         </Typography>
                      </Box>
                   </ListItem>
@@ -137,11 +91,11 @@ export function OrderBasicInfoCard({ order }: OrderBasicInfoCardProps) {
                      <Typography variant="subtitle2" sx={{ minWidth: 180 }}>
                         Payment Method
                      </Typography>
-                     <Box sx={{ flex: 1 }}>
+                     {/* <Box sx={{ flex: 1 }}>
                         <Typography variant="body2" color="text">
                            {order.payment}
                         </Typography>
-                     </Box>
+                     </Box> */}
                   </ListItem>
                   <Divider />
 
@@ -154,9 +108,9 @@ export function OrderBasicInfoCard({ order }: OrderBasicInfoCardProps) {
                         Total Amount
                      </Typography>
                      <Box sx={{ flex: 1 }}>
-                        <Typography variant="body2" color="text">
+                        {/* <Typography variant="body2" color="text">
                            ${order.amount.toFixed(2)}
-                        </Typography>
+                        </Typography> */}
                      </Box>
                   </ListItem>
                   <Divider />

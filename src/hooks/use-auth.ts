@@ -1,13 +1,10 @@
 import LOGIN_QUERY from 'graphql/query/login'
 import { LoginPayload, User } from './../models'
-import useSWR from 'swr'
 import { PublicConfiguration } from 'swr/dist/types'
-import { useRouter } from 'next/router'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import CURRENT_USER_QUERY from 'graphql/query/currentUser'
 
 export function useAuth(options?: Partial<PublicConfiguration>) {
-   const router = useRouter()
 
    const [_login, { loading: _loading, error: _error, data }] = useLazyQuery(LOGIN_QUERY, {
       fetchPolicy: 'network-only'
@@ -17,7 +14,8 @@ export function useAuth(options?: Partial<PublicConfiguration>) {
    const firstLoading = profile === undefined && error === undefined
 
    async function login(payload: LoginPayload) {
-      window.localStorage.removeItem('token')
+      window.localStorage.removeItem('accessToken')
+      window.localStorage.removeItem('refreshToken')
 
       const res = await _login({
          variables: { input: { email: payload.email, password: payload.password } }

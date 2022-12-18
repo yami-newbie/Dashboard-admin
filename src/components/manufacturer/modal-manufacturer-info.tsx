@@ -26,11 +26,11 @@ const schema = yup.object().shape({
 const ManufacturerInfoCreateEditModal = (props: Props) => {
    const { data, onClose, isOpen, onSubmit } = props
 
-   const [fetch, { data: options }] = useLazyQuery(MANUFACTURERS_QUERY)
+   const { data: options, refetch } = useQuery(MANUFACTURERS_QUERY)
 
    useEffect(() => {
       if (isOpen) {
-         fetch()
+         refetch()
       }
    }, [isOpen])
 

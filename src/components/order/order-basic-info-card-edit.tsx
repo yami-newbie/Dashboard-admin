@@ -15,7 +15,7 @@ import { Box } from '@mui/system'
 import { CustomSelectField, CustomTextField } from 'components/form-controls'
 import { OrderStatus } from 'constants/enums/order-status'
 import { regexVietnamesePhoneNumber } from 'constants/regexes'
-import { District, EditOrderFormValues, Order, Province } from 'models'
+import { District, Order, Province } from 'models'
 import React, { MouseEvent, useEffect, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import * as yup from 'yup'
@@ -72,7 +72,7 @@ export function OrderBasicInfoCardEdit({ order, onSave, onDelete }: OrderBasicIn
       formState: { isSubmitting },
       handleSubmit,
       reset
-   } = useForm<EditOrderFormValues>({
+   } = useForm<any>({
       defaultValues: {
          deliveryInfo: {
             name: '',
@@ -132,15 +132,12 @@ export function OrderBasicInfoCardEdit({ order, onSave, onDelete }: OrderBasicIn
       if (order) {
          console.log(order.status)
          reset({
-            deliveryInfo: order.deliveryInfo,
-            notes: order.notes,
-            amount: order.amount,
-            status: order.status
+            
          })
       }
    }, [order, reset])
 
-   const handleSave = async (values: EditOrderFormValues) => {
+   const handleSave = async (values: any) => {
       console.log(values)
       if (onSave) {
          const payload = {
@@ -289,7 +286,7 @@ export function OrderBasicInfoCardEdit({ order, onSave, onDelete }: OrderBasicIn
          {order && (
             <CardActions sx={{ m: 2, justifyContent: 'space-between' }}>
                <Box sx={{ display: 'flex', gap: 2 }}>
-                  <Link href={`/orders/${order._id}`} passHref legacyBehavior>
+                  <Link href={`/orders/${order.id}`} passHref>
                      <Button variant="outlined" disabled={isSubmitting}>
                         Cancel
                      </Button>

@@ -1,26 +1,12 @@
 import { useState } from 'react'
 import { Box, Button, Card, CardContent, CardHeader, Divider, TextField } from '@mui/material'
 import * as yup from 'yup'
-import { authApi } from 'api-client'
 import { CustomTextField } from 'components/form-controls'
 import { useForm } from 'react-hook-form'
 import { ChangePasswordPayLoad } from 'models'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
 
 const schema = yup.object().shape({
-   oldPassword: yup
-      .string()
-      .max(255)
-      .label('Old password')
-      .required()
-      .test('check-old-password-is-correct', 'Old password is not correct', async value => {
-         try {
-            await authApi.changePassword({ oldPassword: value })
-            return true
-         } catch (error) {
-            return false
-         }
-      }),
    newPassword: yup.string().min(4).max(255).label('New password').required(),
    confirmPassword: yup
       .string()

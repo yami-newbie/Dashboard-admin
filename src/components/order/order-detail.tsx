@@ -17,7 +17,7 @@ import IconReport from 'assets/IconReport'
 import CustomizedModal from 'components/customized-modal/customized-modal'
 import { OrderStatus } from 'constants/enums/order-status'
 import { format, parseISO } from 'date-fns'
-import { Order, ProductOrder } from 'models'
+import { Order } from 'models'
 import React, { useState } from 'react'
 import { EditOrderForm } from './edit-order-form'
 
@@ -39,13 +39,13 @@ export function OrderDetailModal({
    const [mode, setMode] = useState<'edit' | 'view'>('view')
 
    const handleApprove = async () => {
-      if (order?._id) {
-         await onUpdate(order._id)({ status: 'DELIVERIED' })
+      if (order?.id) {
+         await onUpdate(order.id)({ status: 'DELIVERIED' })
       }
    }
    const handleReject = async () => {
-      if (order?._id) {
-         await onUpdate(order._id)({ status: 'CANCELED' })
+      if (order?.id) {
+         await onUpdate(order.id)({ status: 'CANCELED' })
       }
    }
 
@@ -62,14 +62,14 @@ export function OrderDetailModal({
             <EditOrderForm
                order={order}
                onSave={async payload => {
-                  if (order?._id) {
-                     await onUpdate(order._id)(payload).then(() => setMode('view'))
+                  if (order?.id) {
+                     await onUpdate(order.id)(payload).then(() => setMode('view'))
                   }
                }}
                onCancel={() => setMode('view')}
                onDelete={async () => {
-                  if (order?._id) {
-                     await onDelete(order._id).then(() => setMode('view'))
+                  if (order?.id) {
+                     await onDelete(order.id).then(() => setMode('view'))
                   }
                }}
             />
@@ -134,7 +134,7 @@ export function OrderDetailModal({
                      </Typography>
                      <Box sx={{ flex: 1 }}>
                         <Typography variant="body2" color="text.secondary">
-                           {order?._id}
+                           {order?.id}
                         </Typography>
                      </Box>
                   </ListItem>
@@ -164,7 +164,7 @@ export function OrderDetailModal({
                      <Typography variant="subtitle2" sx={{ minWidth: 180 }}>
                         Delivery Information
                      </Typography>
-                     <Box sx={{ flex: 1 }}>
+                     {/* <Box sx={{ flex: 1 }}>
                         <Typography variant="body2" color="primary">
                            {order?.deliveryInfo.name}
                         </Typography>
@@ -186,7 +186,7 @@ export function OrderDetailModal({
                         <Typography variant="body2" color="text.secondary">
                            {order?.deliveryInfo.email}
                         </Typography>
-                     </Box>
+                     </Box> */}
                   </ListItem>
 
                   <ListItem
@@ -198,9 +198,9 @@ export function OrderDetailModal({
                         Payment Method
                      </Typography>
                      <Box sx={{ flex: 1 }}>
-                        <Typography variant="body2" color="text">
+                        {/* <Typography variant="body2" color="text">
                            {order?.payment}
-                        </Typography>
+                        </Typography> */}
                      </Box>
                   </ListItem>
 
@@ -213,9 +213,9 @@ export function OrderDetailModal({
                         Total Amount
                      </Typography>
                      <Box sx={{ flex: 1 }}>
-                        <Typography variant="body2" color="text">
+                        {/* <Typography variant="body2" color="text">
                            ${order?.amount.toFixed(2)}
-                        </Typography>
+                        </Typography> */}
                      </Box>
                   </ListItem>
 
@@ -249,7 +249,7 @@ export function OrderDetailModal({
                      </TableRow>
                   </TableHead>
                   <TableBody>
-                     {order?.products.map((product: ProductOrder) => (
+                     {/* {order?.products.map((product: ProductOrder) => (
                         <TableRow key={product?.productId}>
                            <TableCell>
                               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -260,7 +260,7 @@ export function OrderDetailModal({
                            <TableCell align="center">{product?.quantity}</TableCell>
                            <TableCell align="right">${product?.amount.toFixed(2)}</TableCell>
                         </TableRow>
-                     ))}
+                     ))} */}
                   </TableBody>
                </Table>
             </Box>

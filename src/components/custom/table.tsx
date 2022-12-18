@@ -155,8 +155,8 @@ export default function CustomTable(props: Props) {
          {
             loading ? (
             <Stack width="100%">
-               {Array(5).fill(2).map(_ => (
-                  <Skeleton animation="wave" height="64px" />
+               {Array(5).fill(2).map((_, index) => (
+                  <Skeleton animation="wave" key={index} height="64px" />
                ))}
             </Stack>
             ) : null

@@ -12,7 +12,7 @@ import {
    Skeleton
 } from '@mui/material'
 import { formatDistance, parseISO } from 'date-fns'
-import { Product } from 'models'
+import { Product, ProductType } from 'models'
 import NextLink from 'next/link'
 import useSWR from 'swr'
 
@@ -51,12 +51,12 @@ export const LatestProducts = (props: any) => {
          <Divider />
          {products ? (
             <List>
-               {products.map((product: Product, i: number) => (
+               {products.map((product: ProductType, i: number) => (
                   <ListItem divider={i < products.length - 1} key={product.id}>
                      <ListItemAvatar>
                         <img
-                           alt={product.description}
-                           src={product.img}
+                           alt={product?.description}
+                           src={product?.medias?.[0]?.filePath || ""}
                            style={{
                               height: 48,
                               width: 48
@@ -64,9 +64,9 @@ export const LatestProducts = (props: any) => {
                         />
                      </ListItemAvatar>
                      <ListItemText
-                        primary={product.description}
+                        primary={product?.description}
                         secondary={`Updated ${formatDistance(
-                           parseISO(product.updatedAt),
+                           parseISO(product?.updatedAt),
                            new Date(),
                            { addSuffix: true }
                         )}`}
@@ -85,7 +85,7 @@ export const LatestProducts = (props: any) => {
                p: 2
             }}
          >
-            <NextLink href={'/products'} passHref legacyBehavior>
+            <NextLink href={'/products'} passHref>
                <Button color="primary" endIcon={<ArrowRightIcon />} size="small" variant="text">
                   View all
                </Button>
