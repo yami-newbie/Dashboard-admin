@@ -11,7 +11,7 @@ import {
 import { DashboardLayout } from 'components/layouts'
 import Head from 'next/head'
 import CustomTable from 'components/custom/table'
-import { useLazyQuery, useMutation } from '@apollo/client'
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import MANUFACTURERS_QUERY from 'graphql/query/manufacturers'
 import { useEffect, useState } from 'react'
 import {
@@ -52,7 +52,7 @@ const Manufacturers = () => {
    const [paginationQuery, setPaginationQuery] = useState<Variables_Graphql>({ take: rowsPerPage })
    const [pageInfo, setPageInfo] = useState<PageInfo>()
 
-   const [fetch, { data, refetch, loading }] = useLazyQuery(MANUFACTURERS_QUERY, {
+   const { data, refetch, loading } = useQuery(MANUFACTURERS_QUERY, {
       variables: { ...paginationQuery }
    })
    const [createManufacturer] = useMutation(CREATE_MANUFACTURER)
@@ -66,10 +66,6 @@ const Manufacturers = () => {
       { field: 'address', headerName: 'Address' },
       { field: 'description', headerName: 'Description' }
    ]
-
-   useEffect(() => {
-      fetch()
-   }, [fetch])
 
    useEffect(() => {
       if (paginationQuery) {
@@ -107,14 +103,6 @@ const Manufacturers = () => {
          )
       }
    }, [data])
-
-   useEffect(() => {
-      if (pagination) {
-         if (pagination.currentPage === 0) {
-            setPaginationQuery(prev => ({ ...prev, after: null, first: rowsPerPage }))
-         }
-      }
-   }, [pagination, rowsPerPage])
 
    const handleChangeRowsPerPage = (
       event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

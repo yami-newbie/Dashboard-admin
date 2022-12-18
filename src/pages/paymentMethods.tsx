@@ -96,14 +96,6 @@ const PaymentMethods = () => {
       }
    }, [data])
 
-   useEffect(() => {
-      if (pagination) {
-         if (pagination.currentPage === 0) {
-            setPaginationQuery(prev => ({ ...prev, after: null, first: rowsPerPage }))
-         }
-      }
-   }, [pagination, rowsPerPage])
-
    const handleChangeRowsPerPage = (
       event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
    ) => {
