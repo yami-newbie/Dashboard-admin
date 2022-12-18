@@ -12,12 +12,12 @@ export function Unauth({ children }: UnauthProps) {
    const { profile, firstLoading } = useAuth()
 
    useEffect(() => {
-      if (!firstLoading && profile?.username) {
+      if (!firstLoading && profile?.email) {
          router.push('/')
       }
    }, [router, profile, firstLoading])
 
-   if (firstLoading || profile?.username) return <LoadingBackdrop />
+   if (firstLoading || profile?.email) return <LoadingBackdrop open={true} />
 
    return <div>{children}</div>
 }
