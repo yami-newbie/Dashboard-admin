@@ -49,7 +49,7 @@ const ProductTypes = () => {
    useEffect(() => {
       setProductTypeList([])
       fetch()
-   }, [variables])
+   }, [variables, fetch])
 
    useEffect(() => {
       if (productTypes) {

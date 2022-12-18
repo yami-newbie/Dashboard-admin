@@ -69,13 +69,13 @@ const Manufacturers = () => {
 
    useEffect(() => {
       fetch()
-   }, [])
+   }, [fetch])
 
    useEffect(() => {
       if (paginationQuery) {
          refetch(paginationQuery)
       }
-   }, [paginationQuery])
+   }, [paginationQuery, refetch])
 
    useEffect(() => {
       if (data) {

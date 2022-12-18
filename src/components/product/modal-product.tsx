@@ -28,7 +28,7 @@ const ProductCreateEditModal = (props: Props) => {
       if (isOpen) {
          fetch()
       }
-   }, [isOpen])
+   }, [isOpen, fetch])
 
    const form = useForm<ProductPayLoad>({
       defaultValues: new ProductPayLoad(),

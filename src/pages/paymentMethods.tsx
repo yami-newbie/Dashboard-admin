@@ -64,7 +64,7 @@ const PaymentMethods = () => {
       if (paginationQuery) {
          refetch(paginationQuery)
       }
-   }, [paginationQuery])
+   }, [paginationQuery, refetch])
 
    useEffect(() => {
       if (data) {
