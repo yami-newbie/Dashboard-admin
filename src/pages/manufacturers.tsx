@@ -73,7 +73,7 @@ const Manufacturers = () => {
 
          setPagination(prev => ({
             ...prev,
-            totalItems: _data.totalCount
+            totalCount: _data.totalCount
          }))
 
          setRows(nodes_data.map((item, index) => ({ name: item.name, address: item.address, description: item.description, _data: item }) as ManufacturersDataTable))
@@ -277,7 +277,7 @@ const Manufacturers = () => {
                         handleChangePage={handleChangePagination}
                         handleChangeRowsPerPage={handleChangeRowsPerPage}
                         page={pagination.currentPage}
-                        totalItems={pagination.totalItems}
+                        totalItems={pagination.totalCount}
                         subButton
                      />
                   </CardContent>

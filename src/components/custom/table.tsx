@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { GridColDef, DataGrid } from '@mui/x-data-grid';
-import { Avatar, Box, IconButton, Stack, TablePagination, Typography } from '@mui/material';
+import { Avatar, Box, Divider, IconButton, Stack, TablePagination, Typography } from '@mui/material';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { Manufacturer } from 'models';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -111,6 +111,7 @@ export default function CustomTable(props: Props) {
                })}
             </TableBody>
          </Table>
+         <Divider/>
          <TablePagination
             rowsPerPageOptions={[5, 10]}
             component="div"

@@ -113,9 +113,9 @@ export const OrderListResults = ({
          <TableBody>
             {orderList
                ? orderList.map((order: Order) => (
-                    <TableRow hover key={order._id}>
+                    <TableRow hover key={order.id}>
                        <TableCell align="left" sx={{ minWidth: 200 }}>
-                          <Link href={`/customers/${order.user._id}`} passHref legacyBehavior>
+                          <Link href={`/customers/${order.user.id}`} passHref>
                              <Typography
                                 sx={{
                                    cursor: 'pointer',
@@ -126,13 +126,13 @@ export const OrderListResults = ({
                                 }}
                                 variant="body2"
                              >
-                                {order.user.name}
+                                {order.user.fullname}
                              </Typography>
                           </Link>
                        </TableCell>
                        <TableCell align="left">
                           <Box sx={{ display: 'flex', alignItems: 'end', gap: 1 }}>
-                             {order.products.slice(0, 3).map(product => (
+                             {order.slice(0, 3).map(product => (
                                 <Tooltip
                                    key={product.productId}
                                    title={product.title}

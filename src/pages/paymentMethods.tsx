@@ -1,50 +1,45 @@
-import { Avatar, Box, Button, Card, CardContent, CardHeader, Container, Divider, Stack, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Container, Divider, Stack, Typography } from '@mui/material'
 import { DashboardLayout } from 'components/layouts'
 import Head from 'next/head'
 import CustomTable from 'components/custom/table'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-import { Category, CategoryPayLoad, DEFAULT_PAGINATION, PageInfo, PaginationParams, Variables_Graphql } from 'models'
-import { ProductTypesFilterInput } from 'graphql/query/productTypes'
+import { PaymentMethod, PaymentMethodPayLoad, DEFAULT_PAGINATION, PageInfo, PaginationParams, Variables_Graphql } from 'models'
 import { useSnackbar } from 'notistack'
-import { ConfirmDialog } from 'components/productType/confirm-dialog'
-import ReportProblemIcon from '@mui/icons-material/ReportProblem'
-import CATEGORIES_QUERY from 'graphql/query/categories'
-import UPDATE_CATEGORY from 'graphql/mutation/updateCategory'
-import DELETE_CATEGORY from 'graphql/mutation/deleteCategory'
-import CategoryCreateEditModal from 'components/category/modal'
-import CREATE_CATEGORY from 'graphql/mutation/createCategory'
+import CREATE_PAYMENT_METHOD from 'graphql/mutation/createPaymentMethod'
+import UPDATE_PAYMENT_METHOD from 'graphql/mutation/updatePaymentMethod'
+import DELETE_PAYMENT_METHOD from 'graphql/mutation/deletePaymentMethod'
+import PAYMENT_METHODS_QUERY from 'graphql/query/paymentMethods'
+import PaymentMethodCreateEditModal from 'components/paymentMethod/modal'
 
-interface CategoriesDataTable {
+interface PaymentMethodsDataTable {
    name: string,
-   address: string,
-   description: string,
-   _data: Category
+   currency: string,
+   _data: PaymentMethod
 }
 
-const Categories = () => {
+const PaymentMethods = () => {
    const { enqueueSnackbar } = useSnackbar()
-   const [rows, setRows] = useState<CategoriesDataTable[]>([])
+   const [rows, setRows] = useState<PaymentMethodsDataTable[]>([])
    
-   const [dataCategoryModal, setDataCategoryModal] = useState<Category | undefined>()
-   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false)
+   const [dataPaymentMethodModal, setDataPaymentMethodModal] = useState<PaymentMethod | undefined>()
+   const [isPaymentMethodModalOpen, setIsPaymentMethodModalOpen] = useState(false)
 
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
    const [rowsPerPage, setRowsPerPage] = useState(10);
    const [paginationQuery, setPaginationQuery] = useState<Variables_Graphql>({ first: rowsPerPage })
    const [pageInfo, setPageInfo] = useState<PageInfo>()
 
-   const [fetch, { data, refetch }] = useLazyQuery(CATEGORIES_QUERY, { variables: { ...paginationQuery } })
+   const [fetch, { data, refetch }] = useLazyQuery(PAYMENT_METHODS_QUERY, { variables: { ...paginationQuery } })
 
-   const [createCategory] = useMutation(CREATE_CATEGORY)
-   const [updateCategory] = useMutation(UPDATE_CATEGORY)
-   const [removeCategory] = useMutation(DELETE_CATEGORY)
+   const [createPaymentMethod] = useMutation(CREATE_PAYMENT_METHOD)
+   const [updatePaymentMethod] = useMutation(UPDATE_PAYMENT_METHOD)
+   const [removePaymentMethod] = useMutation(DELETE_PAYMENT_METHOD)
 
    const headers = [
       { field: 'name', headerName: 'Name' }, 
       // { field: 'address', headerName: 'Address' }, 
-      { field: 'description', headerName: 'Description' }
+      { field: 'currency', headerName: 'Currency' }
    ]
 
    useEffect(() => {
@@ -61,11 +56,11 @@ const Categories = () => {
       if (data) {
          console.log(data);
          
-         const _data = data.categories
+         const _data = data.paymentMethods
 
-         const nodes_data = _data.nodes as Array<Category>
+         const nodes_data = _data.nodes as Array<PaymentMethod>
 
-         // setCategories(nodes_data)
+         // setPaymentMethods(nodes_data)
 
          setPageInfo(_data.pageInfo)
 
@@ -74,7 +69,7 @@ const Categories = () => {
             totalCount: _data.totalCount
          }))
 
-         setRows(nodes_data.map((item, index) => ({ name: item.name, description: item.description, _data: item }) as CategoriesDataTable))
+         setRows(nodes_data.map((item, index) => ({ name: item.name, currency: item.currency, _data: item }) as PaymentMethodsDataTable))
       }
    }, [data])
 
@@ -102,10 +97,13 @@ const Categories = () => {
       
       const currentPage = pagination.currentPage
 
+      debugger
+
       if (value === 0) {
          setPaginationQuery(prev =>({
             ...prev,
             after: null,
+            first: rowsPerPage
          }))
       }
       else {
@@ -113,12 +111,16 @@ const Categories = () => {
             setPaginationQuery(prev => ({
                ...prev,
                after: pageInfo?.endCursor || null,
+               first: rowsPerPage,
+               last: null
             }))
          }
          else {
             setPaginationQuery(prev => ({
                ...prev,
                after: pageInfo?.startCursor || null,
+               first: null,
+               last: rowsPerPage
             }))
          }
       }
@@ -128,21 +130,21 @@ const Categories = () => {
       }))
    }
 
-   const handleCategoryModalOpen = (data?: Category) => {
+   const handlePaymentMethodModalOpen = (data?: PaymentMethod) => {
       console.log(data);
       
-      setDataCategoryModal(data)
-      setIsCategoryModalOpen(true)
+      setDataPaymentMethodModal(data)
+      setIsPaymentMethodModalOpen(true)
    }
 
-   const handleCloseCategoryModal = () => {
-      setDataCategoryModal(new Category())
-      setIsCategoryModalOpen(false)
+   const handleClosePaymentMethodModal = () => {
+      setDataPaymentMethodModal(new PaymentMethod())
+      setIsPaymentMethodModalOpen(false)
    }
 
-   const onHandleDeleteCategory = async (id: string) => {
+   const onHandleDeletePaymentMethod = async (id: string) => {
       try {
-         await removeCategory({ variables: { input: { id } } })
+         await removePaymentMethod({ variables: { input: { id } } })
 
          refetch()
 
@@ -153,23 +155,23 @@ const Categories = () => {
       }
    }
 
-   const onHandleCreateEditCategory = async (data: CategoryPayLoad) => {
+   const onHandleCreateEditPaymentMethod = async (data: PaymentMethodPayLoad) => {
       try {
          if(data && data.id) {
-            await updateCategory({ variables: { input: data } })
+            await updatePaymentMethod({ variables: { input: data } })
 
             refetch()
 
             enqueueSnackbar("Success", { variant: "success" })
          }
          else {
-            await createCategory({ variables: { input: data } })
+            await createPaymentMethod({ variables: { input: data } })
             
             refetch()
 
             enqueueSnackbar("Success", { variant: "success" })
          }
-         handleCloseCategoryModal()
+         handleClosePaymentMethodModal()
       }
       catch(e: any){
          enqueueSnackbar(e.message, { variant: "error" })
@@ -179,7 +181,7 @@ const Categories = () => {
    return (
       <>
          <Head>
-            <title>Categories | FurnitureStore Dashboard</title>
+            <title>PaymentMethods | FurnitureStore Dashboard</title>
          </Head>
          <Box
             component="main"
@@ -199,7 +201,7 @@ const Categories = () => {
                   }}
                >
                   <Typography sx={{ m: 1 }} variant="h4">
-                     Categories List
+                     Payment Methods List
                   </Typography>
                   <Box sx={{ m: 1 }}>
                      <Stack direction="row" spacing={2}>
@@ -207,11 +209,11 @@ const Categories = () => {
                            color="primary"
                            variant="contained"
                            onClick={() => {
-                              setDataCategoryModal(undefined)
-                              setIsCategoryModalOpen(true)
+                              setDataPaymentMethodModal(undefined)
+                              setIsPaymentMethodModalOpen(true)
                            }}
                         >
-                           Add Category
+                           Add Payment Method
                         </Button>
                      </Stack>
                   </Box>
@@ -223,8 +225,8 @@ const Categories = () => {
                         headers={headers}
                         rows={rows}
                         rowsPerPage={rowsPerPage}
-                        onHandleEditButton={handleCategoryModalOpen}
-                        onHandleDeleteButton={onHandleDeleteCategory}
+                        onHandleEditButton={handlePaymentMethodModalOpen}
+                        onHandleDeleteButton={onHandleDeletePaymentMethod}
                         handleChangePage={handleChangePagination}
                         handleChangeRowsPerPage={handleChangeRowsPerPage}
                         page={pagination.currentPage}
@@ -234,12 +236,12 @@ const Categories = () => {
                   </CardContent>
                </Card>
             </Container>
-            <CategoryCreateEditModal data={dataCategoryModal} isOpen={isCategoryModalOpen} onSubmit={onHandleCreateEditCategory} onClose={handleCloseCategoryModal} />
+            <PaymentMethodCreateEditModal data={dataPaymentMethodModal} isOpen={isPaymentMethodModalOpen} onSubmit={onHandleCreateEditPaymentMethod} onClose={handleClosePaymentMethodModal} />
          </Box>
       </>
    )
 }
 
-Categories.Layout = DashboardLayout
+PaymentMethods.Layout = DashboardLayout
 
-export default Categories
+export default PaymentMethods

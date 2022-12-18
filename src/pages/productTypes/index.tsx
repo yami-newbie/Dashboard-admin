@@ -64,7 +64,7 @@ const ProductTypes = () => {
          setPageInfo(_pageInfo)
          setPagination(prev => ({
             ...prev,
-            totalItems: _totalItems,
+            totalCount: _totalItems,
             totalPages: Math.ceil(_totalItems / 10)
          }))
       }
@@ -215,7 +215,7 @@ const ProductTypes = () => {
                   >
                      <TablePagination
                         component="div"
-                        count={pagination.totalItems}
+                        count={pagination.totalCount}
                         page={pagination.currentPage}
                         onPageChange={handleChangePagination}
                         onRowsPerPageChange={handleChangeRowsPerPage}

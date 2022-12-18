@@ -5,7 +5,7 @@ import { EmotionCache } from '@emotion/react'
 
 
 export const DEFAULT_PAGINATION = {
-   totalItems: 10,
+   totalCount: 10,
    totalPages: 1,
    currentPage: 0,
    pageSize: 10
@@ -56,7 +56,7 @@ export interface Edges {
    cursor: string
 }
 export interface PaginationParams {
-   totalItems: number,
+   totalCount: number,
    totalPages: number,
    currentPage: number,
    pageSize: number

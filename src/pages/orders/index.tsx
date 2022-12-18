@@ -13,19 +13,10 @@ import { DashboardLayout } from 'components/layouts'
 import { OrderDetailModal } from 'components/order/order-detail'
 import { OrderListResults } from 'components/order/order-list-results'
 import USERS_QUERY from 'graphql/query/users'
-import { Order, PaginationParams, ResponseListData } from 'models'
+import { DEFAULT_PAGINATION, PaginationParams } from 'models'
 import Head from 'next/head'
-import queryString from 'query-string'
 import { ChangeEvent, MouseEvent, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import useSWR from 'swr'
-
-const DEFAULT_PAGINATION = {
-   totalItems: 10,
-   totalPages: 1,
-   currentPage: 1,
-   pageSize: 10
-}
 
 const Orders = () => {
    const [filters, setFilters] = useState({ status: '', orderBy: 'updatedAt-desc' })

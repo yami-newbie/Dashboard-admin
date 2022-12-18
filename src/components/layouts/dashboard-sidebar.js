@@ -54,6 +54,11 @@ const items = [
       href: '/categories',
       icon: <UserIcon fontSize="small" />,
       title: 'Categories'
+   },
+   {
+      href: '/paymentMethods',
+      icon: <UserIcon fontSize="small" />,
+      title: 'Payment Methods'
    }
 ]
 
