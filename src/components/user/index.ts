@@ -1,5 +1,5 @@
 export * from './customer-list-results'
 export * from './customer-list-toolbar'
-export * from './customer-basic-info-card'
-export * from './customer-basic-info-card-edit'
+export * from './user-basic-info-card'
+export * from './user-basic-info-card-edit'
 export * from './customer-order-list-card'

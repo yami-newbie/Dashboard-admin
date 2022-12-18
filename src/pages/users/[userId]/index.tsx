@@ -10,41 +10,50 @@ import {
    Container,
    Divider,
    Grid,
-   MenuItem,
    Skeleton,
    Typography
 } from '@mui/material'
-import { CustomerBasicInfoCard, CustomerOrderListCard } from 'components/customer'
 import { DashboardLayout } from 'components/layouts'
 import PencilIcon from 'icons/pencil'
-import { ResponseData, User } from 'models'
+import { User } from 'models'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
-import useSWR from 'swr'
+import React, { useEffect, useRef, useState } from 'react'
 import { getInitials } from 'utils'
 import Head from 'next/head'
 import { useSnackbar } from 'notistack'
 import { ConfirmDialog } from 'components/productType/confirm-dialog'
 import ReportProblemIcon from '@mui/icons-material/ReportProblem'
 import { useQuery } from '@apollo/client'
-import USERS_QUERY from 'graphql/users'
+import USERS_QUERY from 'graphql/query/users'
+import { UserBasicInfoCard } from 'components/user'
 
-export interface CustomerDetailPageProps {}
-
-const fetcher = (url: string) => {
-   
-}
-function CustomerDetailPage(props: CustomerDetailPageProps) {
+export interface UserDetailPageProps {}
+function UserDetailPage(props: UserDetailPageProps) {
    const { enqueueSnackbar } = useSnackbar()
    const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
+   const [user, setUser] = useState<User>()
    const router = useRouter()
-   const { customerId } = router.query
+   const { userId } = router.query
+   const ref = useRef<HTMLInputElement>(null)
 
-   const { data: customer } = useQuery(USERS_QUERY)
+   const { data: _user } = useQuery(USERS_QUERY, { variables: { input: { ids: [userId] } } })
 
-   const handleDeleteCustomer = async () => {
-      if (typeof customerId === 'string') {
+   useEffect(() => {
+      if(_user) {
+         const _data = _user.users
+
+         const count = _data.totalCount
+
+         if(count === 1) {
+            setUser(_data.nodes[0])
+         }
+
+      }
+   }, [_user])
+
+   const handleDeleteUser = async () => {
+      if (typeof userId === 'string') {
          try {
             
          } catch (error: any) {
@@ -57,7 +66,7 @@ function CustomerDetailPage(props: CustomerDetailPageProps) {
 
    return <>
       <Head>
-         <title>Customer Details | FurnitureStore Dashboard</title>
+         <title>User Details | FurnitureStore Dashboard</title>
       </Head>
       <Box
          component="main"
@@ -77,9 +86,9 @@ function CustomerDetailPage(props: CustomerDetailPageProps) {
                   flexWrap: 'wrap'
                }}
             >
-               <Link href="/customers" passHref>
+               <Link href="/users" passHref>
                   <Button variant="text" startIcon={<ArrowBackIcon />}>
-                     Customers
+                     Users
                   </Button>
                </Link>
             </Box>
@@ -91,19 +100,27 @@ function CustomerDetailPage(props: CustomerDetailPageProps) {
                   justifyContent: 'space-between'
                }}
             >
-               {customer ? (
+               {user ? (
                   <Grid item sx={{ m: 1 }}>
                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <Avatar sx={{ width: 56, height: 56 }} src="">
-                           {getInitials(customer.name)}
-                        </Avatar>
+                        <Box
+                           onClick={() => { console.log(ref); ref.current?.click() }}
+                        >
+                           <Avatar 
+                              sx={{ width: 56, height: 56 }}
+                              src={user?.medias?.[0]?.filePath || ""}
+                              alt={getInitials(user.fullname)}
+                              >
+                           </Avatar>
+                        </Box>
+                        <input ref={ref} hidden name='upload-image' type="file"/>
                         <Box sx={{ flex: 1 }}>
-                           <Typography variant="h4">{customer.email}</Typography>
+                           <Typography variant="h4">{user.email}</Typography>
                            <Typography
                               variant="subtitle2"
                               sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
                            >
-                              user_id: <Chip size="small" label={customer._id} />
+                              user_id: <Chip size="small" label={user.id} />
                            </Typography>
                         </Box>
                      </Box>
@@ -119,7 +136,7 @@ function CustomerDetailPage(props: CustomerDetailPageProps) {
                   </Grid>
                )}
                <Grid item sx={{ display: 'flex', gap: 2 }}>
-                  <Link href={`/customers/${customerId}/edit`} passHref>
+                  <Link href={`/users/${userId}/edit`} passHref>
                      <Button variant="outlined" endIcon={<PencilIcon width={20} />}>
                         Edit
                      </Button>
@@ -128,11 +145,11 @@ function CustomerDetailPage(props: CustomerDetailPageProps) {
             </Grid>
 
             <Box sx={{ ml: 1, mt: 4 }}>
-               <CustomerBasicInfoCard customer={customer} />
+               <UserBasicInfoCard user={user} />
             </Box>
 
             <Box sx={{ ml: 1, mt: 4 }}>
-               <CustomerOrderListCard />
+               {/* <UserOrderListCard /> */}
             </Box>
 
             <Box sx={{ ml: 1, mt: 4 }}>
@@ -156,7 +173,7 @@ function CustomerDetailPage(props: CustomerDetailPageProps) {
                            Delete Account
                         </Button>
                         <Typography variant="body2" color="textSecondary">
-                           Remove this customer’s account if he/she requested that, if not please
+                           Remove this user’s account if he/she requested that, if not please
                            be aware that what has been deleted can never brought back.
                         </Typography>
                      </Box>
@@ -173,8 +190,8 @@ function CustomerDetailPage(props: CustomerDetailPageProps) {
                   }
                   isOpen={openConfirmDialog}
                   title="Are you sure?"
-                  body="Are you sure to delete this customer?"
-                  onSubmit={handleDeleteCustomer}
+                  body="Are you sure to delete this user?"
+                  onSubmit={handleDeleteUser}
                   onClose={() => setOpenConfirmDialog(false)}
                />
             </Box>
@@ -183,5 +200,5 @@ function CustomerDetailPage(props: CustomerDetailPageProps) {
    </>;
 }
 
-CustomerDetailPage.Layout = DashboardLayout
-export default CustomerDetailPage
+UserDetailPage.Layout = DashboardLayout
+export default UserDetailPage

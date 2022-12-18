@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Box, Container, Grid, Typography } from '@mui/material'
 import { AccountProfile, AccountProfileDetails } from 'components/account'
 import { useAuth } from 'hooks'
-import { ChangePasswordFormValues, User } from 'models'
+import { ChangePasswordPayLoad, User } from 'models'
 import { SettingsPassword } from 'components/settings/settings-password'
 import { DashboardLayout } from 'components/layouts'
 
@@ -16,7 +16,7 @@ const Account = () => {
          console.log('error to update profile', error)
       }
    }
-   const handleChangePassword = async (payload: ChangePasswordFormValues) => {
+   const handleChangePassword = async (payload: ChangePasswordPayLoad) => {
       try {
          
       } catch (error) {

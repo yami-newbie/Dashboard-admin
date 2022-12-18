@@ -1,33 +1,42 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Avatar, Box, Button, Chip, Container, Grid, Skeleton, Typography } from '@mui/material'
-import { CustomerBasicInfoCardEdit } from 'components/customer'
+import { UserBasicInfoCardEdit } from 'components/user'
 import { DashboardLayout } from 'components/layouts'
-import { ResponseData, User } from 'models'
+import { User } from 'models'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React from 'react'
-import useSWR from 'swr'
+import React, { useEffect, useState } from 'react'
 import { getInitials } from 'utils'
 import Head from 'next/head'
 import { useSnackbar } from 'notistack'
-import { AxiosError } from 'axios'
 import { useQuery } from '@apollo/client'
-import USERS_QUERY from 'graphql/users'
+import USERS_QUERY from 'graphql/query/users'
 
 export interface EditCustomerPageProps {}
 
-const fetcher = (url: string) => {
-   
-}
 const EditCustomerPage = (props: EditCustomerPageProps) => {
    const { enqueueSnackbar } = useSnackbar()
    const router = useRouter()
-   const { customerId } = router.query
+   const { userId } = router.query
+   const { data: _user } = useQuery(USERS_QUERY, { variables: { input: { ids: [userId] } } })
 
-   const { data: customer } = useQuery(USERS_QUERY)
+   const [user, setUser] = useState<User>()
+
+   useEffect(() => {
+      if(_user) {
+         const _data = _user.users
+
+         const count = _data.totalCount
+
+         if(count === 1) {
+            setUser(_data.nodes[0])
+         }
+
+      }
+   }, [_user])
 
    const handleUpdateBasicInfo = async (payload: Partial<User>) => {
-      if (typeof customerId === 'string') {
+      if (typeof userId === 'string') {
          try {
             
          } catch (error: any) {
@@ -38,8 +47,8 @@ const EditCustomerPage = (props: EditCustomerPageProps) => {
       }
    }
 
-   const handleDeleteCustomer = async () => {
-      if (typeof customerId === 'string') {
+   const handleDeleteUser = async () => {
+      if (typeof userId === 'string') {
          try {
             
          } catch (error: any) {
@@ -52,7 +61,7 @@ const EditCustomerPage = (props: EditCustomerPageProps) => {
 
    return <>
       <Head>
-         <title>Edit Customer | FurnitureStore Dashboard</title>
+         <title>Edit User | FurnitureStore Dashboard</title>
       </Head>
       <Box
          component="main"
@@ -72,9 +81,9 @@ const EditCustomerPage = (props: EditCustomerPageProps) => {
                   flexWrap: 'wrap'
                }}
             >
-               <Link href="/customers" passHref>
+               <Link href="/users" passHref>
                   <Button variant="text" startIcon={<ArrowBackIcon />}>
-                     Customers
+                     Users
                   </Button>
                </Link>
             </Box>
@@ -86,19 +95,19 @@ const EditCustomerPage = (props: EditCustomerPageProps) => {
                   justifyContent: 'space-between'
                }}
             >
-               {customer ? (
+               {user ? (
                   <Grid item sx={{ m: 1 }}>
                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <Avatar sx={{ width: 56, height: 56 }} src="">
-                           {getInitials(customer.name)}
+                           {getInitials(user.fullname)}
                         </Avatar>
                         <Box sx={{ flex: 1 }}>
-                           <Typography variant="h4">{customer.email}</Typography>
+                           <Typography variant="h4">{user.email}</Typography>
                            <Typography
                               variant="subtitle2"
                               sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
                            >
-                              user_id: <Chip size="small" label={customer._id} />
+                              user_id: <Chip size="small" label={user.id} />
                            </Typography>
                         </Box>
                      </Box>
@@ -116,10 +125,10 @@ const EditCustomerPage = (props: EditCustomerPageProps) => {
             </Grid>
 
             <Box sx={{ ml: 1, mt: 4 }}>
-               <CustomerBasicInfoCardEdit
-                  customer={customer}
+               <UserBasicInfoCardEdit
+                  user={user}
                   onSave={handleUpdateBasicInfo}
-                  onDelete={handleDeleteCustomer}
+                  onDelete={handleDeleteUser}
                />
             </Box>
          </Container>

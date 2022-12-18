@@ -4,7 +4,7 @@ import * as yup from 'yup'
 import { authApi } from 'api-client'
 import { CustomTextField } from 'components/form-controls'
 import { useForm } from 'react-hook-form'
-import { ChangePasswordFormValues } from 'models'
+import { ChangePasswordPayLoad } from 'models'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
 
 const schema = yup.object().shape({
@@ -32,7 +32,7 @@ const schema = yup.object().shape({
 })
 
 export const SettingsPassword = ({ onSubmit, ...restProps }: { onSubmit: Function }) => {
-   const form = useForm<ChangePasswordFormValues>({
+   const form = useForm<ChangePasswordPayLoad>({
       resolver: yupResolver(schema)
    })
    const {
@@ -41,7 +41,7 @@ export const SettingsPassword = ({ onSubmit, ...restProps }: { onSubmit: Functio
       formState: { isSubmitting }
    } = form
 
-   const handleSave = async (values: ChangePasswordFormValues) => {
+   const handleSave = async (values: ChangePasswordPayLoad) => {
       if (onSubmit) await onSubmit(values)
    }
 

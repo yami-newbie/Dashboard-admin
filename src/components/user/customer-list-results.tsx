@@ -47,31 +47,19 @@ const headCells: HeadCell[] = [
       sortable: true
    },
    {
-      id: 'orderCount',
-      align: 'center',
-      label: 'Orders',
-      sortable: false
-   },
-   {
-      id: 'amountTotal',
-      align: 'center',
-      label: 'Spent',
-      sortable: false
-   },
-   {
       id: 'actions',
       align: 'center',
       label: 'Actions',
       sortable: false
    }
 ]
-export const CustomerListResults = ({
-   customerList,
+export const UserListResults = ({
+   userList,
    pagination,
    onSortByColumn,
    ...rest
 }: {
-   customerList?: User[]
+   userList?: User[]
    pagination: PaginationParams
    onSortByColumn: Function
 }) => {
@@ -138,9 +126,9 @@ export const CustomerListResults = ({
                   </TableRow>
                </TableHead>
                <TableBody>
-                  {customerList
-                     ? customerList.map(customer => (
-                          <TableRow hover key={customer._id}>
+                  {userList
+                     ? userList.map(user => (
+                          <TableRow hover key={user.id}>
                              <TableCell align="left">
                                 <Box
                                    sx={{
@@ -150,42 +138,37 @@ export const CustomerListResults = ({
                                 >
                                    <Avatar
                                       style={{
-                                         backgroundColor: bgColor[customerList.indexOf(customer)]
+                                         backgroundColor: bgColor[userList.indexOf(user)]
                                       }}
                                       src="/broken-image.jpg"
                                       sx={{ mr: 2 }}
                                    >
-                                      {getInitials(customer.name)}
+                                      {getInitials(user.fullname)}
                                    </Avatar>
                                    <Typography
                                       sx={{ fontWeight: 500 }}
                                       color="textPrimary"
                                       variant="body2"
                                    >
-                                      {customer.name || 'N/A'}
+                                      {user.fullname || 'N/A'}
                                    </Typography>
                                 </Box>
                              </TableCell>
-                             <TableCell align="left">{customer.email}</TableCell>
-                             <TableCell align="center">{customer.phone}</TableCell>
+                             <TableCell align="left">{user.email}</TableCell>
+                             <TableCell align="center">{user.phone}</TableCell>
                              <TableCell align="center" sx={{ pr: 5 }}>
-                                {format(parseISO(customer.createdAt), 'dd/MM/yyyy')}
+                                {format(parseISO(user.createdAt), 'dd/MM/yyyy')}
                              </TableCell>
-                             <TableCell align="center">{customer.orderCount}</TableCell>
+                             
                              <TableCell align="center">
-                                <Typography color="success.main" variant="body2">
-                                   {customer.amountTotal && `$${customer.amountTotal.toFixed(2)}`}
-                                </Typography>
-                             </TableCell>
-                             <TableCell align="center">
-                                <Link href={`/customers/${customer._id}/edit`} passHref>
+                                <Link href={`/users/${user.id}/edit`} passHref>
                                    <Tooltip title="Edit Customer" placement="top">
                                       <IconButton size="small">
                                          <PencilIcon width={20} />
                                       </IconButton>
                                    </Tooltip>
                                 </Link>
-                                <Link href={`/customers/${customer._id}`} passHref>
+                                <Link href={`/users/${user.id}`} passHref>
                                    <Tooltip title="View Details" placement="top">
                                       <IconButton size="small">
                                          <ArrowForwardIcon fontSize="small" />

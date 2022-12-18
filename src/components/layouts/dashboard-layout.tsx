@@ -4,8 +4,7 @@ import { styled } from '@mui/material/styles'
 import { DashboardNavbar } from './dashboard-navbar'
 import { DashboardSidebar } from './dashboard-sidebar'
 import { Auth } from '../auth'
-import { authApi } from 'api-client'
-import { useRouter } from 'next/router'
+import { useAuth } from 'hooks'
 
 const DashboardLayoutRoot = styled('div')(({ theme }) => ({
    display: 'flex',
@@ -18,7 +17,7 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 }))
 
 export const DashboardLayout = ({ children }: { children: ReactNode }) => {
-   const router = useRouter()
+   
    const [isSidebarOpen, setSidebarOpen] = useState(true)
 
    return (

@@ -44,7 +44,7 @@ const Login = () => {
    const handleClickLogin = async (_data: LoginPayload) => {
       try {
          await login(_data)
-
+         
          router.push('/')
       } catch (error: any) {
          enqueueSnackbar(error.message, {

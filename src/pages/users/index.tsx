@@ -10,24 +10,14 @@ import {
    Tabs,
    Typography
 } from '@mui/material'
-import { ChangeEvent, MouseEvent, useState } from 'react'
-import { CustomerQueryParams, PaginationParams, ResponseListData, User } from 'models'
-import useSWR from 'swr'
-import queryString from 'query-string'
-import { Download as DownloadIcon } from '../../icons/download'
-import { CustomerListResults, CustomerListToolbar } from 'components/customer'
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
+import { CustomerQueryParams, DEFAULT_PAGINATION, PaginationParams, User } from 'models'
+import { UserListResults, CustomerListToolbar } from 'components/user'
 import { DashboardLayout } from 'components/layouts'
 import { useQuery } from '@apollo/client'
-import USERS_QUERY from 'graphql/users'
+import USERS_QUERY from 'graphql/query/users'
 
-const DEFAULT_PAGINATION = {
-   totalItems: 10,
-   totalPages: 1,
-   currentPage: 1,
-   pageSize: 10
-}
-
-const Customers = () => {
+const Users = () => {
    const [filters, setFilters] = useState<CustomerQueryParams>({
       search: '',
       orderBy: 'updatedAt-desc',
@@ -35,11 +25,17 @@ const Customers = () => {
    })
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
 
-   const fetcher = (url: string) => {
-      
-   }
+   const { data: _userList } = useQuery(USERS_QUERY)
 
-   const { data: customerList } = useQuery(USERS_QUERY)
+   const [userList, setUserList] = useState<User[]>([])
+
+   useEffect(() => {
+      if(_userList) {
+         const users = _userList.users.nodes
+
+         setUserList(users || [])
+      }
+   }, [_userList])
 
    const handleLimitChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
       setPagination({ ...pagination, pageSize: Number.parseInt(event.target.value) })
@@ -75,7 +71,7 @@ const Customers = () => {
    return (
       <>
          <Head>
-            <title>Customers | FurnitureStore</title>
+            <title>Users | FurnitureStore</title>
          </Head>
          <Box
             component="main"
@@ -95,7 +91,7 @@ const Customers = () => {
                   }}
                >
                   <Typography sx={{ m: 1 }} variant="h4">
-                     Customers
+                     Users
                   </Typography>
                   {/* <Box sx={{ m: 1 }}>
                      <Button startIcon={<DownloadIcon fontSize="small" />} sx={{ mr: 1 }}>
@@ -116,8 +112,8 @@ const Customers = () => {
                         onSearch={handleSearch}
                         onChangeSorting={handleChangeSorting}
                      />
-                     <CustomerListResults
-                        customerList={customerList}
+                     <UserListResults
+                        userList={userList}
                         pagination={pagination}
                         onSortByColumn={handleChangeSorting}
                      />
@@ -137,6 +133,6 @@ const Customers = () => {
       </>
    )
 }
-Customers.Layout = DashboardLayout
+Users.Layout = DashboardLayout
 
-export default Customers
+export default Users

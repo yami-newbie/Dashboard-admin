@@ -18,7 +18,7 @@ export class User {
       public deletedAt: string = "",
       public createdAt: string = "",
       public updatedAt: string = "",
-   ) {}
+   ) { }
 }
 
 export type EditProfileFormValues = {
@@ -28,22 +28,23 @@ export type EditProfileFormValues = {
    email: string
 }
 
-export type ChangePasswordFormValues = {
+export type ChangePasswordPayLoad = {
    oldPassword?: string
    newPassword?: string
    confirmPassword?: string
 }
-export interface EditCustomerFormValues {
-   username: string
-   name: string
-   phone: string
-   email: string
-   deliveryInfo: {
-      name: string
-      phone: string
-      email: string
-      address: string
-   }
+export class UserPayload {
+   constructor(
+      public id: string = "",
+      public fullname: string = "",
+      public dob: string = "",
+      public email: string = "",
+      public address: string = "",
+      public phone: string = "",
+      public password: string = "",
+      public rolesId: string = "",
+      public status: boolean = false,
+   ) { }
 }
 export interface CustomerQueryParams extends Partial<Record<keyof User, string>> {
    orderBy?: string
