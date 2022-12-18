@@ -32,7 +32,7 @@ const ManufacturerInfoCreateEditModal = (props: Props) => {
       if (isOpen) {
          refetch()
       }
-   }, [isOpen])
+   }, [isOpen, refetch])
 
    const form = useForm<ManufactureInfoPayLoad>({
       defaultValues: new ManufactureInfoPayLoad(),

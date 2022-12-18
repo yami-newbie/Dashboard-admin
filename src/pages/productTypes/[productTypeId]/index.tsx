@@ -60,7 +60,7 @@ function ProductTypePage(props: ProductTypePageProps) {
          setProductType(data.productTypes.items[0])
          loadProduct()
       }
-   }, [data])
+   }, [data, loadProduct])
 
    useEffect(() => {
       if (productTypeId && productTypeId !== 'create') {
@@ -69,7 +69,7 @@ function ProductTypePage(props: ProductTypePageProps) {
       if (productTypeId && productTypeId === 'create') {
          setProductType(undefined)
       }
-   }, [productTypeId])
+   }, [productTypeId, fetch])
 
    const onOpenModal = (data?: Product) => {
       const newProduct = new Product()
