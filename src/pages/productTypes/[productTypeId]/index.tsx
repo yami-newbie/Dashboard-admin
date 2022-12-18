@@ -1,7 +1,7 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Box, Button, Container, Grid } from '@mui/material'
 import { DashboardLayout } from 'components/layouts'
-import { Order, Product, ProductType, ProductTypePayload } from 'models'
+import { Order, Product, ProductPayLoad, ProductType, ProductTypePayload } from 'models'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
@@ -15,6 +15,8 @@ import CREATE_PRODUCT_TYPE from 'graphql/mutation/createProductType'
 import UPLOAD_MEDIAS from 'graphql/mutation/uploadMedias'
 import ProductList from 'components/product/product-list'
 import PRODUCT_QUERY from 'graphql/query/products'
+import ProductCreateEditModal from 'components/product/modal-product'
+import CREATE_PRODUCT from 'graphql/mutation/createProduct'
 
 export interface ProductTypePageProps {}
 function ProductTypePage(props: ProductTypePageProps) {
@@ -23,7 +25,7 @@ function ProductTypePage(props: ProductTypePageProps) {
 
    const { productTypeId } = router.query
 
-   const [fetch, { data }] = useLazyQuery(PRODUCT_TYPE, { variables: { input: { ids: productTypeId ? productTypeId : null } } })
+   const [fetch, { data, error }] = useLazyQuery(PRODUCT_TYPE, { variables: { input: { ids: productTypeId ? productTypeId : null } } })
    const [loadProduct, { data: productList_data }] = 
       useLazyQuery(PRODUCT_QUERY, {
          variables: {
@@ -36,9 +38,13 @@ function ProductTypePage(props: ProductTypePageProps) {
    const [uploadMedias] = useMutation(UPLOAD_MEDIAS)
    const [updateProductType] = useMutation(UPDATE_PRODUCT_TYPE);
    const [createProductType] = useMutation(CREATE_PRODUCT_TYPE);
+
+   const [createProduct] = useMutation(CREATE_PRODUCT);
    
    const [productType, setProductType] = useState<ProductType | undefined>()
    const [productList, setProductList] = useState<Product[]>([])
+   const [isOpen, setIsOpen] = useState(false)
+   const [dataModal, setDataModal] = useState<Product>()
 
    useEffect(() => {
       if(productList_data) {
@@ -64,18 +70,60 @@ function ProductTypePage(props: ProductTypePageProps) {
       }
    }, [productTypeId])
 
+   const onOpenModal = (data?: Product) => {
+      const newProduct = new Product()
+      newProduct.productTypesId = productType?.id || ""
+      setDataModal(newProduct)
+      setIsOpen(true)
+   }
+
+   const onCloseModal = () => {
+      setIsOpen(false)
+   }
+
+   const onSubmitModal = async (product: ProductPayLoad) => {
+      if (product.id && product.id !== "") {
+         try {
+            // await updateProductType({ variables: { input: product } })
+
+            onCloseModal()
+
+            enqueueSnackbar("Success", { variant: "success" })
+            
+            loadProduct()
+         } catch (error: any) {
+            enqueueSnackbar(error.message, {
+               variant: 'error'
+            })
+         }
+      } else {
+         try {
+            await createProduct({ variables: { input: product } })
+
+            onCloseModal()
+
+            enqueueSnackbar("Success", { variant: "success" })
+
+            loadProduct()
+         } catch (error: any) {
+            enqueueSnackbar(error.message, {
+               variant: 'error'
+            })
+         }
+      }
+   }
 
    const handleCloseAddEdit = () => {
       router.push('/productTypes')
    }
 
-   const handleAddEdit = async (product: ProductTypePayload, files: FileList | null) => {     
+   const handleAddEdit = async (productType: ProductTypePayload, files: FileList | null) => {     
       
       // uploadMedias({ variables: { files } })
        
-      if (product.id && product.id !== "") {
+      if (productType.id && productType.id !== "") {
          try {
-            await updateProductType({ variables: { input: product, files } })
+            await updateProductType({ variables: { input: productType, files: files || [] } })
 
             handleCloseAddEdit()
 
@@ -87,7 +135,7 @@ function ProductTypePage(props: ProductTypePageProps) {
          }
       } else {
          try {
-            await createProductType({ variables: { input: product, files } })
+            await createProductType({ variables: { input: productType, files: files || [] } })
 
             handleCloseAddEdit()
 
@@ -158,14 +206,15 @@ function ProductTypePage(props: ProductTypePageProps) {
                      )
                   }
                </Grid>
-               <Grid item xs={4}>
+               <Grid item xs={4} hidden={error ? true : false}>
                   <Box>
-                     <ProductList data={productList}/>
+                     <ProductList data={productList} onHandleAddButton={onOpenModal}/>
                   </Box>
                </Grid>
 
             </Grid>
          </Container>
+         <ProductCreateEditModal data={dataModal} isOpen={isOpen} onClose={onCloseModal} onSubmit={onSubmitModal}/>
       </Box>
    </>;
 }

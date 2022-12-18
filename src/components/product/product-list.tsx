@@ -6,15 +6,16 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 
 type Props = {
   data: Product[]
+  onHandleAddButton: () => void
 }
 
 const ProductList = (props: Props) => {
-  const { data } = props
+  const { data, onHandleAddButton } = props
   return (
     <Card>
       <CardHeader title="Product List" 
         action={
-          <IconButton size='small' aria-label="Add Product">
+          <IconButton size='small' aria-label="Add Product" onClick={onHandleAddButton}>
             <AddCircleOutlineRoundedIcon color='primary' fontSize='medium'/>
           </IconButton>
         }

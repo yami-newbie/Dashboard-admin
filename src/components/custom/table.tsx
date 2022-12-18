@@ -8,31 +8,32 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { GridColDef, DataGrid } from '@mui/x-data-grid';
-import { Avatar, Box, IconButton, Stack, TablePagination } from '@mui/material';
+import { Avatar, Box, IconButton, Stack, TablePagination, Typography } from '@mui/material';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { Manufacturer } from 'models';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ConfirmDialog } from 'components/productType/confirm-dialog'
 import ReportProblemIcon from '@mui/icons-material/ReportProblem'
+import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
+   [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.common.white,
+   },
+   [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+   },
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
+   '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+   },
+   // hide last border
+   '&:last-child td, &:last-child th': {
+      border: 0,
+   },
 }));
 
 interface Props {
@@ -41,14 +42,16 @@ interface Props {
    page: number,
    totalItems: number,
    rowsPerPage: number,
-   onHandleEditButton: (item: Manufacturer) => void,
+   subButton?: boolean,
+   onHandleEditButton: (item: any) => void,
    onHandleDeleteButton: (id: string) => void,
+   onHandleSubButton?: (id: string) => void,
    handleChangePage: (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, page: number) => void,
    handleChangeRowsPerPage: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined,
 }
 
 export default function CustomTable(props: Props) {
-   const { headers, rows, page, totalItems, rowsPerPage, handleChangePage, handleChangeRowsPerPage, onHandleEditButton, onHandleDeleteButton } = props
+   const { headers, rows, page, totalItems, rowsPerPage, handleChangePage, handleChangeRowsPerPage, onHandleEditButton, onHandleDeleteButton, onHandleSubButton, subButton = false } = props
    const [openConfirmDialog, setOpenConfirmDialog] = React.useState(false)
    const [id, setId] = React.useState('')
 
@@ -67,35 +70,42 @@ export default function CustomTable(props: Props) {
             <TableBody>
                {rows.map((row: any, index) => {
 
-                  const rawData = {...row._data} as Manufacturer
+                  const rawData = { ...row._data } as Manufacturer
 
                   console.log(row);
 
-                  const _row = {...row}
+                  const _row = { ...row }
 
                   delete _row._data
 
                   const array: any[] = Object.keys(_row).map(key => _row[key])
 
                   return (
-                     <StyledTableRow 
+                     <StyledTableRow
                         key={index}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                      >
                         <StyledTableCell>{index + 1}</StyledTableCell>
                         {
                            array.map((item, index) => (
-                              <StyledTableCell key={index}>{item}</StyledTableCell>
+                              <StyledTableCell sx={{ maxWidth: '300px', overflow: "hidden" }} key={index}>
+                                 <Typography textOverflow="ellipsis">
+                                    {item}
+                                 </Typography>
+                              </StyledTableCell>
                            ))
                         }
                         <StyledTableCell>
                            <Stack direction="row" spacing={1}>
                               <IconButton onClick={() => { onHandleEditButton(rawData) }}>
-                                 <ModeEditIcon/>
+                                 <ModeEditIcon />
                               </IconButton>
                               <IconButton onClick={() => { setId(rawData.id), setOpenConfirmDialog(true) }}>
-                                 <DeleteIcon/>
+                                 <DeleteIcon />
                               </IconButton>
+                              {subButton && <IconButton onClick={() => { if (onHandleSubButton) onHandleSubButton(rawData.id) }}>
+                                 <AddToPhotosIcon />
+                              </IconButton>}
                            </Stack>
                         </StyledTableCell>
                      </StyledTableRow>
@@ -121,7 +131,7 @@ export default function CustomTable(props: Props) {
             isOpen={openConfirmDialog}
             title="Are you sure?"
             body="Are you sure to delete this customer?"
-            onSubmit={() => {onHandleDeleteButton(id); setOpenConfirmDialog(false)}}
+            onSubmit={() => { onHandleDeleteButton(id); setOpenConfirmDialog(false) }}
             onClose={() => setOpenConfirmDialog(false)}
          />
       </TableContainer>

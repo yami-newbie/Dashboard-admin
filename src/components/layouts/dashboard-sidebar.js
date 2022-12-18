@@ -49,6 +49,11 @@ const items = [
       href: '/manufacturers',
       icon: <UserIcon fontSize="small" />,
       title: 'Manufacturers'
+   },
+   {
+      href: '/categories',
+      icon: <UserIcon fontSize="small" />,
+      title: 'Categories'
    }
 ]
 

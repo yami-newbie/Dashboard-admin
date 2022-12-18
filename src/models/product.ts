@@ -6,7 +6,6 @@ import { MetaData, MetaDataPayLoad } from "./metadata"
 export class Product {
    constructor(
       public id: string = "",
-      public productTypeIds: string = "",
       public manufactureInfosId: string = "",
       public manufactureInfos: ManufactureInfo = new ManufactureInfo(),
       public deletedAt: string = "",

@@ -1,21 +1,23 @@
-import { Avatar, Box, Button, Card, CardContent, CardHeader, Container, Divider, Typography } from '@mui/material'
+import { Avatar, Box, Button, Card, CardContent, CardHeader, Container, Divider, Stack, Typography } from '@mui/material'
 import { DashboardLayout } from 'components/layouts'
 import Head from 'next/head'
 import CustomTable from 'components/custom/table'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import MANUFACTURERS_QUERY from 'graphql/query/manufacturers'
 import { useEffect, useState } from 'react'
-import { Manufacturer, ManufacturerPayLoad } from 'models/manufacturer'
+import { ManufactureInfo, ManufactureInfoPayLoad, Manufacturer, ManufacturerPayLoad } from 'models/manufacturer'
 import { useRouter } from 'next/router'
 import { DEFAULT_PAGINATION, PageInfo, PaginationParams, Variables_Graphql } from 'models'
 import { ProductTypesFilterInput } from 'graphql/query/productTypes'
-import ManufacturerCreateEditModal from 'components/manufacturer/modal'
+import ManufacturerCreateEditModal from 'components/manufacturer/modal-manufacturer'
 import CREATE_MANUFACTURER from 'graphql/mutation/createManufacturer'
 import UPDATE_MANUFACTURER from 'graphql/mutation/updateManufacturer'
 import { useSnackbar } from 'notistack'
 import DELETE_MANUFACTURER from 'graphql/mutation/deleteManufacturer'
 import { ConfirmDialog } from 'components/productType/confirm-dialog'
 import ReportProblemIcon from '@mui/icons-material/ReportProblem'
+import ManufacturerInfoCreateEditModal from 'components/manufacturer/modal-manufacturer-info'
+import CREATE_MANUFACTURE_INFO from 'graphql/mutation/createManufactureInfo'
 
 interface ManufacturersDataTable {
    name: string,
@@ -28,9 +30,10 @@ const Manufacturers = () => {
    const { enqueueSnackbar } = useSnackbar()
    const [rows, setRows] = useState<ManufacturersDataTable[]>([])
    
-   const [dataModal, setDataModal] = useState<Manufacturer | undefined>()
-   const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
-   const [isOpen, setIsOpen] = useState(false)
+   const [dataManufactureModal, setDataManufactureModal] = useState<Manufacturer | undefined>()
+   const [dataManufactureInfoModal, setDataManufactureInfoModal] = useState<ManufactureInfo | undefined>()
+   const [isManufactureModalOpen, setIsManufactureModalOpen] = useState(false)
+   const [isManufactureInfoModalOpen, setIsManufactureInfoModalOpen] = useState(false)
 
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
    const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -38,9 +41,11 @@ const Manufacturers = () => {
    const [pageInfo, setPageInfo] = useState<PageInfo>()
 
    const [fetch, { data, refetch }] = useLazyQuery(MANUFACTURERS_QUERY, { variables: { ...paginationQuery } })
-   const [create] = useMutation(CREATE_MANUFACTURER)
-   const [update] = useMutation(UPDATE_MANUFACTURER)
-   const [remove] = useMutation(DELETE_MANUFACTURER)
+   const [createManufacturer] = useMutation(CREATE_MANUFACTURER)
+   const [updateManufacturer] = useMutation(UPDATE_MANUFACTURER)
+   const [removeManufacturer] = useMutation(DELETE_MANUFACTURER)
+   
+   const [createManufacturerInfo] = useMutation(CREATE_MANUFACTURE_INFO)
 
    const headers = [{ field: 'name', headerName: 'Name' }, { field: 'address', headerName: 'Address' }, { field: 'description', headerName: 'Description' }]
 
@@ -125,47 +130,82 @@ const Manufacturers = () => {
       }))
    }
 
-   const handleOpenModal = (data?: Manufacturer) => {
+   const handleManufactureModalOpen = (data?: Manufacturer) => {
       console.log(data);
       
-      setDataModal(data)
-      setIsOpen(true)
+      setDataManufactureModal(data)
+      setIsManufactureModalOpen(true)
    }
 
-   const handleCloseModal = () => {
-      setIsOpen(false)
+   const handleManufactureInfoModalOpen = (data?: string) => {
+      const newInfo = new ManufactureInfo()
+      newInfo.manufacturersId = data || ''
+
+      setDataManufactureInfoModal(newInfo)
+      setIsManufactureInfoModalOpen(true)
    }
 
-   const onHandleDelete = async (id: string) => {
+   const handleCloseManufactureModal = () => {
+      setIsManufactureModalOpen(false)
+   }
+
+   const handleCloseManufactureInfoModal = () => {
+      setIsManufactureInfoModalOpen(false)
+   }
+
+   const onHandleDeleteManufacture = async (id: string) => {
       try {
-         await remove({ variables: { input: { id } } })
+         await removeManufacturer({ variables: { input: { id } } })
 
          refetch()
 
-         enqueueSnackbar("Success Add Manufacturer", { variant: "success" })
+         enqueueSnackbar("Success", { variant: "success" })
       }
       catch(e: any){
          enqueueSnackbar(e.message, { variant: "error" })
       }
    }
 
-   const onHandleCreateEdit = async (data: ManufacturerPayLoad, files: File[]) => {
+   const onHandleCreateEditManufacture = async (data: ManufacturerPayLoad, files: File[]) => {
       try {
          if(data && data.id) {
-            await update({ variables: { input: data, files } })
+            await updateManufacturer({ variables: { input: data, files } })
 
             refetch()
 
-            enqueueSnackbar("Success Add Manufacturer", { variant: "success" })
+            enqueueSnackbar("Success", { variant: "success" })
          }
          else {
-            await create({ variables: { input: data } })
+            await createManufacturer({ variables: { input: data } })
             
             refetch()
 
-            enqueueSnackbar("Success Add Manufacturer", { variant: "success" })
+            enqueueSnackbar("Success", { variant: "success" })
          }
-         handleCloseModal()
+         handleCloseManufactureModal()
+      }
+      catch(e: any){
+         enqueueSnackbar(e.message, { variant: "error" })
+      }
+   }
+
+   const onHandleCreateEditManufactureInfo = async (data: ManufactureInfoPayLoad) => {
+      try {
+         if(data && data.id) {
+            // await update({ variables: { input: data } })
+
+            // refetch()
+
+            enqueueSnackbar("Success", { variant: "success" })
+         }
+         else {
+            await createManufacturerInfo({ variables: { input: data } })
+            
+            // refetch()
+
+            enqueueSnackbar("Success", { variant: "success" })
+         }
+         handleCloseManufactureInfoModal()
       }
       catch(e: any){
          enqueueSnackbar(e.message, { variant: "error" })
@@ -198,16 +238,28 @@ const Manufacturers = () => {
                      Manufacturers List
                   </Typography>
                   <Box sx={{ m: 1 }}>
-                     <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={() => {
-                           setDataModal(undefined)
-                           setIsOpen(true)
-                        }}
-                     >
-                        Add Manufacture
-                     </Button>
+                     <Stack direction="row" spacing={2}>
+                        <Button
+                           color="primary"
+                           variant="contained"
+                           onClick={() => {
+                              setDataManufactureModal(undefined)
+                              setIsManufactureModalOpen(true)
+                           }}
+                        >
+                           Add Manufacture
+                        </Button>
+                        <Button
+                           color="primary"
+                           variant="contained"
+                           onClick={() => {
+                              setDataManufactureInfoModal(undefined)
+                              setIsManufactureInfoModalOpen(true)
+                           }}
+                        >
+                           Add Manufacture Info
+                        </Button>
+                     </Stack>
                   </Box>
                </Box>
                <Divider sx={{ my: 2 }} />
@@ -217,17 +269,20 @@ const Manufacturers = () => {
                         headers={headers}
                         rows={rows}
                         rowsPerPage={rowsPerPage}
-                        onHandleEditButton={handleOpenModal}
-                        onHandleDeleteButton={onHandleDelete}
+                        onHandleEditButton={handleManufactureModalOpen}
+                        onHandleDeleteButton={onHandleDeleteManufacture}
+                        onHandleSubButton={handleManufactureInfoModalOpen}
                         handleChangePage={handleChangePagination}
                         handleChangeRowsPerPage={handleChangeRowsPerPage}
                         page={pagination.currentPage}
                         totalItems={pagination.totalItems}
+                        subButton
                      />
                   </CardContent>
                </Card>
             </Container>
-            <ManufacturerCreateEditModal data={dataModal} isOpen={isOpen} onSubmit={onHandleCreateEdit} onClose={handleCloseModal} />
+            <ManufacturerCreateEditModal data={dataManufactureModal} isOpen={isManufactureModalOpen} onSubmit={onHandleCreateEditManufacture} onClose={handleCloseManufactureModal} />
+            <ManufacturerInfoCreateEditModal data={dataManufactureInfoModal} isOpen={isManufactureInfoModalOpen} onSubmit={onHandleCreateEditManufactureInfo} onClose={handleCloseManufactureInfoModal} />
          </Box>
       </>
    )
