@@ -147,10 +147,12 @@ const Manufacturers = () => {
 
    const handleCloseManufactureModal = () => {
       setIsManufactureModalOpen(false)
+      setDataManufactureModal(undefined)
    }
 
    const handleCloseManufactureInfoModal = () => {
       setIsManufactureInfoModalOpen(false)
+      setDataManufactureInfoModal(undefined)
    }
 
    const onHandleDeleteManufacture = async (id: string) => {
@@ -176,7 +178,7 @@ const Manufacturers = () => {
             enqueueSnackbar("Success", { variant: "success" })
          }
          else {
-            await createManufacturer({ variables: { input: data } })
+            await createManufacturer({ variables: { input: data, files } })
             
             refetch()
 

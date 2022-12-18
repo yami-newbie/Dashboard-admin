@@ -12,6 +12,7 @@ import * as yup from 'yup'
 import { Manufacturer, ManufacturerPayLoad } from 'models'
 import { CustomSelectField, CustomTextField } from 'components/form-controls'
 import { LoadingButton } from '@mui/lab'
+import FileUpload from 'components/file-upload/file-upload'
 
 type Props = {
    data?: Manufacturer,
@@ -85,6 +86,9 @@ const ManufacturerCreateEditModal = (props: Props) => {
                   name="address"
                   label="Address"
                />
+
+               <FileUpload label="Medias" multiple updateFilesCb={setFiles}/>
+               
                <CustomTextField
                   disabled={isSubmitting}
                   control={control}

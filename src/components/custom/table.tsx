@@ -70,9 +70,7 @@ export default function CustomTable(props: Props) {
             <TableBody>
                {rows.map((row: any, index) => {
 
-                  const rawData = { ...row._data } as Manufacturer
-
-                  console.log(row);
+                  const rawData = {...row._data}
 
                   const _row = { ...row }
 
