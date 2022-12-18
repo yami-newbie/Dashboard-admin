@@ -14,12 +14,7 @@ import {
 import { Box } from '@mui/system'
 import { CustomSelectField, CustomTextField } from 'components/form-controls'
 import { regexVietnamesePhoneNumber } from 'constants/regexes'
-import {
-   Province,
-   Role,
-   User,
-   UserPayload
-} from 'models'
+import { Province, Role, User, UserPayload } from 'models'
 import React, { MouseEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -30,6 +25,7 @@ import { LoadingBackdrop } from 'components/loading'
 import moment from 'moment'
 import { useQuery } from '@apollo/client'
 import ROLES_QUERY from 'graphql/query/roles'
+import { LoadingButton } from '@mui/lab'
 
 export interface UserBasicInfoCardEditProps {
    user?: User
@@ -48,13 +44,9 @@ const schema = yup.object().shape({
 
          return regexVietnamesePhoneNumber.test(number)
       }),
-   email: yup.string().email().max(255).nullable(),
+   email: yup.string().email().max(255).nullable()
 })
-export function UserBasicInfoCardEdit({
-   user,
-   onSave,
-   onDelete
-}: UserBasicInfoCardEditProps) {
+export function UserBasicInfoCardEdit({ user, onSave, onDelete }: UserBasicInfoCardEditProps) {
    const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
    const [loading, setLoading] = useState(false)
    const [roles, setRoles] = useState<Role[]>([])
@@ -74,21 +66,21 @@ export function UserBasicInfoCardEdit({
    useEffect(() => {
       if (user) {
          reset({
-            id: user?.id || "",
-            fullname: user?.fullname || "",
-            phone: user?.phone || "",
-            email: user?.email || "",
+            id: user?.id || '',
+            fullname: user?.fullname || '',
+            phone: user?.phone || '',
+            email: user?.email || '',
             dob: moment(user?.dob || undefined).format('YYYY-MM-DD'),
-            address: user?.address || "",
-            rolesId: user?.rolesId || "",
+            address: user?.address || '',
+            rolesId: user?.rolesId || '',
             status: user?.status || false,
-            password: user?.password || "",
+            password: user?.password || ''
          })
       }
    }, [user, reset])
 
    useEffect(() => {
-      const _data = _roles?.roles.nodes
+      const _data = _roles?.roles.items
       setRoles(_data || [])
    }, [_roles])
 
@@ -126,7 +118,20 @@ export function UserBasicInfoCardEdit({
       <Card>
          <LoadingBackdrop open={loading} />
 
-         <CardHeader title="Edit user" />
+         <CardHeader
+            title="Edit user"
+            action={
+               <LoadingButton
+                  variant="text"
+                  loading={false}
+                  color="error"
+                  disabled={isSubmitting}
+                  onClick={() => setOpenConfirmDialog(true)}
+               >
+                  {!user?.status ? 'Disabled User' : 'Enabled User'}
+               </LoadingButton>
+            }
+         />
          <Divider />
          <CardContent>
             <form onSubmit={handleSubmit(handleSave)}>
@@ -151,7 +156,7 @@ export function UserBasicInfoCardEdit({
                   <Grid item md={4} xs={12}>
                      <CustomTextField
                         control={control}
-                        disabled={true}
+                        disabled={isSubmitting || !user}
                         name="email"
                         label="Email"
                      />
@@ -183,9 +188,7 @@ export function UserBasicInfoCardEdit({
                         control={control}
                         name="rolesId"
                         label="Role"
-                        options={
-                           (roles || []).map(item => ({ value: item.id, label: item.name }))
-                        }
+                        options={(roles || []).map(item => ({ value: item.id, label: item.name }))}
                      />
                   </Grid>
 
@@ -216,14 +219,6 @@ export function UserBasicInfoCardEdit({
                      Update
                   </Button>
                </Box>
-               <Button
-                  variant="text"
-                  color="error"
-                  disabled={isSubmitting}
-                  onClick={() => setOpenConfirmDialog(true)}
-               >
-                  Delete user
-               </Button>
             </CardActions>
          )}
 
@@ -240,5 +235,5 @@ export function UserBasicInfoCardEdit({
             onClose={() => setOpenConfirmDialog(false)}
          />
       </Card>
-   );
+   )
 }

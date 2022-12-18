@@ -35,7 +35,6 @@ export const Sales = (props: any) => {
    const theme = useTheme()
    const [period, setPeriod] = useState('week')
 
-   
    const data = { datasets: [], labels: [] }
 
    const options: ChartOptions<'line'> = {

@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 import { Search as SearchIcon } from '../../icons/search'
 import { useEffect, useRef, useState } from 'react'
-import { Category  } from 'models'
+import { Category } from 'models'
 import { ProductTypesFilterInput } from 'graphql/query/productTypes'
 import { useQuery } from '@apollo/client'
 import CATEGORIES_QUERY from 'graphql/query/categories'
@@ -36,7 +36,7 @@ export const ProductListToolbar = ({
    const ref = useRef<NodeJS.Timeout | null>(null)
 
    useEffect(() => {
-      setCategories(data?.categories?.nodes || [])
+      setCategories(data?.categories?.items || [])
    }, [data])
 
    const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,18 +51,16 @@ export const ProductListToolbar = ({
    const handleChangeSort = (event: any) => {
       const value = event.target.value
 
-      if(value === "all"){
+      if (value === 'all') {
          onChangeSorting(undefined)
          return
       }
 
-      if(Array.isArray(value)){
+      if (Array.isArray(value)) {
          onChangeSorting(value)
-      }
-      else {
+      } else {
          onChangeSorting([value])
       }
-
    }
 
    return (
@@ -95,12 +93,14 @@ export const ProductListToolbar = ({
                            fullWidth
                            label="Sort by Category"
                            multiple
-                           value={filters.categoriesIds ? filters.categoriesIds : [] }
+                           value={filters.categoriesIds ? filters.categoriesIds : []}
                            onChange={handleChangeSort}
                         >
                            {/* <MenuItem value="all">All</MenuItem> */}
-                           {categories.map((category) => (
-                              <MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>
+                           {categories.map(category => (
+                              <MenuItem key={category.id} value={category.id}>
+                                 {category.name}
+                              </MenuItem>
                            ))}
                         </Select>
                      </FormControl>

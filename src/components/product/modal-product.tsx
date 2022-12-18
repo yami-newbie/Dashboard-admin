@@ -1,10 +1,4 @@
-import {
-   Button,
-   Dialog,
-   DialogActions,
-   DialogContent,
-   DialogTitle
-} from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
@@ -17,18 +11,15 @@ import { useLazyQuery } from '@apollo/client'
 import MANUFACTUREINFOS_QUERY from 'graphql/query/manufactureInfos'
 
 type Props = {
-   data?: Product,
-   isOpen: boolean,
-   onClose: () => void,
-   onSubmit: (values: ProductPayLoad) => Promise<void>,
-
+   data?: Product
+   isOpen: boolean
+   onClose: () => void
+   onSubmit: (values: ProductPayLoad) => Promise<void>
 }
 
-const schema = yup.object().shape({
-})
+const schema = yup.object().shape({})
 
 const ProductCreateEditModal = (props: Props) => {
-
    const { data, onClose, isOpen, onSubmit } = props
 
    const [fetch, { data: options }] = useLazyQuery(MANUFACTUREINFOS_QUERY)
@@ -57,14 +48,14 @@ const ProductCreateEditModal = (props: Props) => {
       console.log(data)
       if (data && data.id) {
          reset({
-            id: data?.id || "",
-            manufactureInfosId: data?.manufactureInfosId || "",
-            productTypesId: data?.productTypesId || ""
+            id: data?.id || '',
+            manufactureInfosId: data?.manufactureInfosId || '',
+            productTypesId: data?.productTypesId || ''
          })
       } else {
          reset({
-            productTypesId: data?.productTypesId || "",
-            manufactureInfosId: ""
+            productTypesId: data?.productTypesId || '',
+            manufactureInfosId: ''
          })
       }
    }, [data, reset])
@@ -84,9 +75,14 @@ const ProductCreateEditModal = (props: Props) => {
                   control={control}
                   name="manufactureInfosId"
                   label="Manufacturer Info"
-                  options={
-                     (options?.manufactureInfos.nodes as Array<ManufactureInfo> || []).map(item => ({ value: item.id, label: item.manufacturedAt ? moment(item.manufacturedAt).format('DD-MM-YYYY') : item.id }))
-                  }
+                  options={((options?.manufactureInfos.items as Array<ManufactureInfo>) || []).map(
+                     item => ({
+                        value: item.id,
+                        label: item.manufacturedAt
+                           ? moment(item.manufacturedAt).format('DD-MM-YYYY')
+                           : item.id
+                     })
+                  )}
                />
             </form>
          </DialogContent>

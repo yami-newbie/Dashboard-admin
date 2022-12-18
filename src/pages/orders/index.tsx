@@ -22,7 +22,6 @@ const Orders = () => {
    const [filters, setFilters] = useState({ status: '', orderBy: 'updatedAt-desc' })
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
 
-   
    const { data: orderList } = useQuery(USERS_QUERY)
 
    const handleLimitChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {

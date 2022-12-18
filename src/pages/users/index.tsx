@@ -5,17 +5,20 @@ import {
    Card,
    Container,
    Divider,
+   Pagination,
+   Stack,
    Tab,
    TablePagination,
    Tabs,
    Typography
 } from '@mui/material'
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
-import { CustomerQueryParams, DEFAULT_PAGINATION, PaginationParams, User } from 'models'
+import { CustomerQueryParams, DEFAULT_PAGINATION, PaginationParams, User, Variables_Graphql } from 'models'
 import { UserListResults, CustomerListToolbar } from 'components/user'
 import { DashboardLayout } from 'components/layouts'
 import { useQuery } from '@apollo/client'
 import USERS_QUERY from 'graphql/query/users'
+import { number } from 'yup/lib/locale'
 
 const Users = () => {
    const [filters, setFilters] = useState<CustomerQueryParams>({
@@ -25,14 +28,22 @@ const Users = () => {
    })
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
 
-   const { data: _userList } = useQuery(USERS_QUERY)
-
+   const [variables, setVariables] = useState<Variables_Graphql>({take: 5})
+   
    const [userList, setUserList] = useState<User[]>([])
+   
+   const { data: _userList } = useQuery(USERS_QUERY, { variables: { ...variables } })
 
    useEffect(() => {
-      if(_userList) {
-         const users = _userList.users.nodes
+      if (_userList) {
+         const users = _userList.users.items
 
+         const _totalCount = _userList.users.totalCount
+
+         setPagination(prev => ({
+            ...prev,
+            totalCount: _totalCount
+         }))
          setUserList(users || [])
       }
    }, [_userList])
@@ -41,8 +52,12 @@ const Users = () => {
       setPagination({ ...pagination, pageSize: Number.parseInt(event.target.value) })
    }
 
-   const handlePageChange = (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => {
-      setPagination({ ...pagination, currentPage: newPage + 1 })
+   const handlePageChange = (event: any, newPage: number) => {
+      setPagination({ ...pagination, currentPage: newPage })
+      setVariables(prev => ({
+         ...prev,
+         skip: (newPage - 1) * 5
+      }))
    }
 
    const handleSearch = (search: string) => {
@@ -117,15 +132,9 @@ const Users = () => {
                         pagination={pagination}
                         onSortByColumn={handleChangeSorting}
                      />
-                     <TablePagination
-                        component="div"
-                        count={pagination.totalCount}
-                        onPageChange={handlePageChange}
-                        onRowsPerPageChange={handleLimitChange}
-                        page={pagination.currentPage - 1}
-                        rowsPerPage={pagination.pageSize}
-                        rowsPerPageOptions={[5, 10, 25]}
-                     />
+                     <Stack width="100%" alignItems="center" my={2}>
+                        <Pagination onChange={handlePageChange} count={Math.ceil(pagination.totalCount / 5)} variant="outlined" color="primary" />
+                     </Stack>
                   </Card>
                </Box>
             </Container>

@@ -92,5 +92,5 @@ export const LatestProducts = (props: any) => {
             </NextLink>
          </Box>
       </Card>
-   );
+   )
 }

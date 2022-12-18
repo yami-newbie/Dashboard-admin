@@ -22,9 +22,7 @@ export function ProductTypeList({
    onEditClick,
    onDeleteClick
 }: ProductListProps) {
-
-   if(loading)
-      return <Animation type={'bubbles'} color={'#ef5350'}/>
+   if (loading) return <Animation type={'bubbles'} color={'#ef5350'} />
 
    return (
       <Box sx={{ pt: 3 }}>

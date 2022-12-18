@@ -1,10 +1,4 @@
-import {
-   Button,
-   Dialog,
-   DialogActions,
-   DialogContent,
-   DialogTitle
-} from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
@@ -15,11 +9,10 @@ import { LoadingButton } from '@mui/lab'
 import FileUpload from 'components/file-upload/file-upload'
 
 type Props = {
-   data?: Manufacturer,
-   isOpen: boolean,
-   onClose: () => void,
-   onSubmit: (values: ManufacturerPayLoad, files: File[]) => Promise<void>,
-   
+   data?: Manufacturer
+   isOpen: boolean
+   onClose: () => void
+   onSubmit: (values: ManufacturerPayLoad, files: File[]) => Promise<void>
 }
 
 const schema = yup.object().shape({
@@ -27,7 +20,6 @@ const schema = yup.object().shape({
 })
 
 const ManufacturerCreateEditModal = (props: Props) => {
-
    const { data, onClose, isOpen, onSubmit } = props
 
    const [files, setFiles] = useState<File[]>()
@@ -50,16 +42,16 @@ const ManufacturerCreateEditModal = (props: Props) => {
       console.log(data)
       if (data && data.id) {
          reset({
-            id: data?.id || "",
-            address: data?.address || "",
-            description: data?.description || "",
-            name: data?.name || ""
+            id: data?.id || '',
+            address: data?.address || '',
+            description: data?.description || '',
+            name: data?.name || ''
          })
       } else {
          reset({
-            address: "",
-            description: "",
-            name: ""
+            address: '',
+            description: '',
+            name: ''
          })
       }
    }, [data, reset])
@@ -87,8 +79,8 @@ const ManufacturerCreateEditModal = (props: Props) => {
                   label="Address"
                />
 
-               <FileUpload label="Medias" multiple updateFilesCb={setFiles}/>
-               
+               <FileUpload label="Medias" multiple updateFilesCb={setFiles} />
+
                <CustomTextField
                   disabled={isSubmitting}
                   control={control}

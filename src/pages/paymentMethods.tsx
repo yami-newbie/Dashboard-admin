@@ -1,10 +1,26 @@
-import { Box, Button, Card, CardContent, Container, Divider, Stack, Typography } from '@mui/material'
+import {
+   Box,
+   Button,
+   Card,
+   CardContent,
+   Container,
+   Divider,
+   Stack,
+   Typography
+} from '@mui/material'
 import { DashboardLayout } from 'components/layouts'
 import Head from 'next/head'
 import CustomTable from 'components/custom/table'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
-import { PaymentMethod, PaymentMethodPayLoad, DEFAULT_PAGINATION, PageInfo, PaginationParams, Variables_Graphql } from 'models'
+import {
+   PaymentMethod,
+   PaymentMethodPayLoad,
+   DEFAULT_PAGINATION,
+   PageInfo,
+   PaginationParams,
+   Variables_Graphql
+} from 'models'
 import { useSnackbar } from 'notistack'
 import CREATE_PAYMENT_METHOD from 'graphql/mutation/createPaymentMethod'
 import UPDATE_PAYMENT_METHOD from 'graphql/mutation/updatePaymentMethod'
@@ -13,32 +29,34 @@ import PAYMENT_METHODS_QUERY from 'graphql/query/paymentMethods'
 import PaymentMethodCreateEditModal from 'components/paymentMethod/modal'
 
 interface PaymentMethodsDataTable {
-   name: string,
-   currency: string,
+   name: string
+   currency: string
    _data: PaymentMethod
 }
 
 const PaymentMethods = () => {
    const { enqueueSnackbar } = useSnackbar()
    const [rows, setRows] = useState<PaymentMethodsDataTable[]>([])
-   
+
    const [dataPaymentMethodModal, setDataPaymentMethodModal] = useState<PaymentMethod | undefined>()
    const [isPaymentMethodModalOpen, setIsPaymentMethodModalOpen] = useState(false)
 
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
-   const [rowsPerPage, setRowsPerPage] = useState(10);
-   const [paginationQuery, setPaginationQuery] = useState<Variables_Graphql>({ first: rowsPerPage })
+   const [rowsPerPage, setRowsPerPage] = useState(5)
+   const [paginationQuery, setPaginationQuery] = useState<Variables_Graphql>({ take: rowsPerPage })
    const [pageInfo, setPageInfo] = useState<PageInfo>()
 
-   const [fetch, { data, refetch }] = useLazyQuery(PAYMENT_METHODS_QUERY, { variables: { ...paginationQuery } })
+   const [fetch, { data, refetch, loading }] = useLazyQuery(PAYMENT_METHODS_QUERY, {
+      variables: { ...paginationQuery }
+   })
 
    const [createPaymentMethod] = useMutation(CREATE_PAYMENT_METHOD)
    const [updatePaymentMethod] = useMutation(UPDATE_PAYMENT_METHOD)
    const [removePaymentMethod] = useMutation(DELETE_PAYMENT_METHOD)
 
    const headers = [
-      { field: 'name', headerName: 'Name' }, 
-      // { field: 'address', headerName: 'Address' }, 
+      { field: 'name', headerName: 'Name' },
+      // { field: 'address', headerName: 'Address' },
       { field: 'currency', headerName: 'Currency' }
    ]
 
@@ -47,18 +65,18 @@ const PaymentMethods = () => {
    }, [])
 
    useEffect(() => {
-      if(paginationQuery) {
+      if (paginationQuery) {
          refetch(paginationQuery)
       }
    }, [paginationQuery])
 
    useEffect(() => {
       if (data) {
-         console.log(data);
-         
+         console.log(data)
+
          const _data = data.paymentMethods
 
-         const nodes_data = _data.nodes as Array<PaymentMethod>
+         const nodes_data = _data.items as Array<PaymentMethod>
 
          // setPaymentMethods(nodes_data)
 
@@ -69,61 +87,48 @@ const PaymentMethods = () => {
             totalCount: _data.totalCount
          }))
 
-         setRows(nodes_data.map((item, index) => ({ name: item.name, currency: item.currency, _data: item }) as PaymentMethodsDataTable))
+         setRows(
+            nodes_data.map(
+               (item, index) =>
+                  ({
+                     name: item.name,
+                     currency: item.currency,
+                     _data: item
+                  } as PaymentMethodsDataTable)
+            )
+         )
       }
    }, [data])
 
    useEffect(() => {
-      if(pagination) {
-         if(pagination.currentPage === 0) {
-            setPaginationQuery(prev => ({...prev, after: null, first: rowsPerPage}))
+      if (pagination) {
+         if (pagination.currentPage === 0) {
+            setPaginationQuery(prev => ({ ...prev, after: null, first: rowsPerPage }))
          }
       }
    }, [pagination, rowsPerPage])
 
    const handleChangeRowsPerPage = (
-      event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
    ) => {
       const value = parseInt(event.target.value)
-      setRowsPerPage(value);
+      setRowsPerPage(value)
       setPagination(prev => ({
          ...prev,
          currentPage: 0
       }))
-   };
+   }
 
-   const handleChangePagination = (event: React.MouseEvent<HTMLButtonElement> | null, value: number) => {
-      console.log(value);
-      
-      const currentPage = pagination.currentPage
+   const handleChangePagination = (
+      event: any,
+      value: number
+   ) => {
+      console.log(value)
 
-      debugger
-
-      if (value === 0) {
-         setPaginationQuery(prev =>({
-            ...prev,
-            after: null,
-            first: rowsPerPage
-         }))
-      }
-      else {
-         if (value > currentPage) {
-            setPaginationQuery(prev => ({
-               ...prev,
-               after: pageInfo?.endCursor || null,
-               first: rowsPerPage,
-               last: null
-            }))
-         }
-         else {
-            setPaginationQuery(prev => ({
-               ...prev,
-               after: pageInfo?.startCursor || null,
-               first: null,
-               last: rowsPerPage
-            }))
-         }
-      }
+      setPaginationQuery({
+         skip: (value - 1) * rowsPerPage,
+         take: rowsPerPage         
+      })
       setPagination(prev => ({
          ...prev,
          currentPage: value
@@ -131,8 +136,8 @@ const PaymentMethods = () => {
    }
 
    const handlePaymentMethodModalOpen = (data?: PaymentMethod) => {
-      console.log(data);
-      
+      console.log(data)
+
       setDataPaymentMethodModal(data)
       setIsPaymentMethodModalOpen(true)
    }
@@ -148,33 +153,30 @@ const PaymentMethods = () => {
 
          refetch()
 
-         enqueueSnackbar("Success", { variant: "success" })
-      }
-      catch(e: any){
-         enqueueSnackbar(e.message, { variant: "error" })
+         enqueueSnackbar('Success', { variant: 'success' })
+      } catch (e: any) {
+         enqueueSnackbar(e.message, { variant: 'error' })
       }
    }
 
    const onHandleCreateEditPaymentMethod = async (data: PaymentMethodPayLoad) => {
       try {
-         if(data && data.id) {
+         if (data && data.id) {
             await updatePaymentMethod({ variables: { input: data } })
 
             refetch()
 
-            enqueueSnackbar("Success", { variant: "success" })
-         }
-         else {
+            enqueueSnackbar('Success', { variant: 'success' })
+         } else {
             await createPaymentMethod({ variables: { input: data } })
-            
+
             refetch()
 
-            enqueueSnackbar("Success", { variant: "success" })
+            enqueueSnackbar('Success', { variant: 'success' })
          }
          handleClosePaymentMethodModal()
-      }
-      catch(e: any){
-         enqueueSnackbar(e.message, { variant: "error" })
+      } catch (e: any) {
+         enqueueSnackbar(e.message, { variant: 'error' })
       }
    }
 
@@ -224,6 +226,7 @@ const PaymentMethods = () => {
                      <CustomTable
                         headers={headers}
                         rows={rows}
+                        loading={loading}
                         rowsPerPage={rowsPerPage}
                         onHandleEditButton={handlePaymentMethodModalOpen}
                         onHandleDeleteButton={onHandleDeletePaymentMethod}
@@ -236,7 +239,12 @@ const PaymentMethods = () => {
                   </CardContent>
                </Card>
             </Container>
-            <PaymentMethodCreateEditModal data={dataPaymentMethodModal} isOpen={isPaymentMethodModalOpen} onSubmit={onHandleCreateEditPaymentMethod} onClose={handleClosePaymentMethodModal} />
+            <PaymentMethodCreateEditModal
+               data={dataPaymentMethodModal}
+               isOpen={isPaymentMethodModalOpen}
+               onSubmit={onHandleCreateEditPaymentMethod}
+               onClose={handleClosePaymentMethodModal}
+            />
          </Box>
       </>
    )

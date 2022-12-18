@@ -1,24 +1,24 @@
-import { Media } from "./media"
-import { Role } from "./roles"
+import { Media } from './media'
+import { Role } from './roles'
 
 export class User {
    constructor(
-      public id: string = "",
-      public fullname: string = "",
-      public dob: string = "",
-      public email: string = "",
-      public address: string = "",
-      public phone: string = "",
-      public password: string = "",
-      public rolesId: string = "",
+      public id: string = '',
+      public fullname: string = '',
+      public dob: string = '',
+      public email: string = '',
+      public address: string = '',
+      public phone: string = '',
+      public password: string = '',
+      public rolesId: string = '',
       public roles: Role[] = [],
-      public mediasId: string = "",
+      public mediasId: string = '',
       public medias: Media[] = [],
       public status: boolean = false,
-      public deletedAt: string = "",
-      public createdAt: string = "",
-      public updatedAt: string = "",
-   ) { }
+      public deletedAt: string = '',
+      public createdAt: string = '',
+      public updatedAt: string = ''
+   ) {}
 }
 
 export type EditProfileFormValues = {
@@ -35,16 +35,16 @@ export type ChangePasswordPayLoad = {
 }
 export class UserPayload {
    constructor(
-      public id: string = "",
-      public fullname: string = "",
-      public dob: string = "",
-      public email: string = "",
-      public address: string = "",
-      public phone: string = "",
-      public password: string = "",
-      public rolesId: string = "",
-      public status: boolean = false,
-   ) { }
+      public id: string = '',
+      public fullname: string = '',
+      public dob: string = '',
+      public email: string = '',
+      public address: string = '',
+      public phone: string = '',
+      public password: string = '',
+      public rolesId: string = '',
+      public status: boolean = false
+   ) {}
 }
 export interface CustomerQueryParams extends Partial<Record<keyof User, string>> {
    orderBy?: string

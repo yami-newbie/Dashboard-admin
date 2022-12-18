@@ -219,5 +219,5 @@ export const OrderListResults = ({
                  ))}
          </TableBody>
       </Table>
-   );
+   )
 }

@@ -1,12 +1,4 @@
-import {
-   Box,
-   Button,
-   Container,
-   Divider,
-   Paper,
-   Typography,
-   TablePagination
-} from '@mui/material'
+import { Box, Button, Container, Divider, Paper, Typography, TablePagination, Pagination, Stack } from '@mui/material'
 import { ProductTypeList, ProductListToolbar } from 'components/productType'
 import {
    DEFAULT_PAGINATION,
@@ -28,18 +20,23 @@ import DELETE_PRODUCT_TYPE from 'graphql/mutation/deleteProductType'
 const ProductTypes = () => {
    const { enqueueSnackbar } = useSnackbar()
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
-   const [rowsPerPage, setRowsPerPage] = useState(10);
+   const [rowsPerPage, setRowsPerPage] = useState(10)
    const [filters, setFilters] = useState<Partial<ProductTypesFilterInput>>({})
    const [paginationQuery, setPaginationQuery] = useState<Variables_Graphql>({})
    const [pageInfo, setPageInfo] = useState<PageInfo>()
    const router = useRouter()
 
-   const variables = useMemo(() => ({
-      input: filters,
-      ...paginationQuery
-   }), [filters, paginationQuery])
+   const variables = useMemo(
+      () => ({
+         input: filters,
+         ...paginationQuery
+      }),
+      [filters, paginationQuery]
+   )
 
-   const [fetch, { data: productTypes, loading }] = useLazyQuery(PRODUCT_TYPE, { variables: variables })
+   const [fetch, { data: productTypes, loading }] = useLazyQuery(PRODUCT_TYPE, {
+      variables: variables
+   })
 
    const [deleteProductType] = useMutation(DELETE_PRODUCT_TYPE)
 
@@ -55,43 +52,30 @@ const ProductTypes = () => {
    }, [variables])
 
    useEffect(() => {
-      if(productTypes) {
+      if (productTypes) {
          const productTypesList = productTypes.productTypes
-         const list = productTypesList.edges.map((item: Edge) => item.node)
+         const list = productTypesList.items
          const _pageInfo = productTypesList.pageInfo as PageInfo
          const _totalItems = productTypesList.totalCount
          setProductTypeList(list)
          setPageInfo(_pageInfo)
          setPagination(prev => ({
             ...prev,
-            totalCount: _totalItems,
-            totalPages: Math.ceil(_totalItems / 10)
+            totalCount: _totalItems
          }))
       }
    }, [productTypes])
 
-   const handleChangePagination = (event: React.MouseEvent<HTMLButtonElement> | null, value: number) => {
+   const handleChangePagination = (
+      event: any,
+      value: number
+   ) => {
       executeScroll()
+      setPaginationQuery({
+         skip: (value - 1) * rowsPerPage,
+         take: rowsPerPage
+      })
 
-      const currentPage = pagination.currentPage
-      
-      if(value === 0) {
-         setPaginationQuery({
-            after: null
-         })
-      }
-      else {
-         if(value > currentPage) {
-            setPaginationQuery({
-               after: pageInfo?.endCursor || null,
-            })
-         }
-         else {
-            setPaginationQuery({
-               after: pageInfo?.startCursor || null,
-            })
-         }
-      }
       setPagination(prev => ({
          ...prev,
          currentPage: value
@@ -99,20 +83,20 @@ const ProductTypes = () => {
    }
 
    const handleChangeRowsPerPage = (
-      event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    ) => {
-      setRowsPerPage(parseInt(event.target.value, 10));
+      event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+   ) => {
+      setRowsPerPage(parseInt(event.target.value, 10))
       setPagination(prev => ({
          ...prev,
          currentPage: 0
       }))
-    };
+   }
 
    const handleDeleteProduct = async (id: string) => {
       try {
          await deleteProductType({ variables: { input: { id } } })
 
-         enqueueSnackbar("Delete Product Type Success!", { variant: "success" })
+         enqueueSnackbar('Delete Product Type Success!', { variant: 'success' })
 
          fetch()
       } catch (error: any) {
@@ -123,12 +107,12 @@ const ProductTypes = () => {
    }
 
    const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
-      setFilters((prev) => ({...prev}))
+      setFilters(prev => ({ ...prev }))
    }
 
    const handleSearch = (search: string) => {
       setFilters({
-         ...filters,
+         ...filters
       })
    }
    const handleChangeSorting = (categoriesIds: string[]) => {
@@ -205,32 +189,9 @@ const ProductTypes = () => {
                   onDeleteClick={handleDeleteProduct}
                />
 
-               {productTypeList && productTypeList.length > 0 && (
-                  <Box
-                     sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        pt: 3
-                     }}
-                  >
-                     <TablePagination
-                        component="div"
-                        count={pagination.totalCount}
-                        page={pagination.currentPage}
-                        onPageChange={handleChangePagination}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                        rowsPerPage={rowsPerPage}
-                     />
-                  </Box>
-               )}
-
-               {/* <ProductTypeAddEditModal
-                  isEdit={isEdit}
-                  data={editProduct}
-                  isOpen={isEditModalOpen}
-                  onClose={handleCloseAddEditModal}
-                  onSubmit={handleAddEditProduct}
-               /> */}
+               <Stack width="100%" alignItems="center" my={2}>
+                  <Pagination onChange={handleChangePagination} count={Math.ceil(pagination.totalCount / rowsPerPage)} variant="outlined" color="primary" />
+               </Stack>
             </Container>
          </Box>
       </>

@@ -10,7 +10,7 @@ import * as yup from 'yup'
 import { useAuth } from '../hooks'
 import { LoginPayload } from '../models'
 import LOGIN_QUERY from 'graphql/query/login'
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client'
 import { useEffect } from 'react'
 
 const schema = yup.object({
@@ -44,7 +44,7 @@ const Login = () => {
    const handleClickLogin = async (_data: LoginPayload) => {
       try {
          await login(_data)
-         
+
          router.push('/')
       } catch (error: any) {
          enqueueSnackbar(error.message, {

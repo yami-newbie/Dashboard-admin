@@ -1,10 +1,4 @@
-import {
-   Button,
-   Dialog,
-   DialogActions,
-   DialogContent,
-   DialogTitle
-} from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
@@ -18,11 +12,10 @@ import MANUFACTUREINFOS_QUERY from 'graphql/query/manufactureInfos'
 import MANUFACTURERS_QUERY from 'graphql/query/manufacturers'
 
 type Props = {
-   data?: ManufactureInfo,
-   isOpen: boolean,
-   onClose: () => void,
-   onSubmit: (values: ManufactureInfoPayLoad) => Promise<void>,
-
+   data?: ManufactureInfo
+   isOpen: boolean
+   onClose: () => void
+   onSubmit: (values: ManufactureInfoPayLoad) => Promise<void>
 }
 
 const schema = yup.object().shape({
@@ -31,7 +24,6 @@ const schema = yup.object().shape({
 })
 
 const ManufacturerInfoCreateEditModal = (props: Props) => {
-
    const { data, onClose, isOpen, onSubmit } = props
 
    const [fetch, { data: options }] = useLazyQuery(MANUFACTURERS_QUERY)
@@ -60,13 +52,13 @@ const ManufacturerInfoCreateEditModal = (props: Props) => {
       console.log(data)
       if (data && data.id) {
          reset({
-            id: data?.id || "",
-            manufacturedAt: data?.manufacturedAt || moment().toISOString(),
-            manufacturersId: data?.manufacturersId || ""
+            id: data?.id || '',
+            manufacturedAt: moment(data?.manufacturedAt || undefined).format('YYYY-MM-DD'),
+            manufacturersId: data?.manufacturersId || ''
          })
       } else {
          reset({
-            manufacturedAt: moment().toISOString(),
+            manufacturedAt: moment().format('YYYY-MM-DD'),
             manufacturersId: data?.manufacturersId
          })
       }
@@ -85,7 +77,7 @@ const ManufacturerInfoCreateEditModal = (props: Props) => {
                <CustomTextField
                   disabled={isSubmitting}
                   control={control}
-                  type='date'
+                  type="date"
                   name="manufacturedAt"
                   label="Manufacturer At"
                />
@@ -94,9 +86,9 @@ const ManufacturerInfoCreateEditModal = (props: Props) => {
                   control={control}
                   name="manufacturersId"
                   label="Manufacturer"
-                  options={
-                     (options?.manufacturers.nodes as Array<Manufacturer> || []).map(item => ({ value: item.id, label: item.name }))
-                  }
+                  options={((options?.manufacturers.items as Array<Manufacturer>) || []).map(
+                     item => ({ value: item.id, label: item.name })
+                  )}
                />
             </form>
          </DialogContent>

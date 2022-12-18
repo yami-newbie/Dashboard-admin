@@ -10,9 +10,9 @@ import { AppPropsWithLayout } from 'models'
 import { EmptyLayout } from 'components/layouts'
 import { SnackbarProvider } from 'notistack'
 import 'react-perfect-scrollbar/dist/css/styles.css'
-import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
-import { createUploadLink } from 'apollo-upload-client';
-import { setContext } from '@apollo/client/link/context';
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client'
+import { createUploadLink } from 'apollo-upload-client'
+import { setContext } from '@apollo/client/link/context'
 
 import Router from 'next/router'
 import NProgress from 'nprogress'
@@ -36,30 +36,29 @@ if (typeof window !== 'undefined') {
    })
 }
 
-
 const clientSideEmotionCache = createEmotionCache()
 
 const App = (props: AppPropsWithLayout) => {
-    const uploadLink = createUploadLink({
-      uri: 'https://cheems-store.onrender.com/graphql',
-    })
-    
-    const authLink = setContext((_, { headers }) => {
+   const uploadLink = createUploadLink({
+      uri: 'https://cheems-store.onrender.com/graphql'
+   })
+
+   const authLink = setContext((_, { headers }) => {
       // get the authentication token from local storage if it exists
-      const token = localStorage.getItem('accessToken');
+      const token = localStorage.getItem('accessToken')
       // return the headers to the context so httpLink can read them
       return {
-        headers: {
-          ...headers,
-          authorization: token ? `Bearer ${token}` : "",
-        }
+         headers: {
+            ...headers,
+            authorization: token ? `Bearer ${token}` : ''
+         }
       }
-    });
-    
-    const client = new ApolloClient({
+   })
+
+   const client = new ApolloClient({
       link: authLink.concat(uploadLink),
       cache: new InMemoryCache()
-    });
+   })
    // const notistackRef = createRef<HTMLElement>()
    // const onClickDismiss = (key: SnackbarKey) => () => {
    //    notistackRef.current.closeSnackbar(key)

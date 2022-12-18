@@ -18,7 +18,6 @@ const Account = () => {
    }
    const handleChangePassword = async (payload: ChangePasswordPayLoad) => {
       try {
-         
       } catch (error) {
          console.log('error to update profile', error)
       }

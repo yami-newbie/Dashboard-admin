@@ -12,7 +12,6 @@ export interface CardData {
    compareLastMonth: number
 }
 export function DashboardCards(props: DashboardCardsProps) {
-   
    const data: any[] = []
 
    return (

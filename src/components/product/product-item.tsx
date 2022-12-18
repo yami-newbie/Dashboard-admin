@@ -9,9 +9,9 @@ type Props = {
 
 const ProductItem = (props: Props) => {
    const { data } = props
-   
+
    const manufactureInfo = data?.manufactureInfos
-   
+
    const manufacture = manufactureInfo?.manufacturers
 
    return (
@@ -19,9 +19,13 @@ const ProductItem = (props: Props) => {
          <CardHeader title={manufacture?.name}></CardHeader>
 
          <Divider />
-         
+
          <CardContent>
-            <TextField label="Manufactured At" disabled value={moment(manufactureInfo?.manufacturedAt).format('DD-MM-YYYY')} />
+            <TextField
+               label="Manufactured At"
+               disabled
+               value={moment(manufactureInfo?.manufacturedAt).format('DD-MM-YYYY')}
+            />
          </CardContent>
          <CardActions></CardActions>
       </Card>

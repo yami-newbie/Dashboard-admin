@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag'
 
 const CURRENT_USER_QUERY = gql(`
 query{
@@ -7,7 +7,6 @@ query{
       email
    }
  }
-`);
-
+`)
 
 export default CURRENT_USER_QUERY

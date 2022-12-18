@@ -326,5 +326,5 @@ export function OrderBasicInfoCardEdit({ order, onSave, onDelete }: OrderBasicIn
             onClose={() => setOpenConfirmDialog(false)}
          />
       </Card>
-   );
+   )
 }

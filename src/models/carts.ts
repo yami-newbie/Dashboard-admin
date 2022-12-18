@@ -1,10 +1,10 @@
-import { User } from "./user";
+import { User } from './user'
 
 export class Cart {
    constructor(
       public cartItems: CartItem[] = [],
-      public createdAt: string = "",
-      public updatedAt: string = ""
+      public createdAt: string = '',
+      public updatedAt: string = ''
    ) {}
 }
 

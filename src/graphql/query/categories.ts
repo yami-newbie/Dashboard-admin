@@ -1,31 +1,20 @@
-import { gql } from 'graphql-tag';
+import { gql } from 'graphql-tag'
 
-
-const CATEGORIES_QUERY =  gql`
-query($input: CategoriesFilterInput, $after: String, $before: String, $first: Int, $last: Int){
-  categories(input: $input, after: $after, before: $before, first: $first, last: $last){
-    edges{
-      cursor
-      node {
-        id
-        name
-        description
+const CATEGORIES_QUERY = gql`
+   query ($input: CategoriesFilterInput, $skip: Int, $take: Int) {
+      categories(input: $input, skip: $skip, take: $take) {
+         items {
+            id
+            name
+            description
+         }
+         pageInfo {
+            hasNextPage
+            hasPreviousPage
+         }
+         totalCount
       }
-    }
-    nodes {
-      id
-      name
-      description
-    }
-    pageInfo {
-      hasNextPage
-      hasPreviousPage
-       startCursor
-       endCursor       
-    }
-    totalCount
-  }
-}
- `
+   }
+`
 
 export default CATEGORIES_QUERY

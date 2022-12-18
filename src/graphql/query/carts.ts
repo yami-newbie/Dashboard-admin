@@ -1,41 +1,35 @@
-import { gql } from 'graphql-tag';
+import { gql } from 'graphql-tag'
 
 const CARTS_QUERY = gql`
-query($input: CartsFilterInput, $after: String, $before: String, $first: Int, $last: Int) {
-   carts(input: $input, after: $after, before: $before, first: $first, last: $last) {
-     pageInfo {
-       hasNextPage
-       hasPreviousPage
-       startCursor
-       endCursor
-     }
-     totalCount
-     edges{
-       cursor
-       node {
-         id
-         users {
-           id
-           roles {
-             id
-             name
-           }
-           mediasId
-           fullname 
+   query ($input: CartsFilterInput) {
+      carts(input: $input) {
+         pageInfo {
+            hasNextPage
+            hasPreviousPage
          }
-         cartItems {
-           id
-           cartsId
-           products {
-             id
-           }
-           amount
+         totalCount
+         items {
+            id
+            users {
+               id
+               roles {
+                  id
+                  name
+               }
+               mediasId
+               fullname
+            }
+            cartItems {
+               id
+               cartsId
+               products {
+                  id
+               }
+               amount
+            }
          }
-         
-       }
-     }
+      }
    }
- }`
-
+`
 
 export default CARTS_QUERY

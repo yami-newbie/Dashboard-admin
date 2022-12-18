@@ -1,10 +1,4 @@
-import {
-   Button,
-   Dialog,
-   DialogActions,
-   DialogContent,
-   DialogTitle
-} from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
@@ -14,11 +8,10 @@ import { CustomSelectField, CustomTextField } from 'components/form-controls'
 import { LoadingButton } from '@mui/lab'
 
 type Props = {
-   data?: Category,
-   isOpen: boolean,
-   onClose: () => void,
-   onSubmit: (values: CategoryPayLoad, files: File[]) => Promise<void>,
-   
+   data?: Category
+   isOpen: boolean
+   onClose: () => void
+   onSubmit: (values: CategoryPayLoad, files: File[]) => Promise<void>
 }
 
 const schema = yup.object().shape({
@@ -26,7 +19,6 @@ const schema = yup.object().shape({
 })
 
 const CategoryCreateEditModal = (props: Props) => {
-
    const { data, onClose, isOpen, onSubmit } = props
 
    const [files, setFiles] = useState<File[]>()
@@ -49,14 +41,14 @@ const CategoryCreateEditModal = (props: Props) => {
       console.log(data)
       if (data && data.id) {
          reset({
-            id: data?.id || "",
-            description: data?.description || "",
-            name: data?.name || ""
+            id: data?.id || '',
+            description: data?.description || '',
+            name: data?.name || ''
          })
       } else {
          reset({
-            description: "",
-            name: ""
+            description: '',
+            name: ''
          })
       }
    }, [data, reset])

@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag'
 
 const LOGIN_QUERY = gql(`
    query ($input: UserAuthenticationInput) {
@@ -10,7 +10,6 @@ const LOGIN_QUERY = gql(`
          status
       }
    }
-`);
-
+`)
 
 export default LOGIN_QUERY

@@ -1,10 +1,4 @@
-import {
-   Button,
-   Dialog,
-   DialogActions,
-   DialogContent,
-   DialogTitle
-} from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
@@ -14,11 +8,10 @@ import { CustomSelectField, CustomTextField } from 'components/form-controls'
 import { LoadingButton } from '@mui/lab'
 
 type Props = {
-   data?: PaymentMethod,
-   isOpen: boolean,
-   onClose: () => void,
-   onSubmit: (values: PaymentMethodPayLoad) => Promise<void>,
-   
+   data?: PaymentMethod
+   isOpen: boolean
+   onClose: () => void
+   onSubmit: (values: PaymentMethodPayLoad) => Promise<void>
 }
 
 const schema = yup.object().shape({
@@ -27,7 +20,6 @@ const schema = yup.object().shape({
 })
 
 const PaymentMethodCreateEditModal = (props: Props) => {
-
    const { data, onClose, isOpen, onSubmit } = props
 
    const [files, setFiles] = useState<File[]>()
@@ -50,16 +42,16 @@ const PaymentMethodCreateEditModal = (props: Props) => {
       console.log(data)
       if (data && data.id) {
          reset({
-            id: data?.id || "",
-            name: data?.name || "",
-            description: data?.description || "",
-            currency: data?.currency || ""
+            id: data?.id || '',
+            name: data?.name || '',
+            description: data?.description || '',
+            currency: data?.currency || ''
          })
       } else {
          reset({
-            name: "",
-            description: "",
-            currency: ""
+            name: '',
+            description: '',
+            currency: ''
          })
       }
    }, [data, reset])

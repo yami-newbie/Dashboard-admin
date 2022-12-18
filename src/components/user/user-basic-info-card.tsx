@@ -18,8 +18,6 @@ export interface UserBasicInfoCardProps {
 }
 
 export function UserBasicInfoCard({ user }: UserBasicInfoCardProps) {
-   
-
    return (
       <Card>
          <CardHeader title="Basic details" />
@@ -36,7 +34,11 @@ export function UserBasicInfoCard({ user }: UserBasicInfoCardProps) {
                         Full Name
                      </Typography>
                      <Box sx={{ flex: 1 }}>
-                        <Typography sx={{ fontWeight: 'bold' }} variant="body2" color="text.secondary">
+                        <Typography
+                           sx={{ fontWeight: 'bold' }}
+                           variant="body2"
+                           color="text.secondary"
+                        >
                            {user.fullname}
                         </Typography>
                      </Box>
@@ -126,8 +128,7 @@ export function UserBasicInfoCard({ user }: UserBasicInfoCardProps) {
                      </Typography>
                      <Box sx={{ flex: 1 }}>
                         <Typography variant="body2" color="text.secondary">
-                           {user.createdAt &&
-                              format(parseISO(user.createdAt), 'dd/MM/yyyy HH:mm')}
+                           {user.createdAt && format(parseISO(user.createdAt), 'dd/MM/yyyy HH:mm')}
                         </Typography>
                      </Box>
                   </ListItem>

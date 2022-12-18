@@ -19,7 +19,7 @@ export function Auth({ children }: AuthProps) {
       }
    }, [router, profile, firstLoading])
 
-   if (!profile?.email) return <LoadingBackdrop open={true}/>
+   if (!profile?.email) return <LoadingBackdrop open={true} />
 
    return <div>{children}</div>
 }

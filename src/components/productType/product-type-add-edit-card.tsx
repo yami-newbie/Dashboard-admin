@@ -41,13 +41,17 @@ const schema = yup.object({
    files: yup.array(yup.object())
 })
 
-export function ProductTypeAddEditModal({
-   data,
-   onClose,
-   onSubmit
-}: ProductTypeAddEditModalProps) {
-   const { data: categories, error: categories_error, loading: categories_loading } = useQuery(CATEGORIES_QUERY)
-   const { data: manufacturers, error: manufacturers_error, loading: manufacturers_loading } = useQuery(MANUFACTURERS_QUERY)
+export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductTypeAddEditModalProps) {
+   const {
+      data: categories,
+      error: categories_error,
+      loading: categories_loading
+   } = useQuery(CATEGORIES_QUERY)
+   const {
+      data: manufacturers,
+      error: manufacturers_error,
+      loading: manufacturers_loading
+   } = useQuery(MANUFACTURERS_QUERY)
 
    const [categoriesOptions, setCategoriesOptions] = useState<Category[]>([])
    const [manufacturersOptions, setManufacturersOptions] = useState<Manufacturer[]>([])
@@ -55,11 +59,11 @@ export function ProductTypeAddEditModal({
    const [files, setFiles] = useState<FileList | null>(null)
 
    useEffect(() => {
-      setCategoriesOptions(categories?.categories?.nodes || [])
+      setCategoriesOptions(categories?.categories?.items || [])
    }, [categories])
 
    useEffect(() => {
-      setManufacturersOptions(manufacturers?.manufacturers?.nodes || [])
+      setManufacturersOptions(manufacturers?.manufacturers?.items || [])
    }, [manufacturers])
 
    const form = useForm<ProductTypePayload>({
@@ -71,13 +75,12 @@ export function ProductTypeAddEditModal({
       control,
       formState: { isSubmitting, errors }
    } = form
-   
 
    const handleSaveProduct = async (values: ProductTypePayload) => {
       if (onSubmit) await onSubmit(values, files)
    }
 
-   useEffect(() => {      
+   useEffect(() => {
       if (data) {
          reset({
             id: data?.id || '',
@@ -113,12 +116,11 @@ export function ProductTypeAddEditModal({
       <Card>
          <LoadingBackdrop open={categories_loading && manufacturers_loading} />
 
-         <CardHeader title={!data ? "New Product Type" : "Edit Product Type"}>
-         </CardHeader>
+         <CardHeader title={!data ? 'New Product Type' : 'Edit Product Type'}></CardHeader>
 
          <Divider />
-         <CardContent style={{ width: "100%" }}>
-            <form style={{ width: "100%" }}>
+         <CardContent style={{ width: '100%' }}>
+            <form style={{ width: '100%' }}>
                <CustomTextField
                   disabled={isSubmitting}
                   control={control}
@@ -133,8 +135,13 @@ export function ProductTypeAddEditModal({
                   multiline={true}
                   rows={4}
                />
-               
-               <FileUpload updateFilesCb={setFiles} label="Medias" multiple disabled={isSubmitting}/>
+
+               <FileUpload
+                  updateFilesCb={setFiles}
+                  label="Medias"
+                  multiple
+                  disabled={isSubmitting}
+               />
 
                {/* <input multiple type="file" onChange={(event) => { setFiles(event.target.files) }}/> */}
 
@@ -147,9 +154,9 @@ export function ProductTypeAddEditModal({
                   options={
                      categoriesOptions
                         ? categoriesOptions.map((item: Category) => ({
-                           value: item.id,
-                           label: item.name
-                        }))
+                             value: item.id,
+                             label: item.name
+                          }))
                         : []
                   }
                />
@@ -162,9 +169,9 @@ export function ProductTypeAddEditModal({
                   options={
                      manufacturersOptions
                         ? manufacturersOptions.map((item: Manufacturer) => ({
-                           value: item.id,
-                           label: item.name
-                        }))
+                             value: item.id,
+                             label: item.name
+                          }))
                         : []
                   }
                />

@@ -159,7 +159,7 @@ export const UserListResults = ({
                              <TableCell align="center" sx={{ pr: 5 }}>
                                 {format(parseISO(user.createdAt), 'dd/MM/yyyy')}
                              </TableCell>
-                             
+
                              <TableCell align="center">
                                 <Link href={`/users/${user.id}/edit`} passHref>
                                    <Tooltip title="Edit Customer" placement="top">
@@ -207,5 +207,5 @@ export const UserListResults = ({
             </Table>
          </Box>
       </PerfectScrollbar>
-   );
+   )
 }

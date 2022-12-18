@@ -172,5 +172,5 @@ export const LatestOrders = (props: any) => {
             </NextLink>
          </Box>
       </Card>
-   );
+   )
 }

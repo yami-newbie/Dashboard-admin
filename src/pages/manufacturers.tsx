@@ -1,11 +1,27 @@
-import { Avatar, Box, Button, Card, CardContent, CardHeader, Container, Divider, Stack, Typography } from '@mui/material'
+import {
+   Avatar,
+   Box,
+   Button,
+   Card,
+   CardContent,
+   CardHeader,
+   Container,
+   Divider,
+   Stack,
+   Typography
+} from '@mui/material'
 import { DashboardLayout } from 'components/layouts'
 import Head from 'next/head'
 import CustomTable from 'components/custom/table'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import MANUFACTURERS_QUERY from 'graphql/query/manufacturers'
 import { useEffect, useState } from 'react'
-import { ManufactureInfo, ManufactureInfoPayLoad, Manufacturer, ManufacturerPayLoad } from 'models/manufacturer'
+import {
+   ManufactureInfo,
+   ManufactureInfoPayLoad,
+   Manufacturer,
+   ManufacturerPayLoad
+} from 'models/manufacturer'
 import { useRouter } from 'next/router'
 import { DEFAULT_PAGINATION, PageInfo, PaginationParams, Variables_Graphql } from 'models'
 import { ProductTypesFilterInput } from 'graphql/query/productTypes'
@@ -20,52 +36,60 @@ import ManufacturerInfoCreateEditModal from 'components/manufacturer/modal-manuf
 import CREATE_MANUFACTURE_INFO from 'graphql/mutation/createManufactureInfo'
 
 interface ManufacturersDataTable {
-   name: string,
-   address: string,
-   description: string,
+   name: string
+   address: string
+   description: string
    _data: Manufacturer
 }
 
 const Manufacturers = () => {
    const { enqueueSnackbar } = useSnackbar()
    const [rows, setRows] = useState<ManufacturersDataTable[]>([])
-   
+
    const [dataManufactureModal, setDataManufactureModal] = useState<Manufacturer | undefined>()
-   const [dataManufactureInfoModal, setDataManufactureInfoModal] = useState<ManufactureInfo | undefined>()
+   const [dataManufactureInfoModal, setDataManufactureInfoModal] = useState<
+      ManufactureInfo | undefined
+   >()
    const [isManufactureModalOpen, setIsManufactureModalOpen] = useState(false)
    const [isManufactureInfoModalOpen, setIsManufactureInfoModalOpen] = useState(false)
 
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
-   const [rowsPerPage, setRowsPerPage] = useState(10);
-   const [paginationQuery, setPaginationQuery] = useState<Variables_Graphql>({ first: rowsPerPage })
+   const [rowsPerPage, setRowsPerPage] = useState(5)
+   const [paginationQuery, setPaginationQuery] = useState<Variables_Graphql>({ take: rowsPerPage })
    const [pageInfo, setPageInfo] = useState<PageInfo>()
 
-   const [fetch, { data, refetch }] = useLazyQuery(MANUFACTURERS_QUERY, { variables: { ...paginationQuery } })
+   const [fetch, { data, refetch, loading }] = useLazyQuery(MANUFACTURERS_QUERY, {
+      variables: { ...paginationQuery }
+   })
    const [createManufacturer] = useMutation(CREATE_MANUFACTURER)
    const [updateManufacturer] = useMutation(UPDATE_MANUFACTURER)
    const [removeManufacturer] = useMutation(DELETE_MANUFACTURER)
-   
+
    const [createManufacturerInfo] = useMutation(CREATE_MANUFACTURE_INFO)
 
-   const headers = [{ field: 'name', headerName: 'Name' }, { field: 'address', headerName: 'Address' }, { field: 'description', headerName: 'Description' }]
+   const headers = [
+      { field: 'name', headerName: 'Name' },
+      { field: 'address', headerName: 'Address' },
+      { field: 'description', headerName: 'Description' }
+   ]
 
    useEffect(() => {
       fetch()
    }, [])
 
    useEffect(() => {
-      if(paginationQuery) {
+      if (paginationQuery) {
          refetch(paginationQuery)
       }
    }, [paginationQuery])
 
    useEffect(() => {
       if (data) {
-         console.log(data);
-         
+         console.log(data)
+
          const _data = data.manufacturers
 
-         const nodes_data = _data.nodes as Array<Manufacturer>
+         const nodes_data = _data.items as Array<Manufacturer>
 
          // setManufacturers(nodes_data)
 
@@ -76,54 +100,49 @@ const Manufacturers = () => {
             totalCount: _data.totalCount
          }))
 
-         setRows(nodes_data.map((item, index) => ({ name: item.name, address: item.address, description: item.description, _data: item }) as ManufacturersDataTable))
+         setRows(
+            nodes_data.map(
+               (item, index) =>
+                  ({
+                     name: item.name,
+                     address: item.address,
+                     description: item.description,
+                     _data: item
+                  } as ManufacturersDataTable)
+            )
+         )
       }
    }, [data])
 
    useEffect(() => {
-      if(pagination) {
-         if(pagination.currentPage === 0) {
-            setPaginationQuery(prev => ({...prev, after: null, first: rowsPerPage}))
+      if (pagination) {
+         if (pagination.currentPage === 0) {
+            setPaginationQuery(prev => ({ ...prev, after: null, first: rowsPerPage }))
          }
       }
    }, [pagination, rowsPerPage])
 
    const handleChangeRowsPerPage = (
-      event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
    ) => {
       const value = parseInt(event.target.value)
-      setRowsPerPage(value);
+      setRowsPerPage(value)
       setPagination(prev => ({
          ...prev,
          currentPage: 0
       }))
-   };
+   }
 
-   const handleChangePagination = (event: React.MouseEvent<HTMLButtonElement> | null, value: number) => {
-      console.log(value);
-      
-      const currentPage = pagination.currentPage
+   const handleChangePagination = (
+      event: any,
+      value: number
+   ) => {
 
-      if (value === 0) {
-         setPaginationQuery(prev =>({
-            ...prev,
-            after: null,
-         }))
-      }
-      else {
-         if (value > currentPage) {
-            setPaginationQuery(prev => ({
-               ...prev,
-               after: pageInfo?.endCursor || null,
-            }))
-         }
-         else {
-            setPaginationQuery(prev => ({
-               ...prev,
-               after: pageInfo?.startCursor || null,
-            }))
-         }
-      }
+      setPaginationQuery({
+         skip: (value - 1) * rowsPerPage,
+         take: rowsPerPage         
+      })
+
       setPagination(prev => ({
          ...prev,
          currentPage: value
@@ -131,8 +150,8 @@ const Manufacturers = () => {
    }
 
    const handleManufactureModalOpen = (data?: Manufacturer) => {
-      console.log(data);
-      
+      console.log(data)
+
       setDataManufactureModal(data)
       setIsManufactureModalOpen(true)
    }
@@ -161,56 +180,51 @@ const Manufacturers = () => {
 
          refetch()
 
-         enqueueSnackbar("Success", { variant: "success" })
-      }
-      catch(e: any){
-         enqueueSnackbar(e.message, { variant: "error" })
+         enqueueSnackbar('Success', { variant: 'success' })
+      } catch (e: any) {
+         enqueueSnackbar(e.message, { variant: 'error' })
       }
    }
 
    const onHandleCreateEditManufacture = async (data: ManufacturerPayLoad, files: File[]) => {
       try {
-         if(data && data.id) {
+         if (data && data.id) {
             await updateManufacturer({ variables: { input: data, files } })
 
             refetch()
 
-            enqueueSnackbar("Success", { variant: "success" })
-         }
-         else {
+            enqueueSnackbar('Success', { variant: 'success' })
+         } else {
             await createManufacturer({ variables: { input: data, files } })
-            
+
             refetch()
 
-            enqueueSnackbar("Success", { variant: "success" })
+            enqueueSnackbar('Success', { variant: 'success' })
          }
          handleCloseManufactureModal()
-      }
-      catch(e: any){
-         enqueueSnackbar(e.message, { variant: "error" })
+      } catch (e: any) {
+         enqueueSnackbar(e.message, { variant: 'error' })
       }
    }
 
    const onHandleCreateEditManufactureInfo = async (data: ManufactureInfoPayLoad) => {
       try {
-         if(data && data.id) {
+         if (data && data.id) {
             // await update({ variables: { input: data } })
 
             // refetch()
 
-            enqueueSnackbar("Success", { variant: "success" })
-         }
-         else {
+            enqueueSnackbar('Success', { variant: 'success' })
+         } else {
             await createManufacturerInfo({ variables: { input: data } })
-            
+
             // refetch()
 
-            enqueueSnackbar("Success", { variant: "success" })
+            enqueueSnackbar('Success', { variant: 'success' })
          }
          handleCloseManufactureInfoModal()
-      }
-      catch(e: any){
-         enqueueSnackbar(e.message, { variant: "error" })
+      } catch (e: any) {
+         enqueueSnackbar(e.message, { variant: 'error' })
       }
    }
 
@@ -271,6 +285,7 @@ const Manufacturers = () => {
                         headers={headers}
                         rows={rows}
                         rowsPerPage={rowsPerPage}
+                        loading={loading}
                         onHandleEditButton={handleManufactureModalOpen}
                         onHandleDeleteButton={onHandleDeleteManufacture}
                         onHandleSubButton={handleManufactureInfoModalOpen}
@@ -283,8 +298,18 @@ const Manufacturers = () => {
                   </CardContent>
                </Card>
             </Container>
-            <ManufacturerCreateEditModal data={dataManufactureModal} isOpen={isManufactureModalOpen} onSubmit={onHandleCreateEditManufacture} onClose={handleCloseManufactureModal} />
-            <ManufacturerInfoCreateEditModal data={dataManufactureInfoModal} isOpen={isManufactureInfoModalOpen} onSubmit={onHandleCreateEditManufactureInfo} onClose={handleCloseManufactureInfoModal} />
+            <ManufacturerCreateEditModal
+               data={dataManufactureModal}
+               isOpen={isManufactureModalOpen}
+               onSubmit={onHandleCreateEditManufacture}
+               onClose={handleCloseManufactureModal}
+            />
+            <ManufacturerInfoCreateEditModal
+               data={dataManufactureInfoModal}
+               isOpen={isManufactureInfoModalOpen}
+               onSubmit={onHandleCreateEditManufactureInfo}
+               onClose={handleCloseManufactureInfoModal}
+            />
          </Box>
       </>
    )

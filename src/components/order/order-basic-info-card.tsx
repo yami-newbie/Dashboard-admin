@@ -199,5 +199,5 @@ export function OrderBasicInfoCard({ order }: OrderBasicInfoCardProps) {
             )}
          </CardContent>
       </Card>
-   );
+   )
 }

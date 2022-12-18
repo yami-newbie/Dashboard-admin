@@ -24,7 +24,12 @@ interface ProductCardProps {
    onEditClick?: Function
    onDeleteClick?: Function
 }
-export const ProductTypeCard = ({ productType, onEditClick, onDeleteClick, ...rest }: ProductCardProps) => {
+export const ProductTypeCard = ({
+   productType,
+   onEditClick,
+   onDeleteClick,
+   ...rest
+}: ProductCardProps) => {
    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
    return productType ? (
       <Card
@@ -36,7 +41,12 @@ export const ProductTypeCard = ({ productType, onEditClick, onDeleteClick, ...re
          {...rest}
          elevation={6}
       >
-         <CardMedia component="img" height="220" image={productType.medias?.[0].filePath} alt={productType.description} />
+         <CardMedia
+            component="img"
+            height="220"
+            image={productType.medias?.[0].filePath}
+            alt={productType.description}
+         />
          <CardContent>
             <Typography align="center" color="textPrimary" gutterBottom variant="h5">
                {productType.name}
@@ -73,11 +83,14 @@ export const ProductTypeCard = ({ productType, onEditClick, onDeleteClick, ...re
                >
                   <Tooltip title="Edit" placement="top">
                      {/* <Link href={`/productTypes/${productType.id}`} passHref> */}
-                        <IconButton
-                           onClick={() => { if(onEditClick) onEditClick(productType)}}
-                           color="primary">
-                           <EditIcon />
-                        </IconButton>
+                     <IconButton
+                        onClick={() => {
+                           if (onEditClick) onEditClick(productType)
+                        }}
+                        color="primary"
+                     >
+                        <EditIcon />
+                     </IconButton>
                      {/* </Link> */}
                   </Tooltip>
                   <Tooltip title="Delete" placement="top">

@@ -12,7 +12,9 @@
     "lint": "next lint",
     "lint-fix": "next lint --fix",
     "compile": "graphql-codegen",
-    "watch": "graphql-codegen -w"
+    "watch": "graphql-codegen -w",
+    "format": "prettier -w src/**/*.{ts,tsx,scss,css,json}",
+    "check": "prettier -c src/**/*.{ts,tsx,scss,css,json}"
   },
   "dependencies": {
     "@apollo/client": "^3.7.2",
@@ -45,6 +47,7 @@
     "next-static-manifest": "^0.7.0",
     "notistack": "^2.0.3",
     "nprogress": "^0.2.0",
+    "prettier": "^2.8.1",
     "prop-types": "^15.7.2",
     "query-string": "^7.0.1",
     "react": "^17.0.2",
