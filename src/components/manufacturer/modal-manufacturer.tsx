@@ -63,29 +63,29 @@ const ManufacturerCreateEditModal = (props: Props) => {
 
    return (
       <Dialog open={isOpen} onClose={handleClose} scroll="body">
-         <DialogTitle>Manufacturer</DialogTitle>
+         <DialogTitle>Hãng sản xuất</DialogTitle>
          <DialogContent>
             <form>
                <CustomTextField
                   disabled={isSubmitting}
                   control={control}
                   name="name"
-                  label="Manufacturer Name"
+                  label="Tên hãng"
                />
                <CustomTextField
                   disabled={isSubmitting}
                   control={control}
                   name="address"
-                  label="Address"
+                  label="Địa chỉ"
                />
 
-               <FileUpload label="Medias" multiple updateFilesCb={setFiles} />
+               <FileUpload multiple updateFilesCb={setFiles} />
 
                <CustomTextField
                   disabled={isSubmitting}
                   control={control}
                   name="description"
-                  label="Description"
+                  label="Miêu tả"
                   multiline={true}
                   rows={4}
                />
@@ -93,7 +93,7 @@ const ManufacturerCreateEditModal = (props: Props) => {
          </DialogContent>
          <DialogActions>
             <Button disabled={isSubmitting} onClick={onClose}>
-               Cancel
+               Hủy
             </Button>
             <LoadingButton
                loading={isSubmitting}
@@ -101,7 +101,7 @@ const ManufacturerCreateEditModal = (props: Props) => {
                variant="contained"
                onClick={form.handleSubmit(handleSaveManufacturer)}
             >
-               Save
+               Lưu
             </LoadingButton>
          </DialogActions>
       </Dialog>

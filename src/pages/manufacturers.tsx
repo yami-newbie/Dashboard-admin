@@ -52,7 +52,7 @@ const Manufacturers = () => {
    const [paginationQuery, setPaginationQuery] = useState<Variables_Graphql>({ take: rowsPerPage })
    const [pageInfo, setPageInfo] = useState<PageInfo>()
 
-   const { data, refetch, loading } = useQuery(MANUFACTURERS_QUERY, {
+   const { data, refetch, loading, error } = useQuery(MANUFACTURERS_QUERY, {
       variables: { ...paginationQuery }
    })
    const [createManufacturer] = useMutation(CREATE_MANUFACTURER)
@@ -62,9 +62,9 @@ const Manufacturers = () => {
    const [createManufacturerInfo] = useMutation(CREATE_MANUFACTURE_INFO)
 
    const headers = [
-      { field: 'name', headerName: 'Name' },
-      { field: 'address', headerName: 'Address' },
-      { field: 'description', headerName: 'Description' }
+      { field: 'name', headerName: 'Tên hãng' },
+      { field: 'address', headerName: 'Địa chỉ' },
+      { field: 'description', headerName: 'Miêu tả' }
    ]
 
    useEffect(() => {
@@ -75,7 +75,6 @@ const Manufacturers = () => {
 
    useEffect(() => {
       if (data) {
-         console.log(data)
 
          const _data = data.manufacturers
 
@@ -104,6 +103,11 @@ const Manufacturers = () => {
       }
    }, [data])
 
+   useEffect(() => {
+      if(error) {
+         enqueueSnackbar("Có lỗi xảy ra khi tải danh sách nhà sản xuất", { variant: 'error' })
+      }
+   }, [error])
    const handleChangeRowsPerPage = (
       event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
    ) => {
@@ -157,40 +161,31 @@ const Manufacturers = () => {
    }
 
    const onHandleDeleteManufacture = async (id: string) => {
-      try {
-         await removeManufacturer({ variables: { input: { id } } })
+      await removeManufacturer({ variables: { input: { id } } })
+
+      refetch()
+
+      enqueueSnackbar('Success', { variant: 'success' })
+   }
+
+   const onHandleCreateEditManufacture = async (data: ManufacturerPayLoad, files: File[]) => {
+      if (data && data.id) {
+         await updateManufacturer({ variables: { input: data, files } })
 
          refetch()
 
          enqueueSnackbar('Success', { variant: 'success' })
-      } catch (e: any) {
-         enqueueSnackbar(e.message, { variant: 'error' })
+      } else {
+         await createManufacturer({ variables: { input: data, files } })
+
+         refetch()
+
+         enqueueSnackbar('Success', { variant: 'success' })
       }
-   }
-
-   const onHandleCreateEditManufacture = async (data: ManufacturerPayLoad, files: File[]) => {
-      try {
-         if (data && data.id) {
-            await updateManufacturer({ variables: { input: data, files } })
-
-            refetch()
-
-            enqueueSnackbar('Success', { variant: 'success' })
-         } else {
-            await createManufacturer({ variables: { input: data, files } })
-
-            refetch()
-
-            enqueueSnackbar('Success', { variant: 'success' })
-         }
-         handleCloseManufactureModal()
-      } catch (e: any) {
-         enqueueSnackbar(e.message, { variant: 'error' })
-      }
+      handleCloseManufactureModal()
    }
 
    const onHandleCreateEditManufactureInfo = async (data: ManufactureInfoPayLoad) => {
-      try {
          if (data && data.id) {
             // await update({ variables: { input: data } })
 
@@ -205,9 +200,6 @@ const Manufacturers = () => {
             enqueueSnackbar('Success', { variant: 'success' })
          }
          handleCloseManufactureInfoModal()
-      } catch (e: any) {
-         enqueueSnackbar(e.message, { variant: 'error' })
-      }
    }
 
    return (
@@ -233,7 +225,7 @@ const Manufacturers = () => {
                   }}
                >
                   <Typography sx={{ m: 1 }} variant="h4">
-                     Manufacturers List
+                     Danh sách nhà sản xuất
                   </Typography>
                   <Box sx={{ m: 1 }}>
                      <Stack direction="row" spacing={2}>
@@ -245,17 +237,7 @@ const Manufacturers = () => {
                               setIsManufactureModalOpen(true)
                            }}
                         >
-                           Add Manufacture
-                        </Button>
-                        <Button
-                           color="primary"
-                           variant="contained"
-                           onClick={() => {
-                              setDataManufactureInfoModal(undefined)
-                              setIsManufactureInfoModalOpen(true)
-                           }}
-                        >
-                           Add Manufacture Info
+                           Thêm nhà sản xuất
                         </Button>
                      </Stack>
                   </Box>

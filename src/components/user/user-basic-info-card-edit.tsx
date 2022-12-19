@@ -39,7 +39,7 @@ const schema = yup.object().shape({
       .string()
       .max(255)
 
-      .test('is-vietnamese-phonenumber1', 'Incorrect phone number format.', number => {
+      .test('is-vietnamese-phonenumber1', 'Số điện thoại không đúng định dạng', number => {
          if (!number) return true
 
          return regexVietnamesePhoneNumber.test(number)
@@ -119,30 +119,30 @@ export function UserBasicInfoCardEdit({ user, onSave, onDelete }: UserBasicInfoC
          <LoadingBackdrop open={loading} />
 
          <CardHeader
-            title="Edit user"
+            title="Chỉnh sửa người dùng"
             action={
                <LoadingButton
-                  variant="text"
+                  variant={user?.status ? 'contained' : 'outlined'}
                   loading={false}
-                  color="error"
+                  color={user?.status ? 'error' : 'success'}
                   disabled={isSubmitting}
                   onClick={() => setOpenConfirmDialog(true)}
                >
-                  {!user?.status ? 'Disabled User' : 'Enabled User'}
+                  {user?.status ? 'Vô hiệu hóa' : 'Kích hoạt'}
                </LoadingButton>
             }
          />
          <Divider />
          <CardContent>
             <form onSubmit={handleSubmit(handleSave)}>
-               <Typography variant="subtitle1">Account information</Typography>
+               <Typography variant="subtitle1">Thông tin tài khoản</Typography>
                <Grid container columnSpacing={3} sx={{ mb: 2 }}>
                   <Grid item md={12} xs={12}>
                      <CustomTextField
                         disabled={isSubmitting || !user}
                         control={control}
                         name="fullname"
-                        label="Full Name"
+                        label="Họ và tên"
                      />
                   </Grid>
                   {/* <Grid item md={3} xs={12}>
@@ -167,7 +167,7 @@ export function UserBasicInfoCardEdit({ user, onSave, onDelete }: UserBasicInfoC
                         control={control}
                         type="number"
                         name="phone"
-                        label="Phone Number"
+                        label="Số điện thoại"
                      />
                   </Grid>
                   <Grid item md={4} xs={12}>
@@ -176,7 +176,7 @@ export function UserBasicInfoCardEdit({ user, onSave, onDelete }: UserBasicInfoC
                         control={control}
                         name="dob"
                         type="date"
-                        label="Date of bith"
+                        label="Ngày sinh"
                      />
                   </Grid>
                </Grid>
@@ -187,7 +187,7 @@ export function UserBasicInfoCardEdit({ user, onSave, onDelete }: UserBasicInfoC
                         disabled={isSubmitting || !user}
                         control={control}
                         name="rolesId"
-                        label="Role"
+                        label="Chức vụ"
                         options={(roles || []).map(item => ({ value: item.id, label: item.name }))}
                      />
                   </Grid>
@@ -197,7 +197,7 @@ export function UserBasicInfoCardEdit({ user, onSave, onDelete }: UserBasicInfoC
                         disabled={isSubmitting || !user}
                         control={control}
                         name="address"
-                        label="Address"
+                        label="Địa chỉ"
                      />
                   </Grid>
                </Grid>
@@ -208,7 +208,7 @@ export function UserBasicInfoCardEdit({ user, onSave, onDelete }: UserBasicInfoC
                <Box sx={{ display: 'flex', gap: 2 }}>
                   <Link href={`/users/${user.id}`} passHref>
                      <Button variant="outlined" disabled={isSubmitting}>
-                        Cancel
+                        Hủy
                      </Button>
                   </Link>
                   <Button
@@ -216,7 +216,7 @@ export function UserBasicInfoCardEdit({ user, onSave, onDelete }: UserBasicInfoC
                      onClick={handleSubmit(handleSave)}
                      disabled={isSubmitting}
                   >
-                     Update
+                     Cập nhật
                   </Button>
                </Box>
             </CardActions>

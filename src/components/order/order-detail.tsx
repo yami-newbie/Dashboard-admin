@@ -195,7 +195,7 @@ export function OrderDetailModal({
                      disablePadding
                   >
                      <Typography variant="subtitle2" sx={{ minWidth: 180 }}>
-                        Payment Method
+                        Phương thức thanh toán
                      </Typography>
                      <Box sx={{ flex: 1 }}>
                         {/* <Typography variant="body2" color="text">

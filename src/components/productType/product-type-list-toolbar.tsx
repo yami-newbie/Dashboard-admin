@@ -80,14 +80,14 @@ export const ProductListToolbar = ({
                               </InputAdornment>
                            )
                         }}
-                        placeholder="Search product"
+                        placeholder="Tìm kiếm sản phẩm"
                         variant="outlined"
                         onChange={handleChangeSearch}
                      />
                   </Grid>
                   <Grid item sm={12} md={3}>
                      <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Sort by Category</InputLabel>
+                        <InputLabel id="demo-simple-select-label">Lọc theo danh mục</InputLabel>
                         <Select
                            labelId="demo-simple-select-label"
                            fullWidth

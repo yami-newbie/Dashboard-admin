@@ -151,11 +151,11 @@ export const DashboardNavbar = props => {
                <ListItemIcon>
                   <PersonIcon fontSize="small" />
                </ListItemIcon>
-               Account
+               Thông tin tài khoản
             </MenuItem>
             <Box sx={{ mt: 1, px: 2 }}>
                <Button variant="outlined" fullWidth onClick={handleLogoutClick}>
-                  Logout
+                  Đăng xuất
                </Button>
             </Box>
          </Menu>

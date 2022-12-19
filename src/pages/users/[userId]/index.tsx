@@ -64,7 +64,7 @@ function UserDetailPage(props: UserDetailPageProps) {
    return (
       <>
          <Head>
-            <title>User Details | FurnitureStore Dashboard</title>
+            <title>Thông tin tài khoản | FurnitureStore Dashboard</title>
          </Head>
          <Box
             component="main"
@@ -86,7 +86,7 @@ function UserDetailPage(props: UserDetailPageProps) {
                >
                   <Link href="/users" passHref>
                      <Button variant="text" startIcon={<ArrowBackIcon />}>
-                        Users
+                        Danh sách người dùng
                      </Button>
                   </Link>
                </Box>
@@ -114,7 +114,7 @@ function UserDetailPage(props: UserDetailPageProps) {
                                  variant="subtitle2"
                                  sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
                               >
-                                 user_id: <Chip size="small" label={user.id} />
+                                 uid: <Chip size="small" label={user.id} />
                               </Typography>
                            </Box>
                         </Box>
@@ -132,7 +132,7 @@ function UserDetailPage(props: UserDetailPageProps) {
                   <Grid item sx={{ display: 'flex', gap: 2 }}>
                      <Link href={`/users/${userId}/edit`} passHref>
                         <Button variant="outlined" endIcon={<PencilIcon width={20} />}>
-                           Edit
+                           Chỉnh sửa
                         </Button>
                      </Link>
                   </Grid>
@@ -146,7 +146,7 @@ function UserDetailPage(props: UserDetailPageProps) {
 
                <Box sx={{ ml: 1, mt: 4 }}>
                   <Card>
-                     <CardHeader title="Data management" />
+                     <CardHeader title="Quản lý dữ liệu" />
                      <Divider />
                      <CardContent>
                         <Box
@@ -162,11 +162,10 @@ function UserDetailPage(props: UserDetailPageProps) {
                               color="error"
                               onClick={() => setOpenConfirmDialog(true)}
                            >
-                              Delete Account
+                              Xóa tài khoản
                            </Button>
                            <Typography variant="body2" color="textSecondary">
-                              Remove this user’s account if he/she requested that, if not please be
-                              aware that what has been deleted can never brought back.
+                           Xóa tài khoản của người dùng này nếu họ yêu cầu, nếu không, vui lòng lưu ý rằng những gì đã bị xóa không bao giờ có thể lấy lại được.
                            </Typography>
                         </Box>
                      </CardContent>

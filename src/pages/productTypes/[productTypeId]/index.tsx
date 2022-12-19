@@ -89,7 +89,7 @@ function ProductTypePage(props: ProductTypePageProps) {
 
             onCloseModal()
 
-            enqueueSnackbar('Success', { variant: 'success' })
+            enqueueSnackbar('Chỉnh sửa sản phẩm thành công', { variant: 'success' })
 
             loadProduct()
          } catch (error: any) {
@@ -103,7 +103,7 @@ function ProductTypePage(props: ProductTypePageProps) {
 
             onCloseModal()
 
-            enqueueSnackbar('Success', { variant: 'success' })
+            enqueueSnackbar('Tạo sản phẩm thành công', { variant: 'success' })
 
             loadProduct()
          } catch (error: any) {
@@ -127,7 +127,7 @@ function ProductTypePage(props: ProductTypePageProps) {
 
             handleCloseAddEdit()
 
-            enqueueSnackbar('Edit product type success', { variant: 'success' })
+            enqueueSnackbar('Chỉnh sửa loại sản phẩm thành công', { variant: 'success' })
          } catch (error: any) {
             enqueueSnackbar(error.message, {
                variant: 'error'
@@ -139,7 +139,7 @@ function ProductTypePage(props: ProductTypePageProps) {
 
             handleCloseAddEdit()
 
-            enqueueSnackbar('Edit product type success', { variant: 'success' })
+            enqueueSnackbar('Tạo loại sản phẩm thành công', { variant: 'success' })
          } catch (error: any) {
             enqueueSnackbar(error.message, {
                variant: 'error'
@@ -162,7 +162,7 @@ function ProductTypePage(props: ProductTypePageProps) {
    return (
       <>
          <Head>
-            <title>Order Details | FurnitureStore Dashboard</title>
+            <title>Loại sản phẩm | FurnitureStore Dashboard</title>
          </Head>
          <Box
             component="main"

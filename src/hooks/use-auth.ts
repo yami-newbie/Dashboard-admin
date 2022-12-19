@@ -1,10 +1,15 @@
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import LOGIN_QUERY from 'graphql/query/login'
 import { LoginPayload, User } from './../models'
 import { PublicConfiguration } from 'swr/dist/types'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import CURRENT_USER_QUERY from 'graphql/query/currentUser'
+import { useSnackbar } from 'notistack';
 
 export function useAuth(options?: Partial<PublicConfiguration>) {
+   const { enqueueSnackbar } = useSnackbar()
+   const router = useRouter()
 
    const [_login, { loading: _loading, error: _error, data }] = useLazyQuery(LOGIN_QUERY, {
       fetchPolicy: 'network-only'
@@ -12,6 +17,16 @@ export function useAuth(options?: Partial<PublicConfiguration>) {
    const { loading, error, data: profile, refetch } = useQuery(CURRENT_USER_QUERY)
 
    const firstLoading = profile === undefined && error === undefined
+
+   useEffect(() => {
+      if(_error) {
+         console.log(_error);
+         
+         enqueueSnackbar("Tài khoản hoặc mật khẩu không đúng", {
+            variant: 'error'
+         })
+      }
+   }, [_error])
 
    async function login(payload: LoginPayload) {
       window.localStorage.removeItem('accessToken')
@@ -27,7 +42,12 @@ export function useAuth(options?: Partial<PublicConfiguration>) {
       refetch()
    }
 
-   async function logout() {}
+   async function logout() {
+      window.localStorage.removeItem('accessToken')
+      window.localStorage.removeItem('refreshToken')
+
+      router.push('/')
+   }
 
    async function updateProfile(payload: Partial<User>) {}
 

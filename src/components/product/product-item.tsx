@@ -22,7 +22,7 @@ const ProductItem = (props: Props) => {
 
          <CardContent>
             <TextField
-               label="Manufactured At"
+               label="Thời gian sản xuất"
                disabled
                value={moment(manufactureInfo?.manufacturedAt).format('DD-MM-YYYY')}
             />

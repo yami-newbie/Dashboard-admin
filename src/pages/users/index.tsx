@@ -14,7 +14,7 @@ import {
 } from '@mui/material'
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 import { CustomerQueryParams, DEFAULT_PAGINATION, PaginationParams, User, Variables_Graphql } from 'models'
-import { UserListResults, CustomerListToolbar } from 'components/user'
+import { UserListResults, UserListToolbar } from 'components/user'
 import { DashboardLayout } from 'components/layouts'
 import { useQuery } from '@apollo/client'
 import USERS_QUERY from 'graphql/query/users'
@@ -86,7 +86,7 @@ const Users = () => {
    return (
       <>
          <Head>
-            <title>Users | FurnitureStore</title>
+            <title>Người dùng | FurnitureStore</title>
          </Head>
          <Box
             component="main"
@@ -106,7 +106,7 @@ const Users = () => {
                   }}
                >
                   <Typography sx={{ m: 1 }} variant="h4">
-                     Users
+                     Danh sách người dùng
                   </Typography>
                   {/* <Box sx={{ m: 1 }}>
                      <Button startIcon={<DownloadIcon fontSize="small" />} sx={{ mr: 1 }}>
@@ -117,12 +117,12 @@ const Users = () => {
                <Box sx={{ mt: 1 }}>
                   <Card>
                      <Tabs value={filters.isOrder} onChange={handleChangeTab}>
-                        <Tab label="All" value="" />
-                        <Tab label="Prospect" value="true" />
-                        <Tab label="Returning" value="false" />
+                        <Tab label="Tất cả" value="" />
+                        <Tab label="Nhân viên" value="true" />
+                        <Tab label="Khách hàng" value="false" />
                      </Tabs>
                      <Divider />
-                     <CustomerListToolbar
+                     <UserListToolbar
                         filters={filters}
                         onSearch={handleSearch}
                         onChangeSorting={handleChangeSorting}
