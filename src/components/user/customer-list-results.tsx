@@ -140,10 +140,10 @@ export const UserListResults = ({
                                       style={{
                                          backgroundColor: bgColor[userList.indexOf(user)]
                                       }}
-                                      src="/broken-image.jpg"
+                                      src={user?.medias?.[0]?.filePath}
+                                      alt={getInitials(user.fullname)}
                                       sx={{ mr: 2 }}
                                    >
-                                      {getInitials(user.fullname)}
                                    </Avatar>
                                    <Typography
                                       sx={{ fontWeight: 500 }}

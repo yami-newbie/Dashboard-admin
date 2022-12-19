@@ -21,18 +21,22 @@ import USERS_QUERY from 'graphql/query/users'
 import { number } from 'yup/lib/locale'
 
 const Users = () => {
-   const [filters, setFilters] = useState<CustomerQueryParams>({
-      search: '',
-      orderBy: 'updatedAt-desc',
-      isOrder: ''
-   })
+   const [isCustomer, setIsCustomer] = useState<string>("null")
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
 
    const [variables, setVariables] = useState<Variables_Graphql>({take: 5})
    
    const [userList, setUserList] = useState<User[]>([])
    
-   const { data: _userList } = useQuery(USERS_QUERY, { variables: { ...variables } })
+   const { data: _userList } = useQuery(USERS_QUERY, { 
+      variables: { 
+         ...Object.assign(variables, { 
+            input: { 
+               isCustomer: isCustomer === "null" ? null : ( isCustomer === "true" ? true : false )
+            } 
+         }) 
+      } 
+   })
 
    useEffect(() => {
       if (_userList) {
@@ -62,25 +66,14 @@ const Users = () => {
 
    const handleSearch = (search: string) => {
       setPagination(DEFAULT_PAGINATION)
-      setFilters({
-         ...filters,
-         search
-      })
    }
    const handleChangeSorting = (orderBy: string) => {
       setPagination(DEFAULT_PAGINATION)
-      setFilters({
-         ...filters,
-         orderBy
-      })
    }
 
-   const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
+   const handleChangeTab = (event: React.SyntheticEvent, newValue: any) => {
       setPagination(DEFAULT_PAGINATION)
-      setFilters({
-         ...filters,
-         isOrder: newValue
-      })
+      setIsCustomer(newValue)
    }
 
    return (
@@ -116,17 +109,17 @@ const Users = () => {
                </Box>
                <Box sx={{ mt: 1 }}>
                   <Card>
-                     <Tabs value={filters.isOrder} onChange={handleChangeTab}>
-                        <Tab label="Tất cả" value="" />
-                        <Tab label="Nhân viên" value="true" />
-                        <Tab label="Khách hàng" value="false" />
+                     <Tabs value={isCustomer} onChange={handleChangeTab}>
+                        <Tab label="Tất cả" value="null" />
+                        <Tab label="Nhân viên" value="false" />
+                        <Tab label="Khách hàng" value="true" />
                      </Tabs>
                      <Divider />
-                     <UserListToolbar
+                     {/* <UserListToolbar
                         filters={filters}
                         onSearch={handleSearch}
                         onChangeSorting={handleChangeSorting}
-                     />
+                     /> */}
                      <UserListResults
                         userList={userList}
                         pagination={pagination}

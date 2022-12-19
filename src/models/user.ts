@@ -41,9 +41,9 @@ export class UserPayload {
       public email: string = '',
       public address: string = '',
       public phone: string = '',
-      public password: string = '',
       public rolesId: string = '',
-      public status: boolean = false
+      public status: boolean = false,
+      public password?: string,
    ) {}
 }
 export interface CustomerQueryParams extends Partial<Record<keyof User, string>> {

@@ -6,6 +6,7 @@ const ROLES_QUERY = gql`
          items {
             id
             name
+            description
          }
       }
    }

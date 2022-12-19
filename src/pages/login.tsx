@@ -14,8 +14,8 @@ import { useLazyQuery } from '@apollo/client'
 import { useEffect } from 'react'
 
 const schema = yup.object({
-   email: yup.string().max(255).required('Email is required'),
-   password: yup.string().max(255).required('Password is required')
+   email: yup.string().max(255).required('Vui lòng nhập Email'),
+   password: yup.string().max(255).required('Vui lòng nhập mật khẩu')
 })
 
 const Login = () => {

@@ -6,7 +6,7 @@ const UPLOAD_MEDIAS = gql`
          medias {
             id
             filePath
-            fileName
+            fileType
             fileSize
          }
       }
