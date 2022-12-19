@@ -40,9 +40,9 @@ export function ConfirmDialog(props: ConfirmDialogProps) {
             </Box>
          </Box>
          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleClose}>Hủy</Button>
             <Button onClick={handleSubmit} autoFocus>
-               Confirm
+               Xác nhận
             </Button>
          </DialogActions>
       </Dialog>

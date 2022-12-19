@@ -25,7 +25,7 @@ const headCells: HeadCell[] = [
    {
       id: 'name',
       align: 'left',
-      label: 'Customer',
+      label: 'Tên',
       sortable: false
    },
    {
@@ -37,19 +37,19 @@ const headCells: HeadCell[] = [
    {
       id: 'phone',
       align: 'center',
-      label: 'Phone Number',
+      label: 'Số điện thoại',
       sortable: false
    },
    {
       id: 'createdAt',
       align: 'center',
-      label: 'Registration Date',
+      label: 'Ngày đăng ký',
       sortable: true
    },
    {
       id: 'actions',
       align: 'center',
-      label: 'Actions',
+      label: 'Hành động',
       sortable: false
    }
 ]
@@ -162,14 +162,14 @@ export const UserListResults = ({
 
                              <TableCell align="center">
                                 <Link href={`/users/${user.id}/edit`} passHref>
-                                   <Tooltip title="Edit Customer" placement="top">
+                                   <Tooltip title="Chỉnh sửa thông tin tài khoản" placement="top">
                                       <IconButton size="small">
                                          <PencilIcon width={20} />
                                       </IconButton>
                                    </Tooltip>
                                 </Link>
                                 <Link href={`/users/${user.id}`} passHref>
-                                   <Tooltip title="View Details" placement="top">
+                                   <Tooltip title="Xem chi tiết" placement="top">
                                       <IconButton size="small">
                                          <ArrowForwardIcon fontSize="small" />
                                       </IconButton>

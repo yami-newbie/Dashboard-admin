@@ -71,7 +71,7 @@ const ManufacturerInfoCreateEditModal = (props: Props) => {
 
    return (
       <Dialog open={isOpen} onClose={handleClose} scroll="body">
-         <DialogTitle>Manufacturer Info</DialogTitle>
+         <DialogTitle>Thông tin sản xuất</DialogTitle>
          <DialogContent>
             <form>
                <CustomTextField
@@ -79,13 +79,13 @@ const ManufacturerInfoCreateEditModal = (props: Props) => {
                   control={control}
                   type="date"
                   name="manufacturedAt"
-                  label="Manufacturer At"
+                  label="Thời gian sản xuất"
                />
                <CustomSelectField
                   disabled={isSubmitting}
                   control={control}
                   name="manufacturersId"
-                  label="Manufacturer"
+                  label="Hãng sản xuất"
                   options={((options?.manufacturers.items as Array<Manufacturer>) || []).map(
                      item => ({ value: item.id, label: item.name })
                   )}
@@ -94,7 +94,7 @@ const ManufacturerInfoCreateEditModal = (props: Props) => {
          </DialogContent>
          <DialogActions>
             <Button disabled={isSubmitting} onClick={onClose}>
-               Cancel
+               Hủy
             </Button>
             <LoadingButton
                loading={isSubmitting}
@@ -102,7 +102,7 @@ const ManufacturerInfoCreateEditModal = (props: Props) => {
                variant="contained"
                onClick={form.handleSubmit(handleSaveManufacturer)}
             >
-               Save
+               Lưu
             </LoadingButton>
          </DialogActions>
       </Dialog>

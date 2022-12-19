@@ -125,7 +125,7 @@ const ProductTypes = () => {
    return (
       <>
          <Head>
-            <title>Products | FurnitureStore</title>
+            <title>Loại sản phẩm | FurnitureStore</title>
          </Head>
          <Box
             component="main"
@@ -145,7 +145,7 @@ const ProductTypes = () => {
                   }}
                >
                   <Typography sx={{ m: 1 }} variant="h4" ref={productListTitleRef}>
-                     Product Types
+                     Danh sách loại sản phẩm
                   </Typography>
                   <Box sx={{ m: 1 }}>
                      {/* <Button startIcon={<DownloadIcon fontSize="small" />} sx={{ mr: 1 }}>
@@ -161,7 +161,7 @@ const ProductTypes = () => {
                            router.push('/productTypes/create')
                         }}
                      >
-                        Add products
+                        Thêm loại sản phẩm
                      </Button>
                   </Box>
                </Box>

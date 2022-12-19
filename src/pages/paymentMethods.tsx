@@ -191,7 +191,7 @@ const PaymentMethods = () => {
                   }}
                >
                   <Typography sx={{ m: 1 }} variant="h4">
-                     Payment Methods List
+                  Danh sách phương thức thanh toán
                   </Typography>
                   <Box sx={{ m: 1 }}>
                      <Stack direction="row" spacing={2}>
@@ -203,7 +203,7 @@ const PaymentMethods = () => {
                               setIsPaymentMethodModalOpen(true)
                            }}
                         >
-                           Add Payment Method
+                           Thêm phương thức thanh toán
                         </Button>
                      </Stack>
                   </Box>

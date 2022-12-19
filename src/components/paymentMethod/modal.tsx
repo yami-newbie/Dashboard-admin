@@ -63,20 +63,20 @@ const PaymentMethodCreateEditModal = (props: Props) => {
 
    return (
       <Dialog open={isOpen} onClose={handleClose} scroll="body">
-         <DialogTitle>Payment Method</DialogTitle>
+         <DialogTitle>{ data && data.id ? "Chỉnh sửa phương thức thanh toán" : "Phương thức thanh toán mới" }</DialogTitle>
          <DialogContent>
             <form>
                <CustomTextField
                   disabled={isSubmitting}
                   control={control}
                   name="name"
-                  label="Payment Method Name"
+                  label="Tên"
                />
                <CustomTextField
                   disabled={isSubmitting}
                   control={control}
                   name="description"
-                  label="Description"
+                  label="Miêu tả"
                   multiline={true}
                   rows={4}
                />
@@ -84,7 +84,7 @@ const PaymentMethodCreateEditModal = (props: Props) => {
                   disabled={isSubmitting}
                   control={control}
                   name="currency"
-                  label="Currency"
+                  label="Ký hiệu tiền tệ"
                />
             </form>
          </DialogContent>

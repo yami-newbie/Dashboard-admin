@@ -61,7 +61,7 @@ const EditCustomerPage = (props: EditCustomerPageProps) => {
    return (
       <>
          <Head>
-            <title>Edit User | FurnitureStore Dashboard</title>
+            <title>Quản lý người dùng | FurnitureStore Dashboard</title>
          </Head>
          <Box
             component="main"
@@ -83,7 +83,7 @@ const EditCustomerPage = (props: EditCustomerPageProps) => {
                >
                   <Link href="/users" passHref>
                      <Button variant="text" startIcon={<ArrowBackIcon />}>
-                        Users
+                        Danh sách người dùng
                      </Button>
                   </Link>
                </Box>
@@ -120,10 +120,10 @@ const EditCustomerPage = (props: EditCustomerPageProps) => {
                                  variant="subtitle2"
                                  sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
                               >
-                                 user_id: <Chip size="small" label={user.id} />
+                                 uid: <Chip size="small" label={user.id} />
                                  <Chip
                                     size="small"
-                                    label={user.status ? 'Active' : 'Disable'}
+                                    label={user.status ? 'Hoạt động' : 'Ngừng hoạt động'}
                                     color={user.status ? 'success' : 'error'}
                                  />
                               </Typography>

@@ -67,7 +67,7 @@ const ProductCreateEditModal = (props: Props) => {
 
    return (
       <Dialog open={isOpen} onClose={handleClose} scroll="body">
-         <DialogTitle>Manufacturer Info</DialogTitle>
+         <DialogTitle>Sản phẩm mới</DialogTitle>
          <DialogContent>
             <form>
                <CustomSelectField
@@ -88,7 +88,7 @@ const ProductCreateEditModal = (props: Props) => {
          </DialogContent>
          <DialogActions>
             <Button disabled={isSubmitting} onClick={onClose}>
-               Cancel
+               Hủy
             </Button>
             <LoadingButton
                loading={isSubmitting}
@@ -96,7 +96,7 @@ const ProductCreateEditModal = (props: Props) => {
                variant="contained"
                onClick={form.handleSubmit(handleSaveManufacturer)}
             >
-               Save
+               Lưu
             </LoadingButton>
          </DialogActions>
       </Dialog>

@@ -56,9 +56,9 @@ const Categories = () => {
    const [removeCategory] = useMutation(DELETE_CATEGORY)
 
    const headers = [
-      { field: 'name', headerName: 'Name' },
+      { field: 'name', headerName: 'Tên danh mục' },
       // { field: 'address', headerName: 'Address' },
-      { field: 'description', headerName: 'Description' }
+      { field: 'description', headerName: 'Miêu tả' }
    ]
 
    useEffect(() => {
@@ -172,7 +172,7 @@ const Categories = () => {
    return (
       <>
          <Head>
-            <title>Categories | FurnitureStore Dashboard</title>
+            <title>Danh mục | FurnitureStore Dashboard</title>
          </Head>
          <Box
             component="main"
@@ -192,7 +192,7 @@ const Categories = () => {
                   }}
                >
                   <Typography sx={{ m: 1 }} variant="h4">
-                     Categories List
+                     Danh mục
                   </Typography>
                   <Box sx={{ m: 1 }}>
                      <Stack direction="row" spacing={2}>
@@ -204,7 +204,7 @@ const Categories = () => {
                               setIsCategoryModalOpen(true)
                            }}
                         >
-                           Add Category
+                           Thêm danh mục
                         </Button>
                      </Stack>
                   </Box>

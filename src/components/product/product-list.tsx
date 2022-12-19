@@ -24,9 +24,9 @@ const ProductList = (props: Props) => {
    return (
       <Card>
          <CardHeader
-            title="Product List"
+            title="Danh sách sản phẩm"
             action={
-               <IconButton size="small" aria-label="Add Product" onClick={onHandleAddButton}>
+               <IconButton size="small" aria-label="Thêm sản phẩm" onClick={onHandleAddButton}>
                   <AddCircleOutlineRoundedIcon color="primary" fontSize="medium" />
                </IconButton>
             }

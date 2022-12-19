@@ -28,37 +28,37 @@ const items = [
    {
       href: '/users',
       icon: <UsersIcon fontSize="small" />,
-      title: 'Users'
+      title: 'Người dùng'
    },
    {
       href: '/orders',
       icon: <OrderIcon fontSize="small" />,
-      title: 'Orders'
+      title: 'Đơn đặt hàng'
    },
    {
       href: '/productTypes',
       icon: <ShoppingBagIcon fontSize="small" />,
-      title: 'Product Types'
+      title: 'Loại sản phẩm'
    },
    {
       href: '/account',
       icon: <UserIcon fontSize="small" />,
-      title: 'Account'
+      title: 'Thông tin tài khoản'
    },
    {
       href: '/manufacturers',
       icon: <UserIcon fontSize="small" />,
-      title: 'Manufacturers'
+      title: 'Nhà sản xuất'
    },
    {
       href: '/categories',
       icon: <UserIcon fontSize="small" />,
-      title: 'Categories'
+      title: 'Danh mục'
    },
    {
       href: '/paymentMethods',
       icon: <UserIcon fontSize="small" />,
-      title: 'Payment Methods'
+      title: 'Phương thức thanh toán'
    }
 ]
 

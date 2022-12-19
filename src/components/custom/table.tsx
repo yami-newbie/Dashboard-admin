@@ -88,7 +88,7 @@ export default function CustomTable(props: Props) {
                   {(headers || []).map((item, index) => (
                      <StyledTableCell key={index}>{item.headerName}</StyledTableCell>
                   ))}
-                  <StyledTableCell>Actions</StyledTableCell>
+                  <StyledTableCell>Hành động</StyledTableCell>
                </TableRow>
             </TableHead>
 

@@ -41,7 +41,7 @@ export function ProductTypeList({
                   }}
                >
                   <Typography variant="h5">
-                     No product found. Please try again with new filters and search keyword.
+                     Không tìm thấy sản phẩm nào. Vui lòng thử lại với các bộ lọc và từ khóa tìm kiếm mới.
                   </Typography>
                </Box>
             ))}
