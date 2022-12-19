@@ -107,7 +107,7 @@ const Manufacturers = () => {
       if(error) {
          enqueueSnackbar("Có lỗi xảy ra khi tải danh sách nhà sản xuất", { variant: 'error' })
       }
-   }, [error])
+   }, [error, enqueueSnackbar])
    const handleChangeRowsPerPage = (
       event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
    ) => {

@@ -92,7 +92,7 @@ export function UserBasicInfoCardEdit({ user, onSave, onDelete }: UserBasicInfoC
       }
    }
 
-   const handleDeleteClick = async (event: MouseEvent) => {
+   const handleDisableEnableClick = async (event: MouseEvent) => {
       setOpenConfirmDialog(false)
       setLoading(true)
       if (onDelete) await onDelete()
@@ -137,7 +137,7 @@ export function UserBasicInfoCardEdit({ user, onSave, onDelete }: UserBasicInfoC
             <form onSubmit={handleSubmit(handleSave)}>
                <Typography variant="subtitle1">Thông tin tài khoản</Typography>
                <Grid container columnSpacing={3} sx={{ mb: 2 }}>
-                  <Grid item md={12} xs={12}>
+                  <Grid item md={6} xs={12}>
                      <CustomTextField
                         disabled={isSubmitting || !user}
                         control={control}
@@ -153,7 +153,7 @@ export function UserBasicInfoCardEdit({ user, onSave, onDelete }: UserBasicInfoC
                         label="Username"
                      />
                   </Grid> */}
-                  <Grid item md={4} xs={12}>
+                  <Grid item md={6} xs={12}>
                      <CustomTextField
                         control={control}
                         disabled={isSubmitting || !user}
@@ -179,16 +179,13 @@ export function UserBasicInfoCardEdit({ user, onSave, onDelete }: UserBasicInfoC
                         label="Ngày sinh"
                      />
                   </Grid>
-               </Grid>
-               <Divider />
-               <Grid container columnSpacing={3}>
-                  <Grid item md={6} xs={12}>
+                  <Grid item md={4} xs={12}>
                      <CustomSelectField
                         disabled={isSubmitting || !user}
                         control={control}
                         name="rolesId"
                         label="Chức vụ"
-                        options={(roles || []).map(item => ({ value: item.id, label: item.name }))}
+                        options={(roles || []).map(item => ({ value: item.id, label: item.description }))}
                      />
                   </Grid>
 
@@ -201,6 +198,7 @@ export function UserBasicInfoCardEdit({ user, onSave, onDelete }: UserBasicInfoC
                      />
                   </Grid>
                </Grid>
+               <Divider />
             </form>
          </CardContent>
          {user && (
@@ -229,9 +227,9 @@ export function UserBasicInfoCardEdit({ user, onSave, onDelete }: UserBasicInfoC
                </Avatar>
             }
             isOpen={openConfirmDialog}
-            title="Are you sure?"
-            body="Are you sure to delete this user?"
-            onSubmit={handleDeleteClick}
+            title="Cảnh báo?"
+            body={`Bạn có chắc chắn muốn ${user?.status ? "vô hiệu hóa" : "kích hoạt"} tài khoản này`}
+            onSubmit={handleDisableEnableClick}
             onClose={() => setOpenConfirmDialog(false)}
          />
       </Card>

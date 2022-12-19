@@ -115,6 +115,11 @@ function UserDetailPage(props: UserDetailPageProps) {
                                  sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
                               >
                                  uid: <Chip size="small" label={user.id} />
+                                 <Chip
+                                    size="small"
+                                    label={user.status ? 'Hoạt động' : 'Ngừng hoạt động'}
+                                    color={user.status ? 'success' : 'error'}
+                                 />
                               </Typography>
                            </Box>
                         </Box>
@@ -144,7 +149,7 @@ function UserDetailPage(props: UserDetailPageProps) {
 
                <Box sx={{ ml: 1, mt: 4 }}>{/* <UserOrderListCard /> */}</Box>
 
-               <Box sx={{ ml: 1, mt: 4 }}>
+               <Box hidden sx={{ ml: 1, mt: 4 }}>
                   <Card>
                      <CardHeader title="Quản lý dữ liệu" />
                      <Divider />

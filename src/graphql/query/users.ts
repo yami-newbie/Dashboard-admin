@@ -22,6 +22,7 @@ const USERS_QUERY = gql`
             rolesId
             mediasId
             fullname
+            password
             dob
             email
             phone
