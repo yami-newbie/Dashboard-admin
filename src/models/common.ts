@@ -4,8 +4,8 @@ import { ReactElement, ReactNode } from 'react'
 import { EmotionCache } from '@emotion/react'
 
 export const DEFAULT_PAGINATION = {
-   totalCount: 10,
-   totalPages: 1,
+   totalCount: 0,
+   totalPages: 0,
    currentPage: 0,
    pageSize: 10
 }

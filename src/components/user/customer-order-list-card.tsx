@@ -26,12 +26,16 @@ import { Order } from 'models'
 import { format, parseISO } from 'date-fns'
 import PencilIcon from 'icons/pencil'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import ORDERS_QUERY from 'graphql/query/orders'
+import { useQuery } from '@apollo/client'
 
 export interface CustomerOrderListCardProps {}
 
 export function CustomerOrderListCard(props: CustomerOrderListCardProps) {
    const router = useRouter()
    const { customerId } = router.query
+   const { data: _orderList } = useQuery(ORDERS_QUERY)
+   
    const { data: orders } = useSWR(`orders/order-userid/${customerId}`)
    return (
       <Card>

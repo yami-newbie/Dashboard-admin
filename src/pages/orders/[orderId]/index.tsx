@@ -17,6 +17,8 @@ import Head from 'next/head'
 import { useSnackbar } from 'notistack'
 import { useQuery } from '@apollo/client'
 import USERS_QUERY from 'graphql/query/users'
+import { testOrder } from '..'
+import moment from 'moment'
 
 export interface OrderDetailPageProps {}
 function OrderDetailPage(props: OrderDetailPageProps) {
@@ -24,7 +26,9 @@ function OrderDetailPage(props: OrderDetailPageProps) {
    const router = useRouter()
    const { orderId } = router.query
 
-   const { data: order } = useQuery(USERS_QUERY)
+   const { data: _order } = useQuery(USERS_QUERY)
+
+   const order = testOrder
 
    const handleUpdateOrder = async (payload: Partial<Order>) => {
       if (typeof orderId === 'string') {
@@ -58,7 +62,7 @@ function OrderDetailPage(props: OrderDetailPageProps) {
    return (
       <>
          <Head>
-            <title>Order Details | FurnitureStore Dashboard</title>
+            <title>Chi tiết đơn hàng | FurnitureStore Dashboard</title>
          </Head>
          <Box
             component="main"
@@ -80,7 +84,7 @@ function OrderDetailPage(props: OrderDetailPageProps) {
                >
                   <Link href="/orders" passHref>
                      <Button variant="text" startIcon={<ArrowBackIcon />}>
-                        Orders
+                        Danh sách đơn hàng
                      </Button>
                   </Link>
                </Box>
@@ -94,7 +98,7 @@ function OrderDetailPage(props: OrderDetailPageProps) {
                >
                   {order ? (
                      <Grid item sx={{ m: 1 }}>
-                        <Typography variant="h4">#{order._id}</Typography>
+                        <Typography variant="h4">#{order.id}</Typography>
                         <Typography
                            variant="body2"
                            color="textSecondary"
@@ -102,7 +106,7 @@ function OrderDetailPage(props: OrderDetailPageProps) {
                         >
                            Placed on
                            <EventAvailableRoundedIcon />
-                           {format(parseISO(order.createdAt), 'dd/MM/yyyy HH:mm')}
+                           {moment().format('DD/MM/YYYY HH:mm')}
                         </Typography>
                      </Grid>
                   ) : (
@@ -119,7 +123,7 @@ function OrderDetailPage(props: OrderDetailPageProps) {
                      <Grid item sx={{ display: 'flex', gap: 2 }}>
                         <Link href={`/orders/${orderId}/edit`} passHref>
                            <Button variant="outlined" endIcon={<PencilIcon width={20} />}>
-                              Edit
+                              Chỉnh sửa
                            </Button>
                         </Link>
 

@@ -23,7 +23,7 @@ export interface OrderLineItemsCardProps {
 export function OrderLineItemsCard({ order }: OrderLineItemsCardProps) {
    return (
       <Card>
-         <CardHeader title="Line items" />
+         <CardHeader title="Danh sách sản phẩm" />
          <Divider />
          <CardContent sx={{ p: 0 }}>
             <Table>
