@@ -19,7 +19,7 @@ import { Search as SearchIcon } from '../../icons/search'
 export interface ProductListToolbarProps {
    onSearch: Function
    onChangeSorting: Function
-   filters: Partial<CustomerQueryParams>
+   filters?: any
 }
 export const UserListToolbar = ({
    onSearch,

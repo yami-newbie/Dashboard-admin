@@ -1,10 +1,14 @@
+import { Payment } from "./payment";
+
 export class Receipt {
    constructor(
       public id: string = '',
       public totalPrice: number = 0,
-      public vatPercentage: number = 0,
-      public paymentId: string = '',
+      public vATPercentage: number = 0,
+      public paymentsId: string = '',
+      public payments: Payment = new Payment(),
       public hashed: string = '',
+      public receiptDetails: ReceiptDetail[] = [],
       public deletedAt: string = '',
       public createdAt: string = '',
       public updatedAt: string = ''

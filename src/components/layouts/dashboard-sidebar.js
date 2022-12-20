@@ -59,6 +59,11 @@ const items = [
       href: '/paymentMethods',
       icon: <UserIcon fontSize="small" />,
       title: 'Phương thức thanh toán'
+   },
+   {
+      href: '/customers',
+      icon: <UserIcon fontSize="small" />,
+      title: 'Danh sách khách hàng'
    }
 ]
 

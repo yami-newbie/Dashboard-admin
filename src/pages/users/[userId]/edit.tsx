@@ -64,8 +64,6 @@ const EditCustomerPage = (props: EditCustomerPageProps) => {
 
             const res = await updateUser({ variables: { input: payload } })
 
-
-
             enqueueSnackbar("Cập nhật thông tin thành công", { variant: "success" })
          } catch (error: any) {
             enqueueSnackbar(error.message, {
@@ -80,14 +78,14 @@ const EditCustomerPage = (props: EditCustomerPageProps) => {
          try {
             await updateUser({ variables: { input: { id: user.id, status: !user.status } } })
 
-            enqueueSnackbar(`${user.status ? "Kích hoạt" : "Vô hiệu hóa"} tài khoản thành công`, {
+            enqueueSnackbar(`${!user.status ? "Kích hoạt" : "Vô hiệu hóa"} tài khoản thành công`, {
                variant: "success"
             })
 
-            setUser(prev => ({
-               ...prev,
-               status: !prev?.status
-            } as User))
+            setUser({
+               ...user,
+               status: !user?.status
+            })
          } catch (error: any) {
             enqueueSnackbar(error.message, {
                variant: 'error'
