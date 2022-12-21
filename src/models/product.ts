@@ -30,7 +30,8 @@ export class ProductTypePayload {
       public categoriesIds: string[] = [],
       public price: number = 0,
       public warrentyDate: string = '',
-      public metaDatas: MetaDataPayLoad = new MetaDataPayLoad()
+      public metaDatas: MetaDataPayLoad = new MetaDataPayLoad(),
+      public tags: string[] = [],
    ) {}
 }
 
@@ -51,6 +52,7 @@ export class ProductType {
       public deletedAt: string = '',
       public createdAt: string = '',
       public updatedAt: string = '',
-      public medias: Media[] = []
+      public medias: Media[] = [],
+      public tags: string[] = [],
    ) {}
 }

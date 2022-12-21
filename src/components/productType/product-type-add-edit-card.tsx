@@ -8,6 +8,7 @@ import {
    Divider,
    InputAdornment
 } from '@mui/material'
+import { TagsInput } from "react-tag-input-component";
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
@@ -39,6 +40,7 @@ const schema = yup.object({
    }),
    categoriesIds: yup.array(yup.string()).min(1).required(),
    price: yup.number().integer().moreThan(0),
+   tags: yup.array(yup.string()),
    files: yup.array(yup.object())
 })
 
@@ -73,6 +75,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
    })
    const {
       reset,
+      setValue,
       control,
       formState: { isSubmitting, errors }
    } = form
@@ -108,7 +111,8 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                weight: data?.metaDatas?.weight || '',
                wLAN: data?.metaDatas?.wLAN || '',
             },
-            price: data?.price || 0
+            price: data?.price || 0,
+            tags: data?.tags || [],
          })
          console.log(data);
       } else {
@@ -136,7 +140,8 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                weight: '',
                wLAN: '',
             },
-            price: 0
+            price: 0,
+            tags: [],
          })
       }
    }, [data, reset])
@@ -187,6 +192,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                   name="warrentyDate"
                   type="date"
                   label="Warrenty date"
+                  InputLabelProps={{ shrink: true }}
                />
 
                <FileUpload
@@ -277,6 +283,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                   name="metaDatas.publishedDate"
                   type="date"
                   label="Published date"
+                  InputLabelProps={{ shrink: true }}
                />
 
                <CustomTextField
@@ -340,6 +347,14 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                   control={control}
                   name="metaDatas.wLAN"
                   label="Wifi"
+               />
+
+               <TagsInput
+                  value={data?.tags}
+                  onChange={(tags) => {setValue('tags', tags)}}
+                  name="tags"
+                  placeHolder="enter tags"
+                  disabled={isSubmitting}
                />
             </form>
          </CardContent>
