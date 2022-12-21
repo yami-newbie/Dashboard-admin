@@ -6,7 +6,6 @@ export interface MetaData {
    camera?: string
    color?: string
    cPUSeries?: string
-   createAt?: string
    dimensions?: string
    gPUSeries?: string
    hardDrive?: string
@@ -19,11 +18,30 @@ export interface MetaData {
    ram?: string
    screenResolution?: string
    seriesName: string
-   updateAt: string
    weight?: string
    wLAN?: string
 }
 
 export class MetaDataPayLoad {
-   constructor(public seriesName: string = '', public manufacturersId: string = '') {}
+   constructor(
+      public audio: string = '',
+      public battery: string = '',
+      public camera: string = '',
+      public color: string = '',
+      public cPUSeries: string = '',
+      public dimensions: string = '',
+      public gPUSeries: string = '',
+      public hardDrive: string = '',
+      public id: string = '',
+      public manufacturers: string = '',
+      public manufacturersId: string = '',
+      public operatingSystem: string = '',
+      public ports: string = '',
+      public publishedDate: string = '',
+      public ram: string = '',
+      public screenResolution: string = '',
+      public seriesName: string = '',
+      public weight: string = '',
+      public wLAN: string = '',
+      ) {}
 }
