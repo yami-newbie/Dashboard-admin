@@ -11,7 +11,7 @@ export class Product {
       public deletedAt: string = '',
       public updatedAt: string = '',
       public productTypesId: string = '',
-      public productTypes: ProductType[] = []
+      public productTypes: ProductType = new ProductType()
    ) {}
 }
 
@@ -29,7 +29,7 @@ export class ProductTypePayload {
       public description: string = '',
       public categoriesIds: string[] = [],
       public price: number = 0,
-      public warrentyDate: string = '',
+      public warrantyPeriod: number = 0,
       public metaDatas: MetaDataPayLoad = new MetaDataPayLoad()
    ) {}
 }
@@ -46,7 +46,7 @@ export class ProductType {
       public description: string = '',
       public price: number = 0,
       public categories: Category[] = [],
-      public warrenty_date: Date = new Date(),
+      public warrantyPeriod: number = 0,
       public metaDatas: MetaData[] = [],
       public deletedAt: string = '',
       public createdAt: string = '',

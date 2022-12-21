@@ -45,7 +45,7 @@ const headCells: HeadCell[] = [
       id: 'createdAt',
       align: 'center',
       label: 'Ngày đăng ký',
-      sortable: true
+      sortable: false
    },
    {
       id: 'actions',
