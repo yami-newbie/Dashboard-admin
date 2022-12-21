@@ -17,7 +17,7 @@ const PRODUCT_TYPE = gql`
                description
             }
             createdAt
-            warrentyDate
+            warrantyPeriod
             medias {
                id
                filePath

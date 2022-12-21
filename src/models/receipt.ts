@@ -1,4 +1,5 @@
 import { Payment } from "./payment";
+import { Product } from "./product";
 
 export class Receipt {
    constructor(
@@ -20,9 +21,10 @@ export class ReceiptDetail {
       public id: string = '',
       public productId: string = '',
       public amount: number = 0,
-      public receiptId: string = '',
+      public receiptsId: string = '',
       // last price (- giảm giá)
       public price: number = 0,
+      public products: Product = new Product(),
       public deletedAt: string = '',
       public createdAt: string = '',
       public updatedAt: string = ''

@@ -137,6 +137,8 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                />
 
                <FileUpload
+                  name='medias'
+                  label=""
                   updateFilesCb={setFiles}
                   multiple
                   disabled={isSubmitting}

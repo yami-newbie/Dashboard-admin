@@ -27,6 +27,7 @@ import ReportProblemIcon from '@mui/icons-material/ReportProblem'
 import { useQuery } from '@apollo/client'
 import USERS_QUERY from 'graphql/query/users'
 import { CustomerOrderListCard, UserBasicInfoCard } from 'components/user'
+import ORDERS_QUERY from 'graphql/query/orders'
 
 export interface UCustomerInfoPageProps {}
 function CustomerInfoPage(props: UCustomerInfoPageProps) {
@@ -84,9 +85,9 @@ function CustomerInfoPage(props: UCustomerInfoPageProps) {
                      flexWrap: 'wrap'
                   }}
                >
-                  <Link href="/users" passHref>
+                  <Link href="/customers" passHref>
                      <Button variant="text" startIcon={<ArrowBackIcon />}>
-                        Danh sách người dùng
+                        Danh sách khách hàng
                      </Button>
                   </Link>
                </Box>

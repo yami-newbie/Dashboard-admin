@@ -74,7 +74,7 @@ const CustomersListPage = () => {
    return (
       <>
          <Head>
-            <title>Người dùng | FurnitureStore</title>
+            <title>Khách hàng | FurnitureStore</title>
          </Head>
          <Box
             component="main"
@@ -94,7 +94,7 @@ const CustomersListPage = () => {
                   }}
                >
                   <Typography sx={{ m: 1 }} variant="h4">
-                     Danh sách người dùng
+                     Danh sách khách hàng
                   </Typography>
                   {/* <Box sx={{ m: 1 }}>
                      <Button startIcon={<DownloadIcon fontSize="small" />} sx={{ mr: 1 }}>

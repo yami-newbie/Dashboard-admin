@@ -40,11 +40,11 @@ const items = [
       icon: <ShoppingBagIcon fontSize="small" />,
       title: 'Loại sản phẩm'
    },
-   {
-      href: '/account',
-      icon: <UserIcon fontSize="small" />,
-      title: 'Thông tin tài khoản'
-   },
+   // {
+   //    href: '/account',
+   //    icon: <UserIcon fontSize="small" />,
+   //    title: 'Thông tin tài khoản'
+   // },
    {
       href: '/manufacturers',
       icon: <UserIcon fontSize="small" />,
