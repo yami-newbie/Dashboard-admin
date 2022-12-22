@@ -36,10 +36,12 @@ const schema = yup.object({
    description: yup.string().required(),
    metaDatas: yup.object({
       seriesName: yup.string().required(),
-      manufacturersId: yup.string().required()
+      manufacturersId: yup.string().required(),
+      // publishedDate: yup.string()
    }),
    categoriesIds: yup.array(yup.string()).min(1).required(),
    price: yup.number().integer().moreThan(0),
+   warrantyPeriod: yup.number(),
    tags: yup.array(yup.string()),
    files: yup.array(yup.object())
 })
@@ -104,7 +106,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                manufacturersId: data?.metaDatas?.manufacturersId || '',
                operatingSystem: data?.metaDatas?.operatingSystem || '',
                ports: data?.metaDatas?.ports || '',
-               publishedDate: moment(data?.metaDatas?.publishedDate || undefined).format('YYYY-MM-DD'),
+               // publishedDate: moment(data?.metaDatas?.publishedDate || undefined).format('YYYY-MM-DD'),
                ram: data?.metaDatas?.ram || '',
                screenResolution: data?.metaDatas?.screenResolution || '',
                seriesName: data?.metaDatas?.seriesName || '',
@@ -120,7 +122,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
             name: '',
             description: '',
             categoriesIds: [],
-            warrantyPeriod: undefined,
+            warrantyPeriod: 0,
             metaDatas: {
                audio: '',
                battery: '',
@@ -133,7 +135,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                manufacturersId: '',
                operatingSystem: '',
                ports: '',
-               publishedDate: '',
+               // publishedDate: '',
                ram: '',
                screenResolution: '',
                seriesName: '',
@@ -187,12 +189,12 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                />
 
                <CustomTextField
+                  type="number"
                   disabled={isSubmitting}
                   control={control}
-                  name="warrantyPeriod"
-                  type="number"
                   label="Thời gian bảo hành"
-                  InputLabelProps={{ shrink: true }}
+                  name="warrantyPeriod"
+                  // InputLabelProps={{ shrink: true }}
                />
 
                <FileUpload
@@ -278,14 +280,14 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                   label="Operating system"
                />
 
-               <CustomTextField
+               {/* <CustomTextField
                   disabled={isSubmitting}
                   control={control}
                   name="metaDatas.publishedDate"
                   type="date"
                   label="Published date"
                   InputLabelProps={{ shrink: true }}
-               />
+               /> */}
 
                <CustomTextField
                   disabled={isSubmitting}

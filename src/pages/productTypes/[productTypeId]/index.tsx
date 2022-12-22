@@ -121,6 +121,9 @@ function ProductTypePage(props: ProductTypePageProps) {
    const handleAddEdit = async (productType: ProductTypePayload, files: FileList | null) => {
       // uploadMedias({ variables: { files } })
 
+      console.log(productType);
+      
+
       if (productType.id && productType.id !== '') {
          try {
             await updateProductType({ variables: { input: productType, files: files || [] } })
