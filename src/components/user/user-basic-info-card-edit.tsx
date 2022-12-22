@@ -38,7 +38,6 @@ const schema = yup.object().shape({
    phone: yup
       .string()
       .max(255)
-
       .test('is-vietnamese-phonenumber1', 'Số điện thoại không đúng định dạng', number => {
          if (!number) return true
 
