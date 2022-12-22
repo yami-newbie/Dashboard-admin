@@ -42,13 +42,13 @@ export interface ProductQueryParams extends Record<keyof Product, string> {
 
 export class ProductType {
    constructor(
-      public id: string = '',
+      public id: string = "",
       public name: string = '',
       public description: string = '',
       public price: number = 0,
       public categories: Category[] = [],
       public warrentyDate: Date = new Date(),
-      public metaDatas: MetaData,
+      public metaDatas: MetaData = new MetaData(),
       public deletedAt: string = '',
       public createdAt: string = '',
       public updatedAt: string = '',
