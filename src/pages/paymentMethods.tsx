@@ -47,7 +47,7 @@ const PaymentMethods = () => {
    const [pageInfo, setPageInfo] = useState<PageInfo>()
 
    const { data, refetch, loading } = useQuery(PAYMENT_METHODS_QUERY, {
-      variables: Object.assign({ ...paginationQuery }, { isDeleted: false })
+      variables: Object.assign({ ...paginationQuery }, { input: { isDeleted: false } })
    })
 
    const [createPaymentMethod] = useMutation(CREATE_PAYMENT_METHOD)
@@ -62,7 +62,7 @@ const PaymentMethods = () => {
 
    useEffect(() => {
       if (paginationQuery) {
-         refetch(paginationQuery)
+         refetch(Object.assign({ ...paginationQuery }, { input: { isDeleted: false } }))
       }
    }, [paginationQuery, refetch])
 

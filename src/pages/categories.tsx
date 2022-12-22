@@ -48,7 +48,7 @@ const Categories = () => {
    const [pageInfo, setPageInfo] = useState<PageInfo>()
 
    const { data, refetch, loading } = useQuery(CATEGORIES_QUERY, {
-      variables: { ...paginationQuery }
+      variables: Object.assign({ ...paginationQuery }, { input: { isDeleted: false } })
    })
 
    const [createCategory] = useMutation(CREATE_CATEGORY)
@@ -63,7 +63,7 @@ const Categories = () => {
 
    useEffect(() => {
       if (paginationQuery) {
-         refetch(paginationQuery)
+         refetch(Object.assign({ ...paginationQuery }, { input: { isDeleted: false } }))
       }
    }, [paginationQuery, refetch])
 
