@@ -51,3 +51,16 @@ export interface CustomerQueryParams extends Partial<Record<keyof User, string>>
    search?: string
    isOrder?: string
 }
+
+
+export class RegisterStaffPayload {
+   constructor(
+      public address: string = "",
+      public dob: string = "",
+      public email: string = "",
+      public fullname: string = "",
+      public password: string = "",
+      public phone: string = "",
+      public role: string = "",
+   ) {}
+}
