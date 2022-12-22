@@ -53,7 +53,7 @@ const Manufacturers = () => {
    const [pageInfo, setPageInfo] = useState<PageInfo>()
 
    const { data, refetch, loading, error } = useQuery(MANUFACTURERS_QUERY, {
-      variables: { ...paginationQuery }
+      variables: Object.assign({ ...paginationQuery }, { input: { isDeleted: false } })
    })
    const [createManufacturer] = useMutation(CREATE_MANUFACTURER)
    const [updateManufacturer] = useMutation(UPDATE_MANUFACTURER)
@@ -69,7 +69,7 @@ const Manufacturers = () => {
 
    useEffect(() => {
       if (paginationQuery) {
-         refetch(paginationQuery)
+         refetch(Object.assign({ ...paginationQuery }, { input: { isDeleted: false } }))
       }
    }, [paginationQuery, refetch])
 
