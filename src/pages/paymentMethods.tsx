@@ -47,7 +47,7 @@ const PaymentMethods = () => {
    const [pageInfo, setPageInfo] = useState<PageInfo>()
 
    const { data, refetch, loading } = useQuery(PAYMENT_METHODS_QUERY, {
-      variables: { ...paginationQuery }
+      variables: Object.assign({ ...paginationQuery }, { isDeleted: false })
    })
 
    const [createPaymentMethod] = useMutation(CREATE_PAYMENT_METHOD)
