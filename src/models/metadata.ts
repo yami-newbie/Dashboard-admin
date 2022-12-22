@@ -19,7 +19,7 @@ export class MetaData {
       public ram?: string,
       public screenResolution?: string,
       public seriesName: string = "",
-      weight?: string,
+      public weight?: string,
       public wLAN?: string
    ) { }
 }

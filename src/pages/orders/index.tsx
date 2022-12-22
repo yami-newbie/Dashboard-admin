@@ -19,41 +19,11 @@ import Head from 'next/head'
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
-export const testOrder = new Order(
-   "id",
-   "id",
-   new Receipt(
-      "id",
-      123123,
-      10,
-      "id",
-      new Payment(
-         "id",
-         "id"
-      ),
-      "dasd",
-      [
-         new ReceiptDetail("id", "id", 1, "id", 3000, new Product("id", "id", new ManufactureInfo("id", "", "", "", "", new Manufacturer()), "", "", "id", new ProductType("id", "name", "desc", 12039, [], 2, [], "", "", "", []))),
-         new ReceiptDetail("id", "id", 3, "id", 3400),
-         new ReceiptDetail("id", "id", 2, "id", 3030),
-         new ReceiptDetail("id", "id", 4, "id", 5000),
-         new ReceiptDetail("id", "id", 1, "id", 78700)
-      ]
-   ),
-   "PENDING",
-   "id",
-   new User(
-      "id",
-      "name"
-   ),
-   "from",
-   "to",
-   false)
 
 const Orders = () => {
    const [filters, setFilters] = useState({ status: '' })
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
-   const [orderList, setOrderList] = useState<Order[]>(Array(10).fill(testOrder))
+   const [orderList, setOrderList] = useState<Order[]>([])
    const [deleteOrder] = useMutation(DELETE_ORDER)
 
    const { data: _orderList } = useQuery(ORDERS_QUERY, { variables: { input: filters } })

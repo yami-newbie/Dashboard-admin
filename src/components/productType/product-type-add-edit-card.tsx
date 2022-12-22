@@ -352,7 +352,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
 
                <TagsInput
                   value={data?.tags}
-                  onChange={(tags) => {setValue('tags', tags)}}
+                  onChange={(tags: string[]) => {setValue('tags', tags)}}
                   name="tags"
                   placeHolder="enter tags"
                   disabled={isSubmitting}
