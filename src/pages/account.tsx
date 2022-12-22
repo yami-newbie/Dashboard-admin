@@ -26,7 +26,7 @@ const Account = () => {
    return (
       <>
          <Head>
-            <title>Account | FurnitureStore</title>
+            <title>Account | Cheems Store</title>
          </Head>
          <Box
             component="main"

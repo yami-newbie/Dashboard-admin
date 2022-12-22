@@ -125,7 +125,7 @@ const ProductTypes = () => {
    return (
       <>
          <Head>
-            <title>Loại sản phẩm | FurnitureStore</title>
+            <title>Products | Cheems Store</title>
          </Head>
          <Box
             component="main"

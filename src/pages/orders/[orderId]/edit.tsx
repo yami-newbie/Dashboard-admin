@@ -7,13 +7,12 @@ import { format, parseISO } from 'date-fns'
 import { Order, ResponseData } from 'models'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useState } from 'react'
 import useSWR from 'swr'
 import Head from 'next/head'
 import { useSnackbar } from 'notistack'
 import { useQuery } from '@apollo/client'
 import USERS_QUERY from 'graphql/query/users'
-import { testOrder } from '..'
 import moment from 'moment'
 
 export interface EditOrderPageProps {}
@@ -23,7 +22,8 @@ const EditOrderPage = (props: EditOrderPageProps) => {
    const router = useRouter()
    const { orderId } = router.query
    const { data: _order } = useQuery(USERS_QUERY)
-   const order = testOrder
+   
+   const [order, setOrder] = useState<Order>(new Order())
 
    const handleUpdateBasicInfo = async (payload: Partial<Order>) => {
       if (typeof orderId === 'string') {

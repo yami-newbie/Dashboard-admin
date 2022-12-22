@@ -45,8 +45,6 @@ export function useAuth(options?: Partial<PublicConfiguration>) {
    async function logout() {
       window.localStorage.removeItem('accessToken')
       window.localStorage.removeItem('refreshToken')
-
-      router.push('/')
    }
 
    async function updateProfile(payload: Partial<User>) {}

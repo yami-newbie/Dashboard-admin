@@ -1,4 +1,4 @@
-import { InputProps, TextField } from '@mui/material'
+import { InputLabelProps, InputProps, TextField } from '@mui/material'
 import React, { InputHTMLAttributes } from 'react'
 import { Control, useController } from 'react-hook-form'
 
@@ -10,6 +10,7 @@ export interface CustomTextFieldProps extends InputHTMLAttributes<HTMLInputEleme
    multiline?: boolean
    rows?: number | string | undefined
    InputProps?: Partial<InputProps>
+   InputLabelProps?:  Partial<InputLabelProps>
 }
 
 export function CustomTextField({
@@ -20,6 +21,7 @@ export function CustomTextField({
    multiline = false,
    rows,
    InputProps,
+   InputLabelProps,
    ...restProps
 }: CustomTextFieldProps) {
    const {
@@ -47,6 +49,7 @@ export function CustomTextField({
          rows={rows}
          InputProps={InputProps}
          inputProps={restProps}
+         InputLabelProps={InputLabelProps}
       />
    )
 }

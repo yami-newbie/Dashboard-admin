@@ -205,7 +205,7 @@ const Manufacturers = () => {
    return (
       <>
          <Head>
-            <title>Manufacturers | FurnitureStore Dashboard</title>
+            <title>Manufacturers | Cheems Store</title>
          </Head>
          <Box
             component="main"

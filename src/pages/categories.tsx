@@ -172,7 +172,7 @@ const Categories = () => {
    return (
       <>
          <Head>
-            <title>Danh mục | FurnitureStore Dashboard</title>
+            <title>Categories | Cheems Store</title>
          </Head>
          <Box
             component="main"

@@ -7,32 +7,49 @@ const PRODUCT_TYPE = gql`
    ) {
       productTypes(input: $input, skip: $skip, take: $take) {
          items {
-            id
-            name
-            description
-            price
-            categories {
-               id
-               name
-               description
-            }
-            createdAt
-            warrantyPeriod
-            medias {
-               id
-               filePath
-               fileType
-               fileSize
-            }
-            metaDatas {
-               id
-               seriesName
-               manufacturers {
-                  id
-                  name
-               }
-               manufacturersId
-            }
+            id,
+				name,
+				description,
+				medias {
+					id,
+					filePath,
+					fileSize,
+					fileType
+				},
+				categories {
+					id,
+					name,
+					description,
+					deletedAt
+				},
+				metaDatas {
+					id,
+					audio,
+					battery,
+					camera,
+					color,
+					cPUSeries,
+					dimensions,
+					gPUSeries,
+					hardDrive,
+					manufacturersId
+					manufacturers {
+						id,
+						address,
+						description,
+						name
+					},
+					operatingSystem,
+					ports,
+					publishedDate,
+					ram,
+					screenResolution,
+					seriesName,
+					weight,
+					wLAN
+				},
+				price,
+				warrentyDate,
          }
          pageInfo {
             hasNextPage

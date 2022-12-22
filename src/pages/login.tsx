@@ -54,7 +54,7 @@ const Login = () => {
    return (
       <Box>
          <Head>
-            <title>Login | FurnitureStore Dashboard</title>
+            <title>Login | Cheems stores Dashboard</title>
          </Head>
          <Box
             component="main"
@@ -84,10 +84,6 @@ const Login = () => {
                   >
                      <form onSubmit={form.handleSubmit(handleClickLogin)}>
                         <Box sx={{ textAlign: 'center' }}>
-                           <img
-                              src="https://konsept.qodeinteractive.com/wp-content/uploads/2020/07/logo_mainpng.png"
-                              width="180px"
-                           />
                            <Typography color="textPrimary" variant="h4">
                               Đăng nhập
                            </Typography>

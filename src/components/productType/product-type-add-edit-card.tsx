@@ -8,6 +8,7 @@ import {
    Divider,
    InputAdornment
 } from '@mui/material'
+import { TagsInput } from "react-tag-input-component";
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
@@ -21,6 +22,7 @@ import { Manufacturer } from 'models/manufacturer'
 import MANUFACTURERS_QUERY from 'graphql/query/manufacturers'
 import { LoadingBackdrop } from 'components/loading'
 import FileUpload from 'components/file-upload/file-upload'
+import moment from 'moment'
 
 export interface ProductTypeAddEditModalProps {
    data?: ProductType
@@ -38,6 +40,7 @@ const schema = yup.object({
    }),
    categoriesIds: yup.array(yup.string()).min(1).required(),
    price: yup.number().integer().moreThan(0),
+   tags: yup.array(yup.string()),
    files: yup.array(yup.object())
 })
 
@@ -72,6 +75,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
    })
    const {
       reset,
+      setValue,
       control,
       formState: { isSubmitting, errors }
    } = form
@@ -87,22 +91,57 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
             name: data?.name || '',
             description: data?.description || '',
             categoriesIds: data?.categories.map(i => i.id) || [],
+            warrentyDate: moment(data?.warrentyDate || undefined).format('YYYY-MM-DD'),
             metaDatas: {
-               manufacturersId: data?.metaDatas?.[0]?.manufacturersId || '',
-               seriesName: data?.metaDatas?.[0]?.seriesName || ''
+               audio: data?.metaDatas?.audio || '',
+               battery: data?.metaDatas?.battery || '',
+               camera: data?.metaDatas?.camera || '',
+               color: data?.metaDatas?.color || '',
+               cPUSeries: data?.metaDatas?.cPUSeries || '',
+               dimensions: data?.metaDatas?.dimensions || '',
+               gPUSeries: data?.metaDatas?.gPUSeries || '',
+               hardDrive: data?.metaDatas?.hardDrive || '',
+               manufacturersId: data?.metaDatas?.manufacturersId || '',
+               operatingSystem: data?.metaDatas?.operatingSystem || '',
+               ports: data?.metaDatas?.ports || '',
+               publishedDate: moment(data?.metaDatas?.publishedDate || undefined).format('YYYY-MM-DD'),
+               ram: data?.metaDatas?.ram || '',
+               screenResolution: data?.metaDatas?.screenResolution || '',
+               seriesName: data?.metaDatas?.seriesName || '',
+               weight: data?.metaDatas?.weight || '',
+               wLAN: data?.metaDatas?.wLAN || '',
             },
-            price: data?.price || 0
+            price: data?.price || 0,
+            tags: data?.tags || [],
          })
+         console.log(data);
       } else {
          reset({
             name: '',
             description: '',
             categoriesIds: [],
+            warrentyDate: undefined,
             metaDatas: {
+               audio: '',
+               battery: '',
+               camera: '',
+               color: '',
+               cPUSeries: '',
+               dimensions: '',
+               gPUSeries: '',
+               hardDrive: '',
                manufacturersId: '',
-               seriesName: ''
+               operatingSystem: '',
+               ports: '',
+               publishedDate: '',
+               ram: '',
+               screenResolution: '',
+               seriesName: '',
+               weight: '',
+               wLAN: '',
             },
-            price: 0
+            price: 0,
+            tags: [],
          })
       }
    }, [data, reset])
@@ -134,6 +173,26 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                   label="Miêu tả"
                   multiline={true}
                   rows={4}
+               />
+
+               <CustomTextField
+                  control={control}
+                  name="price"
+                  type="number"
+                  disabled={isSubmitting}
+                  label="Price"
+                  InputProps={{
+                     startAdornment: <InputAdornment position="start">$</InputAdornment>
+                  }}
+               />
+
+               <CustomTextField
+                  disabled={isSubmitting}
+                  control={control}
+                  name="warrentyDate"
+                  type="date"
+                  label="Warrenty date"
+                  InputLabelProps={{ shrink: true }}
                />
 
                <FileUpload
@@ -185,14 +244,118 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                />
 
                <CustomTextField
-                  control={control}
-                  name="price"
-                  type="number"
                   disabled={isSubmitting}
-                  label="Giá"
-                  InputProps={{
-                     endAdornment: <InputAdornment position="end">VND</InputAdornment>
-                  }}
+                  control={control}
+                  name="metaDatas.cPUSeries"
+                  label="CPU Series"
+               />
+
+               <CustomTextField
+                  disabled={isSubmitting}
+                  control={control}
+                  name="metaDatas.gPUSeries"
+                  label="Graphic card"
+               />
+
+               <CustomTextField
+                  disabled={isSubmitting}
+                  control={control}
+                  name="metaDatas.ram"
+                  label="RAM"
+               />
+
+               <CustomTextField
+                  disabled={isSubmitting}
+                  control={control}
+                  name="metaDatas.hardDrive"
+                  label="Hard drive"
+               />
+
+               <CustomTextField
+                  disabled={isSubmitting}
+                  control={control}
+                  name="metaDatas.operatingSystem"
+                  label="Operating system"
+               />
+
+               <CustomTextField
+                  disabled={isSubmitting}
+                  control={control}
+                  name="metaDatas.publishedDate"
+                  type="date"
+                  label="Published date"
+                  InputLabelProps={{ shrink: true }}
+               />
+
+               <CustomTextField
+                  disabled={isSubmitting}
+                  control={control}
+                  name="metaDatas.weight"
+                  label="Weight"
+               />
+
+               <CustomTextField
+                  disabled={isSubmitting}
+                  control={control}
+                  name="metaDatas.audio"
+                  label="Audio"
+               />
+
+               <CustomTextField
+                  disabled={isSubmitting}
+                  control={control}
+                  name="metaDatas.battery"
+                  label="Battery"
+               />
+
+               <CustomTextField
+                  disabled={isSubmitting}
+                  control={control}
+                  name="metaDatas.camera"
+                  label="Camera"
+               />
+
+               <CustomTextField
+                  disabled={isSubmitting}
+                  control={control}
+                  name="metaDatas.color"
+                  label="Color"
+               />
+
+               <CustomTextField
+                  disabled={isSubmitting}
+                  control={control}
+                  name="metaDatas.dimensions"
+                  label="Dimensions"
+               />
+
+               <CustomTextField
+                  disabled={isSubmitting}
+                  control={control}
+                  name="metaDatas.ports"
+                  label="Ports"
+               />
+
+               <CustomTextField
+                  disabled={isSubmitting}
+                  control={control}
+                  name="metaDatas.screenResolution"
+                  label="Screen resolution"
+               />
+
+               <CustomTextField
+                  disabled={isSubmitting}
+                  control={control}
+                  name="metaDatas.wLAN"
+                  label="Wifi"
+               />
+
+               <TagsInput
+                  value={data?.tags}
+                  onChange={(tags: string[]) => {setValue('tags', tags)}}
+                  name="tags"
+                  placeHolder="enter tags"
+                  disabled={isSubmitting}
                />
             </form>
          </CardContent>
