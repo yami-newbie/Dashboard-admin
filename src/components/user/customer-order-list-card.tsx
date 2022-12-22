@@ -107,7 +107,7 @@ export function CustomerOrderListCard(props: CustomerOrderListCardProps) {
                                     </SeverityPill>
                                  </TableCell>
                                  <TableCell align="center">
-                                    <Link
+                                    {/* <Link
                                        href={`/orders/${order.id}/edit`}
                                        passHref
                                     >
@@ -116,7 +116,7 @@ export function CustomerOrderListCard(props: CustomerOrderListCardProps) {
                                              <PencilIcon width={20} />
                                           </IconButton>
                                        </Tooltip>
-                                    </Link>
+                                    </Link> */}
                                     <Link href={`/orders/${order.id}`} passHref>
                                        <Tooltip title="View Details" placement="top">
                                           <IconButton size="small">
