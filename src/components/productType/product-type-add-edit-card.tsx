@@ -13,21 +13,22 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
 import * as yup from 'yup'
-import { Category, ProductTypePayload, ProductType } from 'models'
+import { Category, ProductTypePayload, ProductType, Media } from 'models'
 import { CustomSelectField, CustomTextField } from 'components/form-controls'
 import { LoadingButton } from '@mui/lab'
-import { useQuery } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import CATEGORIES_QUERY from 'graphql/query/categories'
 import { Manufacturer } from 'models/manufacturer'
 import MANUFACTURERS_QUERY from 'graphql/query/manufacturers'
 import { LoadingBackdrop } from 'components/loading'
 import FileUpload from 'components/file-upload/file-upload'
 import moment from 'moment'
+import DELETE_MEDIAS from 'graphql/mutation/deleteMedias';
 
 export interface ProductTypeAddEditModalProps {
    data?: ProductType
    onClose: () => void
-   onSubmit: (product: ProductTypePayload, files: FileList | null) => Promise<void>
+   onSubmit: (product: ProductTypePayload, medias: Media[]) => Promise<void>
 }
 
 const schema = yup.object({
@@ -57,7 +58,6 @@ const schema = yup.object({
    price: yup.number().integer().moreThan(0),
    warrantyPeriod: yup.number(),
    tags: yup.array(yup.string()),
-   files: yup.array(yup.object())
 })
 
 export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductTypeAddEditModalProps) {
@@ -74,8 +74,9 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
 
    const [categoriesOptions, setCategoriesOptions] = useState<Category[]>([])
    const [manufacturersOptions, setManufacturersOptions] = useState<Manufacturer[]>([])
-
-   const [files, setFiles] = useState<FileList | null>(null)
+   const [medias, setMedias] = useState<Media[]>([])
+   const [newestmedias, setNewestmedias] = useState<Media[]>([])
+   const [deleteMedias] = useMutation(DELETE_MEDIAS)
 
    useEffect(() => {
       setCategoriesOptions(categories?.categories?.items || [])
@@ -92,16 +93,18 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
    const {
       reset,
       setValue,
+      getValues,
       control,
       formState: { isSubmitting, errors }
    } = form
 
    const handleSaveProduct = async (values: ProductTypePayload) => {
-      if (onSubmit) await onSubmit(values, files)
+      if (onSubmit) await onSubmit(values, medias)
    }
 
    useEffect(() => {
       if (data) {
+         console.log(data);
          reset({
             id: data?.id || '',
             name: data?.name || '',
@@ -130,7 +133,14 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
             price: data?.price || 0,
             tags: data?.tags || [],
          })
-         console.log(data);
+         setMedias(data?.medias.map(val => ({
+            id: val.id,
+            filePath: val.filePath,
+            fileSize: val.fileSize,
+            fileType: val.fileType,
+            createdAt: val.createdAt,
+            updatedAt: val.updatedAt
+         })));
       } else {
          reset({
             name: '',
@@ -162,9 +172,11 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
       }
    }, [data, reset])
 
-   const handleClose = () => {
+   const handleClose = async () => {
+      const imageIds = newestmedias.map((val) => val.id);
+      const _mutationResult = await deleteMedias({ variables: { input: { ids: imageIds} } })
+      console.log(_mutationResult);
       onClose()
-      reset()
    }
 
    return (
@@ -214,7 +226,12 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                <FileUpload
                   name='medias'
                   label=""
-                  updateFilesCb={setFiles}
+                  value={medias}
+                  updateFilesCb={(vals: any) => {
+                     setMedias(vals.newFiles as Media[]);
+                     setNewestmedias(vals.newestfiles);
+                     console.log(vals.newFiles, vals.newestfiles);
+                  }}
                   multiple
                   disabled={isSubmitting}
                />
@@ -376,7 +393,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
             </form>
          </CardContent>
          <DialogActions>
-            <Button disabled={isSubmitting} onClick={onClose}>
+            <Button disabled={isSubmitting} onClick={handleClose}>
                Hủy
             </Button>
             <LoadingButton

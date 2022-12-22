@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
 import * as yup from 'yup'
-import { Manufacturer, ManufacturerPayLoad } from 'models'
+import { Manufacturer, ManufacturerPayLoad, Media } from 'models'
 import { CustomSelectField, CustomTextField } from 'components/form-controls'
 import { LoadingButton } from '@mui/lab'
 import FileUpload from 'components/file-upload/file-upload'
@@ -12,7 +12,7 @@ type Props = {
    data?: Manufacturer
    isOpen: boolean
    onClose: () => void
-   onSubmit: (values: ManufacturerPayLoad, files: File[]) => Promise<void>
+   onSubmit: (values: ManufacturerPayLoad, medias: Media[]) => Promise<void>
 }
 
 const schema = yup.object().shape({
@@ -22,7 +22,7 @@ const schema = yup.object().shape({
 const ManufacturerCreateEditModal = (props: Props) => {
    const { data, onClose, isOpen, onSubmit } = props
 
-   const [files, setFiles] = useState<File[]>()
+   const [medias, setMedias] = useState<Media[]>([])
 
    const form = useForm<ManufacturerPayLoad>({
       defaultValues: new ManufacturerPayLoad(),
@@ -35,7 +35,7 @@ const ManufacturerCreateEditModal = (props: Props) => {
    } = form
 
    const handleSaveManufacturer = async (values: ManufacturerPayLoad) => {
-      if (onSubmit) await onSubmit(values, files || [])
+      if (onSubmit) await onSubmit(values, medias || [])
    }
 
    useEffect(() => {
@@ -79,7 +79,13 @@ const ManufacturerCreateEditModal = (props: Props) => {
                   label="Địa chỉ"
                />
 
-               <FileUpload multiple updateFilesCb={setFiles} />
+               <FileUpload 
+                  multiple 
+                  value={medias}
+                  updateFilesCb={(vals: any) => {
+                     setMedias(vals.newFiles as Media[]);
+                     console.log(vals.newFiles, vals.newestfiles);
+                  }} />
 
                <CustomTextField
                   disabled={isSubmitting}

@@ -32,6 +32,7 @@ export class ProductTypePayload {
       public warrantyPeriod: number = 0,
       public metaDatas: MetaDataPayLoad = new MetaDataPayLoad(),
       public tags: string[] = [],
+      public medias: Media[] = [],
    ) {}
 }
 

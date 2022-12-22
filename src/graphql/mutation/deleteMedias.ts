@@ -1,8 +1,8 @@
 import { gql } from 'graphql-tag'
 
-const UPLOAD_MEDIAS = gql`
-   mutation ($input: UploadMediasInput!) {
-      uploadMedias(input: $input) {
+const DELETE_MEDIAS = gql`
+   mutation ($input: DeleteMediasInput!) {
+      deleteMedias(input: $input) {
          medias {
             id
             filePath
@@ -15,4 +15,4 @@ const UPLOAD_MEDIAS = gql`
    }
 `
 
-export default UPLOAD_MEDIAS
+export default DELETE_MEDIAS

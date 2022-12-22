@@ -1,7 +1,7 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Box, Button, Container, Grid } from '@mui/material'
 import { DashboardLayout } from 'components/layouts'
-import { Order, Product, ProductPayLoad, ProductType, ProductTypePayload } from 'models'
+import { Media, Order, Product, ProductPayLoad, ProductType, ProductTypePayload } from 'models'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
@@ -118,7 +118,7 @@ function ProductTypePage(props: ProductTypePageProps) {
       router.push('/productTypes')
    }
 
-   const handleAddEdit = async (productType: ProductTypePayload, files: FileList | null) => {
+   const handleAddEdit = async (productType: ProductTypePayload, medias: Media[]) => {
       // uploadMedias({ variables: { files } })
 
       console.log(productType);
@@ -126,7 +126,7 @@ function ProductTypePage(props: ProductTypePageProps) {
 
       if (productType.id && productType.id !== '') {
          try {
-            await updateProductType({ variables: { input: productType, files: files || [] } })
+            await updateProductType({ variables: { input: productType, medias: medias as Media[] } })
 
             handleCloseAddEdit()
 
@@ -138,7 +138,7 @@ function ProductTypePage(props: ProductTypePageProps) {
          }
       } else {
          try {
-            await createProductType({ variables: { input: productType, files: files || [] } })
+            await createProductType({ variables: { input: productType, medias: medias as Media[] } })
 
             handleCloseAddEdit()
 
