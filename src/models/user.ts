@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { Media } from './media'
 import { Role } from './roles'
 
@@ -56,7 +57,7 @@ export interface CustomerQueryParams extends Partial<Record<keyof User, string>>
 export class RegisterStaffPayload {
    constructor(
       public address: string = "",
-      public dob: string = "",
+      public dob: string = moment().format("YYYY-MM-DD"),
       public email: string = "",
       public fullname: string = "",
       public password: string = "",
