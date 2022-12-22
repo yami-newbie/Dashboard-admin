@@ -43,7 +43,7 @@ const Users = () => {
          }) 
       } 
    })
-   const [registerStaff] = useMutation(REGISTER_STAFF)
+   const [registerStaff, { error }] = useMutation(REGISTER_STAFF)
 
    useEffect(() => {
       if (_userList) {
@@ -58,6 +58,12 @@ const Users = () => {
          setUserList(users || [])
       }
    }, [_userList])
+
+   useEffect(() => {
+      if(error) {
+         enqueueSnackbar("Có lỗi xảy ra khi tạo tài khoản", { variant: 'error' })
+      }
+   }, [error])
 
    const handleLimitChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
       setPagination({ ...pagination, pageSize: Number.parseInt(event.target.value) })

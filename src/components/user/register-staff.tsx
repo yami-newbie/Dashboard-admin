@@ -120,7 +120,7 @@ const RegisterStaff = (props: Props) => {
                         control={control}
                         name="role"
                         label="Chức vụ"
-                        options={(roles || []).map(item => ({ value: item.id, label: item.description }))}
+                        options={(roles || []).map(item => ({ value: item.name, label: item.description }))}
                      />
                   </Grid>
                   <Grid item md={12} xs={12}>
