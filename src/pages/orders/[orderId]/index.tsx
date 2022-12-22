@@ -10,7 +10,7 @@ import PencilIcon from 'icons/pencil'
 import { Order, ResponseData } from 'models'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { downloadFile } from 'utils'
 import Head from 'next/head'
@@ -29,6 +29,13 @@ function OrderDetailPage(props: OrderDetailPageProps) {
    const { data: _order } = useQuery(ORDERS_QUERY, { variables: { input: { ids: [orderId] }} })
 
    const [order, setOrder] = useState(new Order())
+
+   useEffect(() => {
+      if(_order) {
+         const _data = _order.orders
+         setOrder(_data.items?.[0] || new Order())
+      }
+   }, [_order])
 
    const handleUpdateOrder = async (payload: Partial<Order>) => {
       if (typeof orderId === 'string') {

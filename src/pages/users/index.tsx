@@ -16,12 +16,16 @@ import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 import { CustomerQueryParams, DEFAULT_PAGINATION, PaginationParams, RegisterStaffPayload, User, Variables_Graphql } from 'models'
 import { UserListResults, UserListToolbar } from 'components/user'
 import { DashboardLayout } from 'components/layouts'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import USERS_QUERY from 'graphql/query/users'
-import { number } from 'yup/lib/locale'
 import RegisterStaff from 'components/user/register-staff'
+import REGISTER_STAFF from 'graphql/mutation/registerStaff'
+import { useSnackbar } from 'notistack'
 
 const Users = () => {
+
+   const { enqueueSnackbar } = useSnackbar()
+
    const [isCustomer, setIsCustomer] = useState<string>("null")
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
    const [isOpenModal, setIsOpenModal] = useState(false)
@@ -39,6 +43,7 @@ const Users = () => {
          }) 
       } 
    })
+   const [registerStaff] = useMutation(REGISTER_STAFF)
 
    useEffect(() => {
       if (_userList) {
@@ -82,8 +87,21 @@ const Users = () => {
       setIsOpenModal(false)
    }
 
-   const onRegister = (payload: RegisterStaffPayload) => {
+   const onRegister = async (payload: RegisterStaffPayload & { confirmPassword?: string }) => {
+      try {
+         const _payload = { ...payload }
 
+         delete _payload.confirmPassword
+
+         await registerStaff({ variables: { input: _payload } })
+
+         setIsOpenModal(false)
+
+         enqueueSnackbar("Đăng ký tài khoản thành công", { variant: "success" })
+      }
+      catch(e) {
+
+      }
    }
 
    return (
@@ -112,7 +130,7 @@ const Users = () => {
                      Danh sách người dùng
                   </Typography>
                   <Box sx={{ m: 1 }}>
-                     <Button sx={{ mr: 1 }} variant="outlined">
+                     <Button sx={{ mr: 1 }} variant="outlined" onClick={() => { setIsOpenModal(true) }}>
                         Thêm nhân viên
                      </Button>
                   </Box>
