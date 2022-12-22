@@ -171,7 +171,7 @@ const PaymentMethods = () => {
    return (
       <>
          <Head>
-            <title>PaymentMethods | FurnitureStore Dashboard</title>
+            <title>PaymentMethods | Cheems Store</title>
          </Head>
          <Box
             component="main"

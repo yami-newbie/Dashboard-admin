@@ -98,8 +98,8 @@ export const DashboardSidebar = props => {
                   <NextLink href="/" passHref style={{ mt: 2, textDecoration: 'none' }}>
 
                      {}
-                     <Typography variant="h3" sx={{ color: '#ffffff' }}>
-                        Konsept
+                     <Typography variant="h4" sx={{ color: '#ffffff' }}>
+                        Cheems Store
                      </Typography>
 
                   </NextLink>

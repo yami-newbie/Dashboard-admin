@@ -6,7 +6,7 @@ import { SettingsNotifications } from '../components/settings/settings-notificat
 const Settings = () => (
    <>
       <Head>
-         <title>Settings | FurnitureStore Dashboard</title>
+         <title>Settings | Cheems Store</title>
       </Head>
       <Box
          component="main"

@@ -27,7 +27,10 @@ export function useAuth(options?: Partial<PublicConfiguration>) {
       refetch()
    }
 
-   async function logout() {}
+   async function logout() {
+      window.localStorage.removeItem('accessToken')
+      window.localStorage.removeItem('refreshToken')
+   }
 
    async function updateProfile(payload: Partial<User>) {}
 

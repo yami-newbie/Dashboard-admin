@@ -51,7 +51,7 @@ const Orders = () => {
    return (
       <>
          <Head>
-            <title>Orders | FurnitureStore</title>
+            <title>Orders | Cheems Store</title>
          </Head>
          <Box
             component="main"

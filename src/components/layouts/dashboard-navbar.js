@@ -38,6 +38,7 @@ export const DashboardNavbar = props => {
    const handleLogoutClick = async () => {
       await logout()
       setAnchorEl(null)
+      router.push('/login')
    }
    return (
       <DashboardNavbarRoot

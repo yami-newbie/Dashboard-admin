@@ -71,7 +71,7 @@ const App = (props: AppPropsWithLayout) => {
       <ApolloProvider client={client}>
          <CacheProvider value={emotionCache}>
             <Head>
-               <title>FurnitureStore Admin</title>
+               <title>Cheems Store Admin</title>
                <meta name="viewport" content="initial-scale=1, width=device-width" />
             </Head>
 
