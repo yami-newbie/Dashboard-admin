@@ -26,7 +26,7 @@ const Orders = () => {
    const [orderList, setOrderList] = useState<Order[]>([])
    const [deleteOrder] = useMutation(DELETE_ORDER)
 
-   const { data: _orderList } = useQuery(ORDERS_QUERY, { variables: { input: filters } })
+   const { data: _orderList } = useQuery(ORDERS_QUERY, { variables: { input: { ...filters, isDeleted: false } } })
 
    useEffect(() => {
       if (_orderList) {
