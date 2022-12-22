@@ -20,7 +20,7 @@ export interface UserBasicInfoCardProps {
 export function UserBasicInfoCard({ user }: UserBasicInfoCardProps) {
    return (
       <Card>
-         <CardHeader title="Basic details" />
+         <CardHeader title="Thông tin cơ bản" />
          <Divider />
          <CardContent sx={{ p: 0 }}>
             {user ? (
@@ -31,7 +31,7 @@ export function UserBasicInfoCard({ user }: UserBasicInfoCardProps) {
                      disablePadding
                   >
                      <Typography variant="subtitle2" sx={{ minWidth: 180 }}>
-                        Full Name
+                        Họ và tên
                      </Typography>
                      <Box sx={{ flex: 1 }}>
                         <Typography
@@ -40,38 +40,6 @@ export function UserBasicInfoCard({ user }: UserBasicInfoCardProps) {
                            color="text.secondary"
                         >
                            {user.fullname}
-                        </Typography>
-                     </Box>
-                  </ListItem>
-                  <Divider />
-
-                  <ListItem
-                     sx={{ px: 3, py: 1.5, display: 'flex', flexDirection: 'row', my: 0 }}
-                     alignItems="center"
-                     disablePadding
-                  >
-                     <Typography variant="subtitle2" sx={{ minWidth: 180 }}>
-                        Username
-                     </Typography>
-                     <Box sx={{ flex: 1 }}>
-                        <Typography variant="body2" color="text.secondary">
-                           {user.email}
-                        </Typography>
-                     </Box>
-                  </ListItem>
-                  <Divider />
-
-                  <ListItem
-                     sx={{ px: 3, py: 1.5, display: 'flex', flexDirection: 'row', my: 0 }}
-                     alignItems="center"
-                     disablePadding
-                  >
-                     <Typography variant="subtitle2" sx={{ minWidth: 180 }}>
-                        Phone Number
-                     </Typography>
-                     <Box sx={{ flex: 1 }}>
-                        <Typography variant="body2" color="text.secondary">
-                           {user.phone}
                         </Typography>
                      </Box>
                   </ListItem>
@@ -92,6 +60,38 @@ export function UserBasicInfoCard({ user }: UserBasicInfoCardProps) {
                      </Box>
                   </ListItem>
                   <Divider />
+
+                  <ListItem
+                     sx={{ px: 3, py: 1.5, display: 'flex', flexDirection: 'row', my: 0 }}
+                     alignItems="center"
+                     disablePadding
+                  >
+                     <Typography variant="subtitle2" sx={{ minWidth: 180 }}>
+                        Số điện thoại
+                     </Typography>
+                     <Box sx={{ flex: 1 }}>
+                        <Typography variant="body2" color="text.secondary">
+                           {user.phone}
+                        </Typography>
+                     </Box>
+                  </ListItem>
+                  <Divider />
+
+                  {/* <ListItem
+                     sx={{ px: 3, py: 1.5, display: 'flex', flexDirection: 'row', my: 0 }}
+                     alignItems="center"
+                     disablePadding
+                  >
+                     <Typography variant="subtitle2" sx={{ minWidth: 180 }}>
+                        Email
+                     </Typography>
+                     <Box sx={{ flex: 1 }}>
+                        <Typography variant="body2" color="text.secondary">
+                           {user.email}
+                        </Typography>
+                     </Box>
+                  </ListItem>
+                  <Divider /> */}
 
                   {/* <ListItem
                      sx={{ px: 3, py: 1.5, display: 'flex', flexDirection: 'row', my: 0 }}
@@ -124,7 +124,7 @@ export function UserBasicInfoCard({ user }: UserBasicInfoCardProps) {
                      disablePadding
                   >
                      <Typography variant="subtitle2" sx={{ minWidth: 180 }}>
-                        Registration Date
+                        Ngày đăng ký
                      </Typography>
                      <Box sx={{ flex: 1 }}>
                         <Typography variant="body2" color="text.secondary">
@@ -132,6 +132,7 @@ export function UserBasicInfoCard({ user }: UserBasicInfoCardProps) {
                         </Typography>
                      </Box>
                   </ListItem>
+                  <Divider />
                </List>
             ) : (
                <List>

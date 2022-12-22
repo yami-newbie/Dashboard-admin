@@ -155,7 +155,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
       <Card>
          <LoadingBackdrop open={categories_loading && manufacturers_loading} />
 
-         <CardHeader title={!data ? 'New Product Type' : 'Edit Product Type'}></CardHeader>
+         <CardHeader title={!data ? 'Loại sản phẩm mới' : 'Chỉnh sửa loại sản phẩm'}></CardHeader>
 
          <Divider />
          <CardContent style={{ width: '100%' }}>
@@ -164,13 +164,13 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                   disabled={isSubmitting}
                   control={control}
                   name="name"
-                  label="Product Type Name"
+                  label="Tên loại sản phẩm"
                />
                <CustomTextField
                   disabled={isSubmitting}
                   control={control}
                   name="description"
-                  label="Description"
+                  label="Miêu tả"
                   multiline={true}
                   rows={4}
                />
@@ -196,8 +196,9 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                />
 
                <FileUpload
+                  name='medias'
+                  label=""
                   updateFilesCb={setFiles}
-                  label="Medias"
                   multiple
                   disabled={isSubmitting}
                />
@@ -207,7 +208,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                <CustomSelectField
                   control={control}
                   name="categoriesIds"
-                  label="Categories"
+                  label="Danh mục"
                   multiple={true}
                   disabled={isSubmitting}
                   options={
@@ -223,7 +224,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                <CustomSelectField
                   control={control}
                   name="metaDatas.manufacturersId"
-                  label="Manufacturer"
+                  label="Hãng sản xuất"
                   disabled={isSubmitting}
                   options={
                      manufacturersOptions
@@ -239,7 +240,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                   disabled={isSubmitting}
                   control={control}
                   name="metaDatas.seriesName"
-                  label="Product Series Name"
+                  label="Series của sản phẩm"
                />
 
                <CustomTextField
@@ -360,7 +361,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
          </CardContent>
          <DialogActions>
             <Button disabled={isSubmitting} onClick={onClose}>
-               Cancel
+               Hủy
             </Button>
             <LoadingButton
                loading={isSubmitting}
@@ -368,7 +369,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                variant="contained"
                onClick={form.handleSubmit(handleSaveProduct)}
             >
-               Save
+               Lưu
             </LoadingButton>
          </DialogActions>
       </Card>

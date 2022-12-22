@@ -13,19 +13,20 @@ import {
    Tooltip,
    Typography
 } from '@mui/material'
-import { format, parseISO } from 'date-fns'
 import PencilIcon from 'icons/pencil'
 import { HeadCell, PaginationParams, User } from 'models'
 import Link from 'next/link'
 import { useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { getInitials } from '../../utils/get-initials'
+import moment from 'moment'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 const headCells: HeadCell[] = [
    {
       id: 'name',
       align: 'left',
-      label: 'Customer',
+      label: 'Tên',
       sortable: false
    },
    {
@@ -37,19 +38,19 @@ const headCells: HeadCell[] = [
    {
       id: 'phone',
       align: 'center',
-      label: 'Phone Number',
+      label: 'Số điện thoại',
       sortable: false
    },
    {
       id: 'createdAt',
       align: 'center',
-      label: 'Registration Date',
-      sortable: true
+      label: 'Ngày đăng ký',
+      sortable: false
    },
    {
       id: 'actions',
       align: 'center',
-      label: 'Actions',
+      label: 'Hành động',
       sortable: false
    }
 ]
@@ -57,11 +58,13 @@ export const UserListResults = ({
    userList,
    pagination,
    onSortByColumn,
+   isCustomerPage = false,
    ...rest
 }: {
    userList?: User[]
    pagination: PaginationParams
    onSortByColumn: Function
+   isCustomerPage?: boolean
 }) => {
    const [order, setOrder] = useState<'asc' | 'desc'>('asc')
    const [orderBy, setOrderBy] = useState('')
@@ -140,10 +143,10 @@ export const UserListResults = ({
                                       style={{
                                          backgroundColor: bgColor[userList.indexOf(user)]
                                       }}
-                                      src="/broken-image.jpg"
+                                      src={user?.medias?.[0]?.filePath}
+                                      alt={getInitials(user.fullname)}
                                       sx={{ mr: 2 }}
                                    >
-                                      {getInitials(user.fullname)}
                                    </Avatar>
                                    <Typography
                                       sx={{ fontWeight: 500 }}
@@ -157,21 +160,21 @@ export const UserListResults = ({
                              <TableCell align="left">{user.email}</TableCell>
                              <TableCell align="center">{user.phone}</TableCell>
                              <TableCell align="center" sx={{ pr: 5 }}>
-                                {format(parseISO(user.createdAt), 'dd/MM/yyyy')}
+                                {moment(user.createdAt || undefined).format('DD/MM/YYYY')}
                              </TableCell>
 
                              <TableCell align="center">
-                                <Link href={`/users/${user.id}/edit`} passHref>
-                                   <Tooltip title="Edit Customer" placement="top">
+                                { !isCustomerPage ? <Link href={`/users/${user.id}/edit`} passHref>
+                                   <Tooltip title="Chỉnh sửa thông tin tài khoản" placement="top">
                                       <IconButton size="small">
                                          <PencilIcon width={20} />
                                       </IconButton>
                                    </Tooltip>
-                                </Link>
-                                <Link href={`/users/${user.id}`} passHref>
-                                   <Tooltip title="View Details" placement="top">
+                                </Link> : null }
+                                <Link href={`/${!isCustomerPage ? 'users' : 'customers'}/${user.id}`} passHref>
+                                   <Tooltip title="Xem chi tiết" placement="top">
                                       <IconButton size="small">
-                                         <ArrowForwardIcon fontSize="small" />
+                                         { !isCustomerPage ? <ArrowForwardIcon fontSize="small" /> : <MoreHorizIcon fontSize="small" />}
                                       </IconButton>
                                    </Tooltip>
                                 </Link>

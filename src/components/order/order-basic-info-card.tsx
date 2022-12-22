@@ -23,7 +23,7 @@ export function OrderBasicInfoCard({ order }: OrderBasicInfoCardProps) {
 
    return (
       <Card>
-         <CardHeader title="Basic info" />
+         <CardHeader title="Thông tin cơ bản" />
          <Divider />
          <CardContent sx={{ p: 0 }}>
             {order ? (
@@ -34,7 +34,7 @@ export function OrderBasicInfoCard({ order }: OrderBasicInfoCardProps) {
                      disablePadding
                   >
                      <Typography variant="subtitle2" sx={{ minWidth: 180 }}>
-                        Delivery information
+                        Thông tin giao hàng
                      </Typography>
                      <Box sx={{ flex: 1 }}>
                         <Typography variant="body2" color="primary">
@@ -71,7 +71,7 @@ export function OrderBasicInfoCard({ order }: OrderBasicInfoCardProps) {
                      disablePadding
                   >
                      <Typography variant="subtitle2" sx={{ minWidth: 180 }}>
-                        Date
+                        Ngày tạo đơn
                      </Typography>
                      <Box sx={{ flex: 1 }}>
                         <Typography variant="body2" color="text.secondary">
@@ -89,13 +89,13 @@ export function OrderBasicInfoCard({ order }: OrderBasicInfoCardProps) {
                      disablePadding
                   >
                      <Typography variant="subtitle2" sx={{ minWidth: 180 }}>
-                        Payment Method
+                        Phương thức thanh toán
                      </Typography>
-                     {/* <Box sx={{ flex: 1 }}>
+                     <Box sx={{ flex: 1 }}>
                         <Typography variant="body2" color="text">
-                           {order.payment}
+                           {order.receipts.payments.customerPayment.paymentMethods.name}
                         </Typography>
-                     </Box> */}
+                     </Box>
                   </ListItem>
                   <Divider />
 
@@ -105,12 +105,12 @@ export function OrderBasicInfoCard({ order }: OrderBasicInfoCardProps) {
                      disablePadding
                   >
                      <Typography variant="subtitle2" sx={{ minWidth: 180 }}>
-                        Total Amount
+                        Tổng cộng
                      </Typography>
                      <Box sx={{ flex: 1 }}>
-                        {/* <Typography variant="body2" color="text">
-                           ${order.amount.toFixed(2)}
-                        </Typography> */}
+                        <Typography variant="body2" color="text">
+                           {order.receipts.totalPrice.toFixed(2)}{order.receipts.payments.customerPayment.paymentMethods.currency}
+                        </Typography>
                      </Box>
                   </ListItem>
                   <Divider />
@@ -121,7 +121,7 @@ export function OrderBasicInfoCard({ order }: OrderBasicInfoCardProps) {
                      disablePadding
                   >
                      <Typography variant="subtitle2" sx={{ minWidth: 180 }}>
-                        Status
+                        Trạng thái
                      </Typography>
                      <Box sx={{ flex: 1 }}>
                         <Typography

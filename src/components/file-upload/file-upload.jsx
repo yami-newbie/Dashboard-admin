@@ -85,7 +85,7 @@ const FilePreviewCard = memo(({ index, file, onRemove }) => {
 })
 
 const FileUpload = ({
-   label,
+   label = "",
    updateFilesCb,
    multiple = true,
    maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES,
@@ -173,9 +173,9 @@ const FileUpload = ({
                {label}
             </Typography>
             <Typography sx={{ fontWeight: '500', marginTop: 0, textAlign: 'center' }}>
-               Drag and drop your files anywhere or
+               Kéo và thả tệp của bạn vào bất cứ đâu hoặc
             </Typography>
-            <Button onClick={handleUploadBtnClick}>Upload {multiple ? 'files' : 'a file'}</Button>
+            <Button onClick={handleUploadBtnClick}>Tải lên</Button>
             <FormField
                type="file"
                ref={fileInputField}

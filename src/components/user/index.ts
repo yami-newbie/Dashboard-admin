@@ -1,4 +1,4 @@
-export * from './customer-list-results'
+export * from './user-list-results'
 export * from './customer-list-toolbar'
 export * from './user-basic-info-card'
 export * from './user-basic-info-card-edit'

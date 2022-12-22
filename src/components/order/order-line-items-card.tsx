@@ -23,45 +23,49 @@ export interface OrderLineItemsCardProps {
 export function OrderLineItemsCard({ order }: OrderLineItemsCardProps) {
    return (
       <Card>
-         <CardHeader title="Line items" />
+         <CardHeader title="Danh sách sản phẩm" />
          <Divider />
          <CardContent sx={{ p: 0 }}>
             <Table>
                <TableHead>
                   <TableRow>
-                     <TableCell>PRODUCT</TableCell>
-                     <TableCell align="center">QUANTITY</TableCell>
-                     <TableCell align="center">AMOUNT</TableCell>
+                     <TableCell>Sản phẩm</TableCell>
+                     <TableCell align="center">Loại sản phẩm</TableCell>
+                     <TableCell align="center">Hãng sản xuất</TableCell>
+                     <TableCell align="center">Số lượng</TableCell>
+                     <TableCell align="center">Thành tiền</TableCell>
                   </TableRow>
                </TableHead>
-               {/* <TableBody>
+               <TableBody>
                   {order
-                     ? order.products.map(item => (
-                          <TableRow hover key={item.productId}>
-                             <TableCell>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                   <Avatar variant="rounded" src={item.img}></Avatar>
-                                   <Typography variant="body2">{item.title}</Typography>
-                                </Box>
-                             </TableCell>
-                             <TableCell align="center">{item.quantity}</TableCell>
-                             <TableCell align="center">${item.amount.toFixed(2)}</TableCell>
-                          </TableRow>
-                       ))
-                     : Array.from(new Array(3)).map((i, idx) => (
-                          <TableRow key={idx}>
-                             <TableCell>
-                                <Skeleton variant="text" />
-                             </TableCell>
-                             <TableCell>
-                                <Skeleton variant="text" />
-                             </TableCell>
-                             <TableCell>
-                                <Skeleton variant="text" />
-                             </TableCell>
-                          </TableRow>
-                       ))}
-               </TableBody> */}
+                     ? order.receipts.receiptDetails.map(item => (
+                        <TableRow hover key={item?.productId}>
+                           <TableCell>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                 <Avatar variant="rounded" src={item?.products?.productTypes?.medias?.[0]?.filePath}></Avatar>
+                                 <Typography variant="body2">{item?.products?.productTypes?.name}</Typography>
+                              </Box>
+                           </TableCell>
+                           <TableCell align="center">{item?.products?.productTypes?.name}</TableCell>
+                           <TableCell align="center">{item?.products?.manufactureInfos?.manufacturers?.name}</TableCell>
+                           <TableCell align="center">{item?.amount}</TableCell>
+                           <TableCell align="center">{item?.price * item?.amount}{order?.receipts?.payments?.customerPayment?.paymentMethods?.currency}</TableCell>
+                        </TableRow>
+                     ))
+                     : Array.from(new Array(5)).map((i, idx) => (
+                        <TableRow key={idx}>
+                           <TableCell>
+                              <Skeleton variant="text" />
+                           </TableCell>
+                           <TableCell>
+                              <Skeleton variant="text" />
+                           </TableCell>
+                           <TableCell>
+                              <Skeleton variant="text" />
+                           </TableCell>
+                        </TableRow>
+                     ))}
+               </TableBody>
             </Table>
          </CardContent>
       </Card>

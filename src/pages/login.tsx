@@ -14,8 +14,8 @@ import { useLazyQuery } from '@apollo/client'
 import { useEffect } from 'react'
 
 const schema = yup.object({
-   email: yup.string().max(255).required('Email is required'),
-   password: yup.string().max(255).required('Password is required')
+   email: yup.string().max(255).required('Vui lòng nhập Email'),
+   password: yup.string().max(255).required('Vui lòng nhập mật khẩu')
 })
 
 const Login = () => {
@@ -28,7 +28,7 @@ const Login = () => {
    //    }
    // }, [data])
 
-   const { login } = useAuth()
+   const { login, error } = useAuth()
    const form = useForm<LoginPayload>({
       defaultValues: {
          email: '',
@@ -47,9 +47,7 @@ const Login = () => {
 
          router.push('/')
       } catch (error: any) {
-         enqueueSnackbar(error.message, {
-            variant: 'error'
-         })
+         console.log(error);
       }
    }
 
@@ -87,7 +85,7 @@ const Login = () => {
                      <form onSubmit={form.handleSubmit(handleClickLogin)}>
                         <Box sx={{ textAlign: 'center' }}>
                            <Typography color="textPrimary" variant="h4">
-                              Sign in
+                              Đăng nhập
                            </Typography>
                         </Box>
 
@@ -95,13 +93,13 @@ const Login = () => {
                            disabled={isSubmitting}
                            control={control}
                            name="email"
-                           label="email"
+                           label="Email"
                         />
                         <CustomTextField
                            disabled={isSubmitting}
                            control={control}
                            name="password"
-                           label="Password"
+                           label="Mật khẩu"
                            type="password"
                         />
                         <Box sx={{ py: 2 }}>
@@ -113,24 +111,9 @@ const Login = () => {
                               type="submit"
                               variant="contained"
                            >
-                              Sign In
+                              Đăng nhập
                            </Button>
                         </Box>
-                        {/* <Typography color="textSecondary" variant="body2">
-                           Don&apos;t have an account?{' '}
-                           <NextLink href="/register">
-                              <Link
-                                 href="/register"
-                                 variant="subtitle2"
-                                 underline="hover"
-                                 sx={{
-                                    cursor: 'pointer'
-                                 }}
-                              >
-                                 Sign Up
-                              </Link>
-                           </NextLink>
-                        </Typography> */}
                      </form>
                   </CardContent>
                </Card>

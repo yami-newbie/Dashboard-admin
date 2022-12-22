@@ -1,3 +1,4 @@
+import React from 'react'
 import Head from 'next/head'
 import {
    Box,
@@ -20,8 +21,7 @@ import { useQuery } from '@apollo/client'
 import USERS_QUERY from 'graphql/query/users'
 import { number } from 'yup/lib/locale'
 
-const Users = () => {
-   const [isCustomer, setIsCustomer] = useState<string>("null")
+const CustomersListPage = () => {
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
 
    const [variables, setVariables] = useState<Variables_Graphql>({take: 5})
@@ -32,7 +32,7 @@ const Users = () => {
       variables: { 
          ...Object.assign(variables, { 
             input: { 
-               isCustomer: isCustomer === "null" ? null : ( isCustomer === "true" ? true : false )
+               isCustomer: true
             } 
          }) 
       } 
@@ -71,15 +71,10 @@ const Users = () => {
       setPagination(DEFAULT_PAGINATION)
    }
 
-   const handleChangeTab = (event: React.SyntheticEvent, newValue: any) => {
-      setPagination(DEFAULT_PAGINATION)
-      setIsCustomer(newValue)
-   }
-
    return (
       <>
          <Head>
-            <title>Users | Cheems Store</title>
+            <title>Khách hàng | FurnitureStore</title>
          </Head>
          <Box
             component="main"
@@ -99,7 +94,7 @@ const Users = () => {
                   }}
                >
                   <Typography sx={{ m: 1 }} variant="h4">
-                     Danh sách người dùng
+                     Danh sách khách hàng
                   </Typography>
                   {/* <Box sx={{ m: 1 }}>
                      <Button startIcon={<DownloadIcon fontSize="small" />} sx={{ mr: 1 }}>
@@ -109,18 +104,13 @@ const Users = () => {
                </Box>
                <Box sx={{ mt: 1 }}>
                   <Card>
-                     <Tabs value={isCustomer} onChange={handleChangeTab}>
-                        <Tab label="Tất cả" value="null" />
-                        <Tab label="Nhân viên" value="false" />
-                        <Tab label="Khách hàng" value="true"  />
-                     </Tabs>
                      <Divider />
-                     {/* <UserListToolbar
-                        filters={filters}
+                     <UserListToolbar
                         onSearch={handleSearch}
                         onChangeSorting={handleChangeSorting}
-                     /> */}
+                     />
                      <UserListResults
+                        isCustomerPage
                         userList={userList}
                         pagination={pagination}
                         onSortByColumn={handleChangeSorting}
@@ -135,6 +125,6 @@ const Users = () => {
       </>
    )
 }
-Users.Layout = DashboardLayout
+CustomersListPage.Layout = DashboardLayout
 
-export default Users
+export default CustomersListPage

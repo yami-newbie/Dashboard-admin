@@ -26,17 +26,18 @@ import { ConfirmDialog } from 'components/productType/confirm-dialog'
 import ReportProblemIcon from '@mui/icons-material/ReportProblem'
 import { useQuery } from '@apollo/client'
 import USERS_QUERY from 'graphql/query/users'
-import { UserBasicInfoCard } from 'components/user'
+import { CustomerOrderListCard, UserBasicInfoCard } from 'components/user'
+import ORDERS_QUERY from 'graphql/query/orders'
 
-export interface UserDetailPageProps {}
-function UserDetailPage(props: UserDetailPageProps) {
+export interface UCustomerInfoPageProps {}
+function CustomerInfoPage(props: UCustomerInfoPageProps) {
    const { enqueueSnackbar } = useSnackbar()
    const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
    const [user, setUser] = useState<User>()
    const router = useRouter()
-   const { userId } = router.query
+   const { customerId } = router.query
 
-   const { data: _user } = useQuery(USERS_QUERY, { variables: { input: { ids: [userId] } } })
+   const { data: _user } = useQuery(USERS_QUERY, { variables: { input: { ids: [customerId] } } })
 
    useEffect(() => {
       if (_user) {
@@ -51,7 +52,7 @@ function UserDetailPage(props: UserDetailPageProps) {
    }, [_user])
 
    const handleDeleteUser = async () => {
-      if (typeof userId === 'string') {
+      if (typeof customerId === 'string') {
          try {
          } catch (error: any) {
             enqueueSnackbar(error.message, {
@@ -84,9 +85,9 @@ function UserDetailPage(props: UserDetailPageProps) {
                      flexWrap: 'wrap'
                   }}
                >
-                  <Link href="/users" passHref>
+                  <Link href="/customers" passHref>
                      <Button variant="text" startIcon={<ArrowBackIcon />}>
-                        Danh sách người dùng
+                        Danh sách khách hàng
                      </Button>
                   </Link>
                </Box>
@@ -134,20 +135,22 @@ function UserDetailPage(props: UserDetailPageProps) {
                         </Typography>
                      </Grid>
                   )}
-                  <Grid item sx={{ display: 'flex', gap: 2 }}>
-                     <Link href={`/users/${userId}/edit`} passHref>
+                  {/* <Grid item sx={{ display: 'flex', gap: 2 }}>
+                     <Link href={`/users/${customerId}/edit`} passHref>
                         <Button variant="outlined" endIcon={<PencilIcon width={20} />}>
                            Chỉnh sửa
                         </Button>
                      </Link>
-                  </Grid>
+                  </Grid> */}
                </Grid>
 
                <Box sx={{ ml: 1, mt: 4 }}>
                   <UserBasicInfoCard user={user} />
                </Box>
 
-               <Box sx={{ ml: 1, mt: 4 }}>{/* <UserOrderListCard /> */}</Box>
+               <Box sx={{ ml: 1, mt: 4 }}>
+                  <CustomerOrderListCard />
+               </Box>
 
                <Box hidden sx={{ ml: 1, mt: 4 }}>
                   <Card>
@@ -197,5 +200,5 @@ function UserDetailPage(props: UserDetailPageProps) {
    )
 }
 
-UserDetailPage.Layout = DashboardLayout
-export default UserDetailPage
+CustomerInfoPage.Layout = DashboardLayout
+export default CustomerInfoPage

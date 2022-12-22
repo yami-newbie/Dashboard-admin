@@ -19,9 +19,9 @@ import { Search as SearchIcon } from '../../icons/search'
 export interface ProductListToolbarProps {
    onSearch: Function
    onChangeSorting: Function
-   filters: Partial<CustomerQueryParams>
+   filters?: any
 }
-export const CustomerListToolbar = ({
+export const UserListToolbar = ({
    onSearch,
    onChangeSorting,
    filters,
@@ -56,7 +56,7 @@ export const CustomerListToolbar = ({
                      </InputAdornment>
                   )
                }}
-               placeholder="Search customer by name, phone, email"
+               placeholder="Tìm kiếm người dùng"
                variant="outlined"
                onChange={handleChangeSearch}
             />

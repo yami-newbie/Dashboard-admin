@@ -13,6 +13,8 @@ import Head from 'next/head'
 import { useSnackbar } from 'notistack'
 import { useQuery } from '@apollo/client'
 import USERS_QUERY from 'graphql/query/users'
+import { testOrder } from '..'
+import moment from 'moment'
 
 export interface EditOrderPageProps {}
 
@@ -20,7 +22,8 @@ const EditOrderPage = (props: EditOrderPageProps) => {
    const { enqueueSnackbar } = useSnackbar()
    const router = useRouter()
    const { orderId } = router.query
-   const { data: order } = useQuery(USERS_QUERY)
+   const { data: _order } = useQuery(USERS_QUERY)
+   const order = testOrder
 
    const handleUpdateBasicInfo = async (payload: Partial<Order>) => {
       if (typeof orderId === 'string') {
@@ -82,7 +85,7 @@ const EditOrderPage = (props: EditOrderPageProps) => {
                >
                   {order ? (
                      <Grid item sx={{ m: 1 }}>
-                        <Typography variant="h4">#{order._id}</Typography>
+                        <Typography variant="h4">#{order.id}</Typography>
                         <Typography
                            variant="body2"
                            color="textSecondary"
@@ -90,7 +93,7 @@ const EditOrderPage = (props: EditOrderPageProps) => {
                         >
                            Placed on
                            <EventAvailableRoundedIcon />
-                           {format(parseISO(order.createdAt), 'dd/MM/yyyy HH:mm')}
+                           {moment().format('DD/MM/YYYY HH:mm')}
                         </Typography>
                      </Grid>
                   ) : (

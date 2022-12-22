@@ -44,7 +44,7 @@ const Account = () => {
                      <AccountProfileDetails onSubmit={handleUpdateAccount} />
                   </Grid>
                   <Grid item lg={12} md={6} xs={12}>
-                     <SettingsPassword onSubmit={handleChangePassword} />
+                     {/* <SettingsPassword onSubmit={handleChangePassword} /> */}
                      {/* <AccountProfile /> */}
                   </Grid>
                </Grid>

@@ -11,7 +11,7 @@ export class Product {
       public deletedAt: string = '',
       public updatedAt: string = '',
       public productTypesId: string = '',
-      public productTypes: ProductType[] = []
+      public productTypes: ProductType = new ProductType()
    ) {}
 }
 

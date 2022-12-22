@@ -12,17 +12,57 @@ import {
 import { DashboardLayout } from 'components/layouts'
 import { OrderDetailModal } from 'components/order/order-detail'
 import { OrderListResults } from 'components/order/order-list-results'
-import USERS_QUERY from 'graphql/query/users'
-import { DEFAULT_PAGINATION, PaginationParams } from 'models'
+import ORDERS_QUERY from 'graphql/query/orders'
+import { DEFAULT_PAGINATION, ManufactureInfo, Manufacturer, Order, PaginationParams, Payment, Product, ProductType, Receipt, ReceiptDetail, User } from 'models'
 import Head from 'next/head'
-import { ChangeEvent, MouseEvent, useState } from 'react'
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
+
+export const testOrder = new Order(
+   "id",
+   "id",
+   new Receipt(
+      "id",
+      123123,
+      10,
+      "id",
+      new Payment(
+         "id",
+         "id"
+      ),
+      "dasd",
+      [
+         new ReceiptDetail("id", "id", 1, "id", 3000, new Product("id", "id", new ManufactureInfo("id", "", "", "", "", new Manufacturer()), "", "", "id", new ProductType("id", "name", "desc", 12039, [], 2, [], "", "", "", []))),
+         new ReceiptDetail("id", "id", 3, "id", 3400),
+         new ReceiptDetail("id", "id", 2, "id", 3030),
+         new ReceiptDetail("id", "id", 4, "id", 5000),
+         new ReceiptDetail("id", "id", 1, "id", 78700)
+      ]
+   ),
+   "PENDING",
+   "id",
+   new User(
+      "id",
+      "name"
+   ),
+   "from",
+   "to",
+   false)
 
 const Orders = () => {
    const [filters, setFilters] = useState({ status: '', orderBy: 'updatedAt-desc' })
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
+   const [orderList, setOrderList] = useState<Order[]>(Array(10).fill(testOrder))
 
-   const { data: orderList } = useQuery(USERS_QUERY)
+   const { data: _orderList } = useQuery(ORDERS_QUERY)
+
+   useEffect(() => {
+      // if(_orderList) {
+      //    const _data = _orderList.orders
+
+      //    setOrderList(_data.items || [])
+      // }
+   }, [_orderList])
 
    const handleLimitChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
       setPagination({ ...pagination, pageSize: Number.parseInt(event.target.value) })
