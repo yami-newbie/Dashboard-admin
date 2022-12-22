@@ -29,7 +29,7 @@ export class ProductTypePayload {
       public description: string = '',
       public categoriesIds: string[] = [],
       public price: number = 0,
-      public warrentyDate: string = '',
+      public warrantyPeriod: number = 0,
       public metaDatas: MetaDataPayLoad = new MetaDataPayLoad(),
       public tags: string[] = [],
    ) {}
@@ -47,7 +47,7 @@ export class ProductType {
       public description: string = '',
       public price: number = 0,
       public categories: Category[] = [],
-      public warrentyDate: Date = new Date(),
+      public warrantyPeriod: number = 0,
       public metaDatas: MetaData = new MetaData(),
       public deletedAt: string = '',
       public createdAt: string = '',
