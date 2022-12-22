@@ -91,7 +91,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
             name: data?.name || '',
             description: data?.description || '',
             categoriesIds: data?.categories.map(i => i.id) || [],
-            warrentyDate: moment(data?.warrentyDate || undefined).format('YYYY-MM-DD'),
+            warrantyPeriod: data?.warrantyPeriod || 0,
             metaDatas: {
                audio: data?.metaDatas?.audio || '',
                battery: data?.metaDatas?.battery || '',
@@ -120,7 +120,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
             name: '',
             description: '',
             categoriesIds: [],
-            warrentyDate: undefined,
+            warrantyPeriod: undefined,
             metaDatas: {
                audio: '',
                battery: '',
@@ -189,9 +189,9 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                <CustomTextField
                   disabled={isSubmitting}
                   control={control}
-                  name="warrentyDate"
-                  type="date"
-                  label="Warrenty date"
+                  name="warrantyPeriod"
+                  type="number"
+                  label="Thời gian bảo hành"
                   InputLabelProps={{ shrink: true }}
                />
 

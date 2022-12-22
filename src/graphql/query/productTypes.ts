@@ -49,7 +49,7 @@ const PRODUCT_TYPE = gql`
 					wLAN
 				},
 				price,
-				warrentyDate,
+				warrantyPeriod,
          }
          pageInfo {
             hasNextPage
