@@ -3,4 +3,6 @@ export interface Media {
    fileSize: number
    fileType: string
    id: string
+   createdAt: string
+   updatedAt: string
 }

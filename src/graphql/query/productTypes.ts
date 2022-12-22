@@ -14,7 +14,9 @@ const PRODUCT_TYPE = gql`
 					id,
 					filePath,
 					fileSize,
-					fileType
+					fileType,
+					createdAt,
+					updatedAt
 				},
 				categories {
 					id,

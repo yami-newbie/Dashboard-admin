@@ -20,7 +20,7 @@ import {
    Manufacturer,
    ManufacturerPayLoad
 } from 'models/manufacturer'
-import { DEFAULT_PAGINATION, PageInfo, PaginationParams, Variables_Graphql } from 'models'
+import { DEFAULT_PAGINATION, Media, PageInfo, PaginationParams, Variables_Graphql } from 'models'
 import ManufacturerCreateEditModal from 'components/manufacturer/modal-manufacturer'
 import CREATE_MANUFACTURER from 'graphql/mutation/createManufacturer'
 import UPDATE_MANUFACTURER from 'graphql/mutation/updateManufacturer'
@@ -168,15 +168,15 @@ const Manufacturers = () => {
       enqueueSnackbar('Success', { variant: 'success' })
    }
 
-   const onHandleCreateEditManufacture = async (data: ManufacturerPayLoad, files: File[]) => {
+   const onHandleCreateEditManufacture = async (data: ManufacturerPayLoad, medias: Media[]) => {
       if (data && data.id) {
-         await updateManufacturer({ variables: { input: data, files } })
+         await updateManufacturer({ variables: { input: data, medias } })
 
          refetch()
 
          enqueueSnackbar('Success', { variant: 'success' })
       } else {
-         await createManufacturer({ variables: { input: data, files } })
+         await createManufacturer({ variables: { input: data, medias } })
 
          refetch()
 

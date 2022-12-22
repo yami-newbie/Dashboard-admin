@@ -1,8 +1,8 @@
 import { gql } from 'graphql-tag'
 
 const CREATE_PRODUCT_TYPE = gql`
-   mutation ($input: CreateProductTypeInput, $files: [Upload!]) {
-      createProductType(input: $input, files: $files) {
+   mutation ($input: CreateProductTypeInput, $medias: [MediasInput!]) {
+      createProductType(input: $input, medias: $medias) {
          productTypes {
             id
             name
@@ -18,6 +18,14 @@ const CREATE_PRODUCT_TYPE = gql`
                   id
                   name
                }
+            }
+            medias {
+               id
+               filePath
+               fileType
+               fileSize
+               createdAt
+               updatedAt
             }
          }
       }

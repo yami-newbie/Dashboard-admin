@@ -1,8 +1,8 @@
 import { gql } from 'graphql-tag'
 
 const UPDATE_PRODUCT_TYPE = gql`
-   mutation ($input: UpdateProductTypeInput, $files: [Upload!]) {
-      updateProductType(input: $input, files: $files) {
+   mutation ($input: UpdateProductTypeInput, $mediasIds: [UUID!]) {
+      updateProductType(input: $input, mediasIds: $mediasIds) {
          productTypes {
             id
             name
@@ -18,6 +18,14 @@ const UPDATE_PRODUCT_TYPE = gql`
                   id
                   name
                }
+            },
+            medias {
+               id
+               filePath
+               fileType
+               fileSize
+               createdAt
+               updatedAt
             }
          }
       }
