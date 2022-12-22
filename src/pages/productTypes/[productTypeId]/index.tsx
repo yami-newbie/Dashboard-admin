@@ -126,7 +126,7 @@ function ProductTypePage(props: ProductTypePageProps) {
 
       if (productType.id && productType.id !== '') {
          try {
-            await updateProductType({ variables: { input: productType, medias: medias as Media[] } })
+            await updateProductType({ variables: { input: productType, mediasIds: medias.map(val => val.id) } })
 
             handleCloseAddEdit()
 

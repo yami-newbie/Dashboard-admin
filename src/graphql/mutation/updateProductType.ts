@@ -1,8 +1,8 @@
 import { gql } from 'graphql-tag'
 
 const UPDATE_PRODUCT_TYPE = gql`
-   mutation ($input: UpdateProductTypeInput, $medias: [MediasInput!]) {
-      updateProductType(input: $input, medias: $medias) {
+   mutation ($input: UpdateProductTypeInput, $mediasIds: [UUID!]) {
+      updateProductType(input: $input, mediasIds: $mediasIds) {
          productTypes {
             id
             name
