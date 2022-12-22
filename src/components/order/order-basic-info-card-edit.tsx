@@ -161,7 +161,7 @@ export function OrderBasicInfoCardEdit({ order, onSave, onDelete }: OrderBasicIn
       <Card>
          <LoadingBackdrop open={loading} />
 
-         <CardHeader title="Edit order" />
+         <CardHeader title="Chỉnh sửa đơn hàng" />
          <Divider />
          <CardContent>
             <form onSubmit={handleSubmit(handleSave)}>

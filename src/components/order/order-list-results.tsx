@@ -15,7 +15,7 @@ import {
    Typography
 } from '@mui/material'
 import { SeverityPill } from 'components/severity-pill'
-import { format, parseISO } from 'date-fns'
+import DeleteIcon from '@mui/icons-material/Delete';
 import PencilIcon from 'icons/pencil'
 import { HeadCell, Order, PaginationParams } from 'models'
 import { useState } from 'react'
@@ -70,11 +70,13 @@ const headCells: HeadCell[] = [
 export const OrderListResults = ({
    orderList,
    onSortByColumn,
+   onDeleteOrder,
    ...rest
 }: {
    orderList?: Order[]
    onRowClick?: (order: Order) => void
    onSortByColumn?: Function
+   onDeleteOrder: (id: string) => void
 }) => {
    const [order, setOrder] = useState<'asc' | 'desc'>('asc')
    const [orderBy, setOrderBy] = useState('')
@@ -181,13 +183,18 @@ export const OrderListResults = ({
                         </TableCell>
                         <TableCell align="center">
                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                              <Link href={`/orders/${order.id}/edit`} passHref>
+                              {/* <Link href={`/orders/${order.id}/edit`} passHref>
                                  <Tooltip title="Edit Order" placement="top">
                                     <IconButton size="small">
                                        <PencilIcon width={20} />
                                     </IconButton>
                                  </Tooltip>
-                              </Link>
+                              </Link> */}
+                              <Tooltip title="View Details" placement="top">
+                                 <IconButton size="small" onClick={() => { onDeleteOrder(order.id) }}>
+                                    <DeleteIcon fontSize="small" />
+                                 </IconButton>
+                              </Tooltip>
                               <Link href={`/orders/${order.id}`} passHref>
                                  <Tooltip title="View Details" placement="top">
                                     <IconButton size="small">

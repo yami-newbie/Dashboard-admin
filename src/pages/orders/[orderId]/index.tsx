@@ -104,9 +104,9 @@ function OrderDetailPage(props: OrderDetailPageProps) {
                            color="textSecondary"
                            sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}
                         >
-                           Placed on
+                           Ngày tạo
                            <EventAvailableRoundedIcon />
-                           {moment().format('DD/MM/YYYY HH:mm')}
+                           {moment(order.createdAt || undefined).format('DD/MM/YYYY HH:mm')}
                         </Typography>
                      </Grid>
                   ) : (
@@ -121,11 +121,11 @@ function OrderDetailPage(props: OrderDetailPageProps) {
                   )}
                   {order && (
                      <Grid item sx={{ display: 'flex', gap: 2 }}>
-                        <Link href={`/orders/${orderId}/edit`} passHref>
+                        {/* <Link href={`/orders/${orderId}/edit`} passHref>
                            <Button variant="outlined" endIcon={<PencilIcon width={20} />}>
                               Chỉnh sửa
                            </Button>
-                        </Link>
+                        </Link> */}
 
                         {order.status === 'PROCESSING' && (
                            <ButtonDropdownMenu label="Actions">

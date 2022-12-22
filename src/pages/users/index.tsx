@@ -13,16 +13,18 @@ import {
    Typography
 } from '@mui/material'
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
-import { CustomerQueryParams, DEFAULT_PAGINATION, PaginationParams, User, Variables_Graphql } from 'models'
+import { CustomerQueryParams, DEFAULT_PAGINATION, PaginationParams, RegisterStaffPayload, User, Variables_Graphql } from 'models'
 import { UserListResults, UserListToolbar } from 'components/user'
 import { DashboardLayout } from 'components/layouts'
 import { useQuery } from '@apollo/client'
 import USERS_QUERY from 'graphql/query/users'
 import { number } from 'yup/lib/locale'
+import RegisterStaff from 'components/user/register-staff'
 
 const Users = () => {
    const [isCustomer, setIsCustomer] = useState<string>("null")
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
+   const [isOpenModal, setIsOpenModal] = useState(false)
 
    const [variables, setVariables] = useState<Variables_Graphql>({take: 5})
    
@@ -76,6 +78,14 @@ const Users = () => {
       setIsCustomer(newValue)
    }
 
+   const handleClose = () => {
+      setIsOpenModal(false)
+   }
+
+   const onRegister = (payload: RegisterStaffPayload) => {
+
+   }
+
    return (
       <>
          <Head>
@@ -101,11 +111,11 @@ const Users = () => {
                   <Typography sx={{ m: 1 }} variant="h4">
                      Danh sách người dùng
                   </Typography>
-                  {/* <Box sx={{ m: 1 }}>
-                     <Button startIcon={<DownloadIcon fontSize="small" />} sx={{ mr: 1 }}>
-                        Export
+                  <Box sx={{ m: 1 }}>
+                     <Button sx={{ mr: 1 }} variant="outlined">
+                        Thêm nhân viên
                      </Button>
-                  </Box> */}
+                  </Box>
                </Box>
                <Box sx={{ mt: 1 }}>
                   <Card>
@@ -132,6 +142,7 @@ const Users = () => {
                </Box>
             </Container>
          </Box>
+         <RegisterStaff open={isOpenModal} onClose={handleClose} handleSave={onRegister}/>
       </>
    )
 }

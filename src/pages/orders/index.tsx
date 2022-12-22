@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import {
    Box,
    Card,
@@ -12,6 +12,7 @@ import {
 import { DashboardLayout } from 'components/layouts'
 import { OrderDetailModal } from 'components/order/order-detail'
 import { OrderListResults } from 'components/order/order-list-results'
+import DELETE_ORDER from 'graphql/mutation/deleteOrder'
 import ORDERS_QUERY from 'graphql/query/orders'
 import { DEFAULT_PAGINATION, ManufactureInfo, Manufacturer, Order, PaginationParams, Payment, Product, ProductType, Receipt, ReceiptDetail, User } from 'models'
 import Head from 'next/head'
@@ -50,18 +51,19 @@ export const testOrder = new Order(
    false)
 
 const Orders = () => {
-   const [filters, setFilters] = useState({ status: '', orderBy: 'updatedAt-desc' })
+   const [filters, setFilters] = useState({ status: '' })
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
    const [orderList, setOrderList] = useState<Order[]>(Array(10).fill(testOrder))
+   const [deleteOrder] = useMutation(DELETE_ORDER)
 
-   const { data: _orderList } = useQuery(ORDERS_QUERY)
+   const { data: _orderList } = useQuery(ORDERS_QUERY, { variables: { input: filters } })
 
    useEffect(() => {
-      // if(_orderList) {
-      //    const _data = _orderList.orders
+      if (_orderList) {
+         const _data = _orderList.orders
 
-      //    setOrderList(_data.items || [])
-      // }
+         setOrderList(_data.items || [])
+      }
    }, [_orderList])
 
    const handleLimitChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -80,12 +82,10 @@ const Orders = () => {
       })
    }
 
-   const handleSortOrder = (orderBy: string) => {
-      setPagination(DEFAULT_PAGINATION)
-      setFilters({
-         ...filters,
-         orderBy
-      })
+   const handleDeleteOrder = (id: string) => {
+      if (id) {
+         deleteOrder({ variables: { input: { id } } })
+      }
    }
 
    return (
@@ -111,17 +111,17 @@ const Orders = () => {
                   }}
                >
                   <Typography sx={{ m: 1 }} variant="h4">
-                     Orders
+                     Danh sách đơn hàng
                   </Typography>
                </Box>
                <Box sx={{ mt: 1 }}>
                   <Card>
                      <Tabs value={filters.status} onChange={handleChangeTab}>
-                        <Tab label="All" value="" />
-                        <Tab label="Pending" value="PENDING" />
-                        <Tab label="Processing" value="PROCESSING" />
-                        <Tab label="Deliveried" value="DELIVERIED" />
-                        <Tab label="Canceled" value="CANCELED" />
+                        <Tab label="Tất cả" value="" />
+                        <Tab label="Đang chờ xử lý" value="PENDING" />
+                        <Tab label="Đang xử lý" value="PROCESSING" />
+                        <Tab label="Đã giao hàng" value="DELIVERIED" />
+                        <Tab label="Đã hủy" value="CANCELED" />
                      </Tabs>
                      <Divider />
 
@@ -129,7 +129,7 @@ const Orders = () => {
                         <Box sx={{ width: '100%' }}>
                            <OrderListResults
                               orderList={orderList}
-                              onSortByColumn={handleSortOrder}
+                              onDeleteOrder={handleDeleteOrder}
                            />
                         </Box>
                      </PerfectScrollbar>

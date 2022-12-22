@@ -197,7 +197,7 @@ function ProductTypePage(props: ProductTypePageProps) {
                   alignItems="flex-start"
                   spacing={2}
                >
-                  <Grid item xs={8}>
+                  <Grid item xs={8} md={12} sm={12}>
                      {productType ? (
                         <ProductTypeAddEditCard
                            data={productType}
@@ -211,7 +211,7 @@ function ProductTypePage(props: ProductTypePageProps) {
                         />
                      )}
                   </Grid>
-                  <Grid item xs={4} hidden={error ? true : false}>
+                  <Grid item xs={4} md={12} sm={12} hidden={error ? true : false}>
                      <Box>
                         <ProductList data={productList} onHandleAddButton={onOpenModal} />
                      </Box>
