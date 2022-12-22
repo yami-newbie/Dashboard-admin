@@ -18,6 +18,9 @@ import { XCircle as XCircleIcon } from '../../icons/x-circle'
 import { Logo } from '../logo'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { NavItem } from 'components/nav-item'
+import FactoryIcon from '@mui/icons-material/Factory'
+import CategoryIcon from '@mui/icons-material/Category'
+import PaymentsIcon from '@mui/icons-material/Payments'
 
 const items = [
    {
@@ -28,7 +31,7 @@ const items = [
    {
       href: '/users',
       icon: <UsersIcon fontSize="small" />,
-      title: 'Người dùng'
+      title: 'Tài khoản'
    },
    {
       href: '/orders',
@@ -47,17 +50,17 @@ const items = [
    // },
    {
       href: '/manufacturers',
-      icon: <UserIcon fontSize="small" />,
+      icon: <FactoryIcon fontSize="small" />,
       title: 'Nhà sản xuất'
    },
    {
       href: '/categories',
-      icon: <UserIcon fontSize="small" />,
+      icon: <CategoryIcon fontSize="small" />,
       title: 'Danh mục'
    },
    {
       href: '/paymentMethods',
-      icon: <UserIcon fontSize="small" />,
+      icon: <PaymentsIcon fontSize="small" />,
       title: 'Phương thức thanh toán'
    },
    {
