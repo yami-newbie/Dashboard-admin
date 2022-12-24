@@ -138,7 +138,7 @@ function ProductTypePage(props: ProductTypePageProps) {
          }
       } else {
          try {
-            await createProductType({ variables: { input: productType, medias: medias as Media[] } })
+            await createProductType({ variables: { input: productType, mediasIds: medias.map(val => val.id) } })
 
             handleCloseAddEdit()
 
