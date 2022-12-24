@@ -1,8 +1,8 @@
 import { gql } from 'graphql-tag'
 
 const CREATE_PRODUCT_TYPE = gql`
-   mutation ($input: CreateProductTypeInput, $medias: [MediasInput!]) {
-      createProductType(input: $input, medias: $medias) {
+   mutation ($input: CreateProductTypeInput, $mediasIds: [UUID!]) {
+      createProductType(input: $input, mediasIds: $mediasIds) {
          productTypes {
             id
             name
