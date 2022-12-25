@@ -18,7 +18,7 @@ const UPDATE_PRODUCT_TYPE = gql`
                   id
                   name
                }
-            },
+            }
             medias {
                id
                filePath
@@ -27,6 +27,11 @@ const UPDATE_PRODUCT_TYPE = gql`
                createdAt
                updatedAt
             }
+            tags {
+               id
+               name
+            }
+            totalAmount
          }
       }
    }

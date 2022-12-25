@@ -57,7 +57,10 @@ function ProductTypePage(props: ProductTypePageProps) {
    useEffect(() => {
       if (data) {
          console.log(data)
-         setProductType(data.productTypes.items[0])
+         setProductType({
+            ...data.productTypes.items[0],
+            tags: data.productTypes.items[0].tags?.map((val: any) => val.name)
+         })
          loadProduct()
       }
    }, [data, loadProduct])
@@ -122,6 +125,18 @@ function ProductTypePage(props: ProductTypePageProps) {
       // uploadMedias({ variables: { files } })
 
       console.log(productType);
+
+      productType = {
+         id: productType?.id,
+         name: productType?.name,
+         description: productType?.description,
+         categoriesIds: productType?.categoriesIds,
+         price: productType?.price,
+         warrantyPeriod: productType?.warrantyPeriod,
+         metaDatas: productType?.metaDatas,
+         tags: productType?.tags,
+         medias: productType?.medias,
+      }
       
 
       if (productType.id && productType.id !== '') {

@@ -75,7 +75,9 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
    const [categoriesOptions, setCategoriesOptions] = useState<Category[]>([])
    const [manufacturersOptions, setManufacturersOptions] = useState<Manufacturer[]>([])
    const [medias, setMedias] = useState<Media[]>([])
+   const [tags, setTags] = useState<string[]>([])
    const [newestmedias, setNewestmedias] = useState<Media[]>([])
+   const [isCreate, setIsCreate] = useState<boolean>(true)
    const [deleteMedias] = useMutation(DELETE_MEDIAS)
 
    useEffect(() => {
@@ -99,7 +101,19 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
    } = form
 
    const handleSaveProduct = async (values: ProductTypePayload) => {
-      if (onSubmit) await onSubmit(values, medias)
+      let productType = {
+         id: values?.id,
+         name: values?.name,
+         description: values?.description,
+         categoriesIds: values?.categoriesIds,
+         price: values?.price,
+         warrantyPeriod: values?.warrantyPeriod,
+         metaDatas: values?.metaDatas,
+         tags: tags,
+         medias: values?.medias,
+      } as ProductTypePayload;
+
+      if (onSubmit) await onSubmit(productType, medias)
    }
 
    useEffect(() => {
@@ -141,6 +155,8 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
             createdAt: val.createdAt,
             updatedAt: val.updatedAt
          })));
+         setTags(data?.tags)
+         setIsCreate(false);
       } else {
          reset({
             name: '',
@@ -168,7 +184,8 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
             },
             price: 0,
             tags: [],
-         })
+         });
+         setIsCreate(true);
       }
    }, [data, reset])
 
@@ -220,6 +237,17 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                   control={control}
                   label="Thời gian bảo hành"
                   name="warrantyPeriod"
+                  // InputLabelProps={{ shrink: true }}
+               />
+
+               <CustomTextField
+                  type="number"
+                  disabled={true}
+                  hidden={isCreate}
+                  control={control}
+                  value={data?.totalAmount}
+                  label="Tổng số lượng"
+                  name="totalAmount"
                   // InputLabelProps={{ shrink: true }}
                />
 
@@ -384,8 +412,8 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                />
 
                <TagsInput
-                  value={data?.tags}
-                  onChange={(tags: string[]) => {setValue('tags', tags)}}
+                  value={tags}
+                  onChange={(tagList: string[]) => {setTags(tagList)}}
                   name="tags"
                   placeHolder="enter tags"
                   disabled={isSubmitting}
