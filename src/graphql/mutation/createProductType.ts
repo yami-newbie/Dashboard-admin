@@ -27,6 +27,11 @@ const CREATE_PRODUCT_TYPE = gql`
                createdAt
                updatedAt
             }
+            tags {
+               id
+               name
+            }
+            totalAmount
          }
       }
    }

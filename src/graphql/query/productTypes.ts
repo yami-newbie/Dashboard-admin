@@ -52,6 +52,11 @@ const PRODUCT_TYPE = gql`
 				},
 				price,
 				warrantyPeriod,
+				tags {
+					id
+					name
+				}
+				totalAmount
          }
          pageInfo {
             hasNextPage

@@ -9,6 +9,7 @@ const CREATE_PRODUCT = gql`
                id
                name
             }
+            stockAmount
          }
       }
    }

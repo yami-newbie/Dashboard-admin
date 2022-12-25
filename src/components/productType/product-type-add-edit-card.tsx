@@ -76,6 +76,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
    const [manufacturersOptions, setManufacturersOptions] = useState<Manufacturer[]>([])
    const [medias, setMedias] = useState<Media[]>([])
    const [newestmedias, setNewestmedias] = useState<Media[]>([])
+   const [isCreate, setIsCreate] = useState<boolean>(true)
    const [deleteMedias] = useMutation(DELETE_MEDIAS)
 
    useEffect(() => {
@@ -141,6 +142,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
             createdAt: val.createdAt,
             updatedAt: val.updatedAt
          })));
+         setIsCreate(false);
       } else {
          reset({
             name: '',
@@ -168,7 +170,8 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
             },
             price: 0,
             tags: [],
-         })
+         });
+         setIsCreate(true);
       }
    }, [data, reset])
 
@@ -220,6 +223,17 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                   control={control}
                   label="Thời gian bảo hành"
                   name="warrantyPeriod"
+                  // InputLabelProps={{ shrink: true }}
+               />
+
+               <CustomTextField
+                  type="number"
+                  disabled={true}
+                  hidden={isCreate}
+                  control={control}
+                  value={data?.totalAmount}
+                  label="Tổng số lượng"
+                  name="totalAmount"
                   // InputLabelProps={{ shrink: true }}
                />
 
