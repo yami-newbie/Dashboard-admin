@@ -10,23 +10,23 @@ import {
    Typography
 } from '@mui/material'
 import { DashboardLayout } from 'components/layouts'
-import { OrderDetailModal } from 'components/order/order-detail'
 import { OrderListResults } from 'components/order/order-list-results'
 import DELETE_ORDER from 'graphql/mutation/deleteOrder'
 import ORDERS_QUERY from 'graphql/query/orders'
-import { DEFAULT_PAGINATION, ManufactureInfo, Manufacturer, Order, PaginationParams, Payment, Product, ProductType, Receipt, ReceiptDetail, User } from 'models'
+import { DEFAULT_PAGINATION, Order, OrderStatus, PaginationParams } from 'models'
 import Head from 'next/head'
+import { useSnackbar } from 'notistack'
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
-
 const Orders = () => {
-   const [filters, setFilters] = useState({ status: '' })
+   const { enqueueSnackbar } = useSnackbar()
+   const [filters, setFilters] = useState<{ status: null | string }>({ status: null })
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
    const [orderList, setOrderList] = useState<Order[]>([])
    const [deleteOrder] = useMutation(DELETE_ORDER)
 
-   const { data: _orderList } = useQuery(ORDERS_QUERY, { variables: { input: { ...filters, isDeleted: false } } })
+   const { data: _orderList } = useQuery(ORDERS_QUERY, { variables: { input: { ...filters } } })
 
    useEffect(() => {
       if (_orderList) {
@@ -54,9 +54,13 @@ const Orders = () => {
 
    const handleDeleteOrder = (id: string) => {
       if (id) {
-         deleteOrder({ variables: { input: { id } } })
+         deleteOrder({ variables: { input: { id } } }).then((res) => {
+            enqueueSnackbar("Xóa đơn hàng thành công", { variant: "success" })
+         })
       }
    }
+
+   
 
    return (
       <>
@@ -87,11 +91,14 @@ const Orders = () => {
                <Box sx={{ mt: 1 }}>
                   <Card>
                      <Tabs value={filters.status} onChange={handleChangeTab}>
-                        <Tab label="Tất cả" value="" />
-                        <Tab label="Đang chờ xử lý" value="PENDING" />
+                        <Tab label="Tất cả" value={null} />
+                        {
+                           Object.keys(OrderStatus).map(item => <Tab {...OrderStatus[item]}/> )
+                        }
+                        {/* <Tab label="Đang chờ xử lý" value="PENDING" />
                         <Tab label="Đang xử lý" value="PROCESSING" />
                         <Tab label="Đã giao hàng" value="DELIVERIED" />
-                        <Tab label="Đã hủy" value="CANCELED" />
+                        <Tab label="Đã hủy" value="CANCELED" /> */}
                      </Tabs>
                      <Divider />
 
@@ -103,12 +110,18 @@ const Orders = () => {
                            />
                         </Box>
                      </PerfectScrollbar>
+                     <Divider />
+                     
                      <TablePagination
                         component="div"
+                        labelRowsPerPage="Số hàng mỗi trang"
+                        labelDisplayedRows={({ from, to, count }) => {
+                           return `${from}–${to} trên ${count !== -1 ? count : `nhiều hơn ${to}`}`;
+                        }}
                         count={pagination.totalCount}
                         onPageChange={handlePageChange}
                         onRowsPerPageChange={handleLimitChange}
-                        page={pagination.currentPage - 1}
+                        page={pagination.currentPage}
                         rowsPerPage={pagination.pageSize}
                         rowsPerPageOptions={[5, 10, 25]}
                      />

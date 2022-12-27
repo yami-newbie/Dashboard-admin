@@ -15,3 +15,56 @@ export class Order {
       public updatedAt: string = ''
    ) {}
 }
+
+export class OrderPayload {
+   constructor(
+      public id: string = '',
+      public status: string = '',
+      public addressFrom: string = '',
+      public addressTo: string = '',
+   ) { }
+}
+
+export const OrderStatus = {
+   accept: {
+      value: "accept",
+      label: "Đã xác nhận",
+      key: 1
+   },
+   packaging: {
+      value: "packaging",
+      label: "Đang đóng gói",
+      key: 2
+   },
+   shipping: {
+      value: "shipping",
+      label: "Đang giao",
+      key: 3
+   },
+   receive: {
+      value: "receive",
+      label: "Đã giao",
+      key: 4
+   },
+   done: {
+      value: "done",
+      label: "Đã thanh toán",
+      key: 5
+   },
+   cancel: {
+      value: "cancel",
+      label: "Đã hủy",
+      key: 6
+   }
+} as Status
+
+
+export interface Status {
+   [name: string]: {
+      value: string,
+      label: string,
+      key: number
+   }
+}
+
+export const StatusList = ["accept", "packaging", "shipping", "receive", "done", "cancel"]

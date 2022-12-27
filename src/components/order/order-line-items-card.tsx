@@ -38,7 +38,7 @@ export function OrderLineItemsCard({ order }: OrderLineItemsCardProps) {
                </TableHead>
                <TableBody>
                   {order
-                     ? order.receipts.receiptDetails.map(item => (
+                     ? (order.receipts?.receiptDetails || []).map(item => (
                         <TableRow hover key={item?.productId}>
                            <TableCell>
                               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
