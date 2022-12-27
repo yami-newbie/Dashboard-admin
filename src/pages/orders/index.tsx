@@ -93,7 +93,7 @@ const Orders = () => {
                      <Tabs value={filters.status} onChange={handleChangeTab}>
                         <Tab label="Tất cả" value={null} />
                         {
-                           Object.keys(OrderStatus).map(item => <Tab {...OrderStatus[item]}/> )
+                           Object.keys(OrderStatus).map((item, index) => <Tab key={index} {...OrderStatus[item]}/> )
                         }
                         {/* <Tab label="Đang chờ xử lý" value="PENDING" />
                         <Tab label="Đang xử lý" value="PROCESSING" />

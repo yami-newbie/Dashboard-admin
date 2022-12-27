@@ -38,7 +38,7 @@ export function OrderBasicInfoCard({ order, cancelOrder, updateOrder }: OrderBas
          id: order.id,
          addressFrom: order.addressFrom,
          addressTo: order.addressTo,
-         status: OrderStatus[StatusList[status?.key % 6]].value
+         status: OrderStatus[StatusList[status?._key % 6]].value
       } as OrderPayload)
    }
    return (
@@ -160,7 +160,7 @@ export function OrderBasicInfoCard({ order, cancelOrder, updateOrder }: OrderBas
                            {status?.label}
                         </Typography>
                         {
-                           OrderStatus[StatusList[status?.key % 6]].value !== 'cancel' ?
+                           OrderStatus[StatusList[status?._key % 6]].value !== 'cancel' ?
                               <>
                                  <ArrowForwardIcon fontSize="small" />
 
@@ -175,10 +175,10 @@ export function OrderBasicInfoCard({ order, cancelOrder, updateOrder }: OrderBas
                                           receive: '#76ff03',
                                           done: '#f50057',
                                           cancel: '#d500f9'
-                                       }[OrderStatus[StatusList[status?.key % 6]].value || 'accept']
+                                       }[OrderStatus[StatusList[status?._key % 6]].value || 'accept']
                                     }}
                                  >
-                                    {OrderStatus[StatusList[status?.key % 6]]?.label}
+                                    {OrderStatus[StatusList[status?._key % 6]]?.label}
                                  </Button>
                               </> : null
                         }
