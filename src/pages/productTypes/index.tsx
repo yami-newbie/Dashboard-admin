@@ -28,7 +28,10 @@ const ProductTypes = () => {
 
    const variables = useMemo(
       () => ({
-         input: {...filters, isDeleted: false},
+         input: {
+            ...filters,
+            isDeleted: false
+         },
          ...paginationQuery
       }),
       [filters, paginationQuery]

@@ -17,7 +17,9 @@ type Props = {
    onSubmit: (values: ProductPayLoad) => Promise<void>
 }
 
-const schema = yup.object().shape({})
+const schema = yup.object({
+   stockAmount: yup.number().integer(),
+}).shape({})
 
 const ProductCreateEditModal = (props: Props) => {
    const { data, onClose, isOpen, onSubmit } = props
@@ -50,12 +52,14 @@ const ProductCreateEditModal = (props: Props) => {
          reset({
             id: data?.id || '',
             manufactureInfosId: data?.manufactureInfosId || '',
-            productTypesId: data?.productTypesId || ''
+            productTypesId: data?.productTypesId || '',
+            stockAmount: data?.stockAmount || 0,
          })
       } else {
          reset({
             productTypesId: data?.productTypesId || '',
-            manufactureInfosId: ''
+            manufactureInfosId: '',
+            stockAmount: 0,
          })
       }
    }, [data, reset])
@@ -83,6 +87,14 @@ const ProductCreateEditModal = (props: Props) => {
                            : item.id
                      })
                   )}
+               />
+
+               <CustomTextField
+                  disabled={isSubmitting}
+                  control={control}
+                  name="stockAmount"
+                  label="Stock Amount"
+                  type="number"
                />
             </form>
          </DialogContent>

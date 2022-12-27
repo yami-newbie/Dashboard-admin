@@ -1,8 +1,8 @@
 import { gql } from 'graphql-tag'
 
 const CREATE_MANUFACTURER = gql`
-   mutation ($input: CreateManufacturerInput!, $files: [Upload!]) {
-      createManufacturer(input: $input, files: $files) {
+   mutation ($input: CreateManufacturerInput!, $medias: [MediasInput!]) {
+      createManufacturer(input: $input, medias: $medias) {
          manufacturers {
             id
             name

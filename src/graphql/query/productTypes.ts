@@ -14,7 +14,9 @@ const PRODUCT_TYPE = gql`
 					id,
 					filePath,
 					fileSize,
-					fileType
+					fileType,
+					createdAt,
+					updatedAt
 				},
 				categories {
 					id,
@@ -50,6 +52,11 @@ const PRODUCT_TYPE = gql`
 				},
 				price,
 				warrantyPeriod,
+				tags {
+					id
+					name
+				}
+				totalAmount
          }
          pageInfo {
             hasNextPage

@@ -8,6 +8,7 @@ export class Product {
       public id: string = '',
       public manufactureInfosId: string = '',
       public manufactureInfos: ManufactureInfo = new ManufactureInfo(),
+      public stockAmount: number = 0,
       public deletedAt: string = '',
       public updatedAt: string = '',
       public productTypesId: string = '',
@@ -19,7 +20,8 @@ export class ProductPayLoad {
    constructor(
       public id: string | null = null,
       public manufactureInfosId: string = '',
-      public productTypesId: string = ''
+      public productTypesId: string = '',
+      public stockAmount: number = 0,
    ) {}
 }
 export class ProductTypePayload {
@@ -32,6 +34,7 @@ export class ProductTypePayload {
       public warrantyPeriod: number = 0,
       public metaDatas: MetaDataPayLoad = new MetaDataPayLoad(),
       public tags: string[] = [],
+      public medias: Media[] = [],
    ) {}
 }
 
@@ -54,5 +57,6 @@ export class ProductType {
       public updatedAt: string = '',
       public medias: Media[] = [],
       public tags: string[] = [],
+      public totalAmount: number = 0,
    ) {}
 }

@@ -1,7 +1,7 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Box, Button, Container, Grid } from '@mui/material'
 import { DashboardLayout } from 'components/layouts'
-import { Order, Product, ProductPayLoad, ProductType, ProductTypePayload } from 'models'
+import { Media, Order, Product, ProductPayLoad, ProductType, ProductTypePayload } from 'models'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
@@ -57,7 +57,10 @@ function ProductTypePage(props: ProductTypePageProps) {
    useEffect(() => {
       if (data) {
          console.log(data)
-         setProductType(data.productTypes.items[0])
+         setProductType({
+            ...data.productTypes.items[0],
+            tags: data.productTypes.items[0].tags?.map((val: any) => val.name)
+         })
          loadProduct()
       }
    }, [data, loadProduct])
@@ -118,15 +121,27 @@ function ProductTypePage(props: ProductTypePageProps) {
       router.push('/productTypes')
    }
 
-   const handleAddEdit = async (productType: ProductTypePayload, files: FileList | null) => {
+   const handleAddEdit = async (productType: ProductTypePayload, medias: Media[]) => {
       // uploadMedias({ variables: { files } })
 
       console.log(productType);
+
+      productType = {
+         id: productType?.id,
+         name: productType?.name,
+         description: productType?.description,
+         categoriesIds: productType?.categoriesIds,
+         price: productType?.price,
+         warrantyPeriod: productType?.warrantyPeriod,
+         metaDatas: productType?.metaDatas,
+         tags: productType?.tags,
+         medias: productType?.medias,
+      }
       
 
       if (productType.id && productType.id !== '') {
          try {
-            await updateProductType({ variables: { input: productType, files: files || [] } })
+            await updateProductType({ variables: { input: productType, mediasIds: medias.map(val => val.id) } })
 
             handleCloseAddEdit()
 
@@ -138,7 +153,7 @@ function ProductTypePage(props: ProductTypePageProps) {
          }
       } else {
          try {
-            await createProductType({ variables: { input: productType, files: files || [] } })
+            await createProductType({ variables: { input: productType, mediasIds: medias.map(val => val.id) } })
 
             handleCloseAddEdit()
 
