@@ -27,7 +27,6 @@ function OrderDetailPage(props: OrderDetailPageProps) {
    const [updateOrder] = useMutation(UPDATE_ORDER)
 
    const [order, setOrder] = useState(new Order())
-   const [updateOrder] = useMutation(UPDATE_ORDER)
 
    useEffect(() => {
       if (_order) {

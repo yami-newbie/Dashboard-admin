@@ -63,7 +63,7 @@ const Users = () => {
       if(error) {
          enqueueSnackbar("Có lỗi xảy ra khi tạo tài khoản", { variant: 'error' })
       }
-   }, [error])
+   }, [error, enqueueSnackbar])
 
    const handleLimitChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
       setPagination({ ...pagination, pageSize: Number.parseInt(event.target.value) })
