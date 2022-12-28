@@ -22,7 +22,8 @@ query($input: OrdersFilterInput, $skip: Int, $take: Int){
         }
         payments {
           id
-          customerPayments {
+          paymentTotal
+         customerPayments {
             id
             paymentMethods {
               id
@@ -41,6 +42,59 @@ query($input: OrdersFilterInput, $skip: Int, $take: Int){
           filePath
           fileSize
           fileType
+          price
+          amount
+          price
+          amount
+          price
+          amount
+         products {
+            id
+           manufactureInfos {
+              id
+              manufacturedAt
+             manufacturers {
+                id
+                name
+              }
+            }
+           productTypes {
+              id
+              name
+              description
+              price
+             categories {
+                id
+                name
+              }
+             medias {
+                id
+                filePath
+              }
+             metaDatas {
+                id
+                operatingSystem
+                ports
+                audio
+                camera
+                weight
+                dimensions
+               manufacturers {
+                  id
+                  name
+                }
+                publishedDate
+                color
+                cPUSeries
+                gPUSeries
+                ram
+                screenResolution
+                hardDrive
+                battery
+                wLAN
+              }
+            }
+          }
         }
        }
        createdAt
