@@ -1,1 +1,1 @@
-export const OrderStatus = ['PENDING', 'PROCESSING', 'DELIVERIED', 'REFUNDED', 'CANCELED']
+export const OrderStatus = ['accept', 'packaging', 'shipping', 'receive', 'done', 'cancel']

@@ -248,7 +248,7 @@ export function ProductTypeAddEditModal({ data, onClose, onSubmit }: ProductType
                   value={data?.totalAmount}
                   label="Tổng số lượng"
                   name="totalAmount"
-                  // InputLabelProps={{ shrink: true }}
+                  InputLabelProps={{ shrink: true }}
                />
 
                <FileUpload

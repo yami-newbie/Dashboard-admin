@@ -93,7 +93,7 @@ export function OrderBasicInfoCard({ order }: OrderBasicInfoCardProps) {
                      </Typography>
                      <Box sx={{ flex: 1 }}>
                         <Typography variant="body2" color="text">
-                           {order.receipts.payments.customerPayment.paymentMethods.name}
+                           {order.receipts.payments.customerPayments.paymentMethods.name}
                         </Typography>
                      </Box>
                   </ListItem>
@@ -109,7 +109,7 @@ export function OrderBasicInfoCard({ order }: OrderBasicInfoCardProps) {
                      </Typography>
                      <Box sx={{ flex: 1 }}>
                         <Typography variant="body2" color="text">
-                           {order.receipts.totalPrice.toFixed(2)}{order.receipts.payments.customerPayment.paymentMethods.currency}
+                           {order.receipts.totalPrice.toFixed(2)}{order.receipts.payments.customerPayments.paymentMethods.currency}
                         </Typography>
                      </Box>
                   </ListItem>

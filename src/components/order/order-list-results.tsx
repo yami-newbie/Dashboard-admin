@@ -123,7 +123,7 @@ export const OrderListResults = ({
                         <TableCell align="left" sx={{ minWidth: 200 }}>
                            <Stack spacing={2} alignItems="center" direction="row">
                               <Link href={`/users/${order?.user?.id}`} passHref>
-                                 <Avatar src={order.user.medias?.[0]?.filePath} />
+                                 <Avatar src={order.user?.medias?.[0]?.filePath} alt="/static/images/no-image.jpg"/>
                               </Link>
                               <Typography
                                  sx={{
@@ -135,7 +135,7 @@ export const OrderListResults = ({
                                  }}
                                  variant="body2"
                               >
-                                 {order.user.fullname}
+                                 {order.user?.fullname}
                               </Typography>
                            </Stack>
                         </TableCell>
@@ -163,9 +163,9 @@ export const OrderListResults = ({
                            {moment().format('DD/MM/YYYY')}
                         </TableCell>
                         <TableCell align="center" sx={{ pr: 5 }}>
-                           {order.receipts.totalPrice.toFixed(2)}{order?.receipts?.payments?.customerPayment?.paymentMethods?.currency}
+                           {order.receipts.totalPrice.toFixed(2)}{order?.receipts?.payments?.customerPayments?.paymentMethods?.currency}
                         </TableCell>
-                        <TableCell align="center">{order?.receipts?.payments?.customerPayment?.paymentMethods?.name}</TableCell>
+                        <TableCell align="center">{order?.receipts?.payments?.customerPayments?.paymentMethods?.name}</TableCell>
                         <TableCell align="center" sx={{ minWidth: 200 }}>
                            <SeverityPill
                               color={
@@ -190,11 +190,6 @@ export const OrderListResults = ({
                                     </IconButton>
                                  </Tooltip>
                               </Link> */}
-                              <Tooltip title="View Details" placement="top">
-                                 <IconButton size="small" onClick={() => { onDeleteOrder(order.id) }}>
-                                    <DeleteIcon fontSize="small" />
-                                 </IconButton>
-                              </Tooltip>
                               <Link href={`/orders/${order.id}`} passHref>
                                  <Tooltip title="View Details" placement="top">
                                     <IconButton size="small">
@@ -202,6 +197,11 @@ export const OrderListResults = ({
                                     </IconButton>
                                  </Tooltip>
                               </Link>
+                              <Tooltip title="Delete Order" placement="top">
+                                 <IconButton size="small" onClick={() => { onDeleteOrder(order.id) }}>
+                                    <DeleteIcon fontSize="small" />
+                                 </IconButton>
+                              </Tooltip>
                            </Box>
                         </TableCell>
                      </TableRow>

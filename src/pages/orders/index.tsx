@@ -21,7 +21,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 
 
 const Orders = () => {
-   const [filters, setFilters] = useState({ status: '' })
+   const [filters, setFilters] = useState<any>({ isDeleted: false })
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
    const [orderList, setOrderList] = useState<Order[]>([])
    const [deleteOrder] = useMutation(DELETE_ORDER)
@@ -46,9 +46,13 @@ const Orders = () => {
 
    const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
       setPagination(DEFAULT_PAGINATION)
-      setFilters({
+      if (newValue !== "") setFilters({
          ...filters,
          status: newValue
+      })
+      else setFilters({
+         ...filters,
+         status: null
       })
    }
 
@@ -86,12 +90,14 @@ const Orders = () => {
                </Box>
                <Box sx={{ mt: 1 }}>
                   <Card>
-                     <Tabs value={filters.status} onChange={handleChangeTab}>
+                     <Tabs value={filters?.status} onChange={handleChangeTab}>
                         <Tab label="Tất cả" value="" />
-                        <Tab label="Đang chờ xử lý" value="PENDING" />
-                        <Tab label="Đang xử lý" value="PROCESSING" />
-                        <Tab label="Đã giao hàng" value="DELIVERIED" />
-                        <Tab label="Đã hủy" value="CANCELED" />
+                        <Tab label="Đã chấp nhận" value="accept" />
+                        <Tab label="Đang xử lý" value="packaging" />
+                        <Tab label="Đang giao hàng" value="shipping" />
+                        <Tab label="Đang nhận hàng" value="receive" />
+                        <Tab label="Đã nhận hàng" value="done" />
+                        <Tab label="Đã hủy" value="cancel" />
                      </Tabs>
                      <Divider />
 

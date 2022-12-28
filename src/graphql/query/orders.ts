@@ -14,7 +14,35 @@ query($input: OrdersFilterInput, $skip: Int, $take: Int){
        status
        addressFrom
        addressTo
+       receipts {
+        totalPrice
+        receiptDetails {
+          id
+          productsId
+        }
+        payments {
+          id
+          customerPayments {
+            id
+            paymentMethods {
+              id
+              currency
+              name
+            }
+          }
+        }
+       }
        receiptsId
+       users {
+        id
+        fullname
+        medias {
+          id
+          filePath
+          fileSize
+          fileType
+        }
+       }
        createdAt
        updatedAt
        deletedAt

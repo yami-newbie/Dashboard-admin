@@ -15,10 +15,11 @@ import useSWR from 'swr'
 import { downloadFile } from 'utils'
 import Head from 'next/head'
 import { useSnackbar } from 'notistack'
-import { useQuery } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import USERS_QUERY from 'graphql/query/users'
 import moment from 'moment'
 import ORDERS_QUERY from 'graphql/query/orders'
+import UPDATE_ORDER from 'graphql/mutation/updateOrder'
 
 export interface OrderDetailPageProps {}
 function OrderDetailPage(props: OrderDetailPageProps) {
@@ -29,6 +30,7 @@ function OrderDetailPage(props: OrderDetailPageProps) {
    const { data: _order } = useQuery(ORDERS_QUERY, { variables: { input: { ids: [orderId] }} })
 
    const [order, setOrder] = useState(new Order())
+   const [updateOrder] = useMutation(UPDATE_ORDER)
 
    useEffect(() => {
       if(_order) {
@@ -40,6 +42,8 @@ function OrderDetailPage(props: OrderDetailPageProps) {
    const handleUpdateOrder = async (payload: Partial<Order>) => {
       if (typeof orderId === 'string') {
          try {
+            let newOrder = await updateOrder({ variables: { input: payload } });
+            console.log(newOrder);
          } catch (error: any) {
             enqueueSnackbar(error.message, {
                variant: 'error'
@@ -47,12 +51,41 @@ function OrderDetailPage(props: OrderDetailPageProps) {
          }
       }
    }
-
+   const handleReorderOrder = async () => {
+      await handleUpdateOrder({
+         id: order.id,
+         status: 'accept' 
+      })
+   }
+   const handlePackagingOrder = async () => {
+      await handleUpdateOrder({ 
+         id: order.id,
+         status: 'packaging' 
+      })
+   }
    const handleApproveOrder = async () => {
-      await handleUpdateOrder({ status: 'DELIVERIED' })
+      await handleUpdateOrder({ 
+         id: order.id,
+         status: 'shipping' 
+      })
+   }
+   const handleShippingOrder = async () => {
+      await handleUpdateOrder({ 
+         id: order.id,
+         status: 'receive' 
+      })
+   }
+   const handleCompleteOrder = async () => {
+      await handleUpdateOrder({ 
+         id: order.id,
+         status: 'done' 
+      })
    }
    const handleRejectOrder = async () => {
-      await handleUpdateOrder({ status: 'CANCELED' })
+      await handleUpdateOrder({ 
+         id: order.id,
+         status: 'cancel' 
+      })
    }
 
    const handleExportInvoice = async () => {
@@ -133,8 +166,21 @@ function OrderDetailPage(props: OrderDetailPageProps) {
                               Chỉnh sửa
                            </Button>
                         </Link> */}
-
-                        {order.status === 'PROCESSING' && (
+                        {order.status === 'accept' && (
+                           <ButtonDropdownMenu label="Actions">
+                              <MenuItem
+                                 onClick={handlePackagingOrder}
+                                 sx={{
+                                    color: 'primary'
+                                 }}
+                              >
+                                 Packaging
+                              </MenuItem>
+                              <MenuItem onClick={handleRejectOrder}>Reject</MenuItem>
+                              <MenuItem onClick={handleExportInvoice}>Export Invoice</MenuItem>
+                           </ButtonDropdownMenu>
+                        )}
+                        {order.status === 'packaging' && (
                            <ButtonDropdownMenu label="Actions">
                               <MenuItem
                                  onClick={handleApproveOrder}
@@ -148,9 +194,57 @@ function OrderDetailPage(props: OrderDetailPageProps) {
                               <MenuItem onClick={handleExportInvoice}>Export Invoice</MenuItem>
                            </ButtonDropdownMenu>
                         )}
-                        {order.status === 'DELIVERIED' && (
+                        {order.status === 'shipping' && (
                            <ButtonDropdownMenu label="Actions">
+                              <MenuItem
+                                 onClick={handleShippingOrder}
+                                 sx={{
+                                    color: 'primary'
+                                 }}
+                              >
+                                 Shipping
+                              </MenuItem>
+                              <MenuItem onClick={handleRejectOrder}>Reject</MenuItem>
                               <MenuItem onClick={handleExportInvoice}>Export Invoice</MenuItem>
+                           </ButtonDropdownMenu>
+                        )}
+                        {order.status === 'receive' && (
+                           <ButtonDropdownMenu label="Actions">
+                              <MenuItem
+                                 onClick={handleCompleteOrder}
+                                 sx={{
+                                    color: 'primary'
+                                 }}
+                              >
+                                 Received
+                              </MenuItem>
+                              <MenuItem onClick={handleRejectOrder}>Reject</MenuItem>
+                              <MenuItem onClick={handleExportInvoice}>Export Invoice</MenuItem>
+                           </ButtonDropdownMenu>
+                        )}
+                        {order.status === 'done' && (
+                           <ButtonDropdownMenu label="Actions">
+                              <MenuItem
+                                 onClick={handleShippingOrder}
+                                 sx={{
+                                    color: 'primary'
+                                 }}
+                              >
+                                 Re Shipping
+                              </MenuItem>
+                              <MenuItem onClick={handleExportInvoice}>Export Invoice</MenuItem>
+                           </ButtonDropdownMenu>
+                        )}
+                        {order.status === 'cancel' && (
+                           <ButtonDropdownMenu label="Actions">
+                              <MenuItem
+                                 onClick={handleReorderOrder}
+                                 sx={{
+                                    color: 'primary'
+                                 }}
+                              >
+                                 Reorder
+                              </MenuItem>
                            </ButtonDropdownMenu>
                         )}
                      </Grid>
