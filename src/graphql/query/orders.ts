@@ -3,49 +3,45 @@ import { gql } from 'graphql-tag';
 
 const ORDERS_QUERY = gql`
 query($input: OrdersFilterInput, $skip: Int, $take: Int){
-   orders(input: $input, skip: $skip, take: $take){
-     totalCount
+  orders(input: $input, skip: $skip, take: $take){
+    totalCount
      pageInfo {
-       hasNextPage
-       hasPreviousPage
-     }
+      hasNextPage
+      hasPreviousPage
+    }
      items {
-       id
-       status
-       addressFrom
-       addressTo
+      id
+      status
+      addressFrom
+      addressTo
+      receiptsId
+      createdAt
+      updatedAt
+      deletedAt
        receipts {
+        id
+        hashed
         totalPrice
-        receiptDetails {
-          id
-          productsId
-        }
-        payments {
+        vATPercentage
+       payments {
           id
           paymentTotal
          customerPayments {
             id
-            paymentMethods {
+            address
+           users {
               id
-              currency
+            }
+           paymentMethods {
+              id
               name
+              description
+              currency
             }
           }
         }
-       }
-       receiptsId
-       users {
-        id
-        fullname
-        medias {
+       receiptDetails {
           id
-          filePath
-          fileSize
-          fileType
-          price
-          amount
-          price
-          amount
           price
           amount
          products {
@@ -96,13 +92,10 @@ query($input: OrdersFilterInput, $skip: Int, $take: Int){
             }
           }
         }
-       }
-       createdAt
-       updatedAt
-       deletedAt
-     }
-   }
- }
+      }
+    }
+  }
+}
 `
 
 export default ORDERS_QUERY
