@@ -46,9 +46,13 @@ const Orders = () => {
 
    const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
       setPagination(DEFAULT_PAGINATION)
-      setFilters({
+      if (newValue !== "") setFilters({
          ...filters,
          status: newValue
+      })
+      else setFilters({
+         ...filters,
+         status: null
       })
    }
 

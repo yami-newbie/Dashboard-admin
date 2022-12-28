@@ -47,6 +47,7 @@ function OrderDetailPage(props: OrderDetailPageProps) {
       }
    }
 
+
    const handleCancelOrder = (id: string) => {
       if (id) {
          cancelOrder({ variables: { input: { id } } }).then((res) => {

@@ -36,7 +36,7 @@ export const ProductTypeCard = ({
 
    useEffect(() => {
       if(productType) {
-         fetch(productType.medias?.[0]?.filePath || "").then((res) => {
+         fetch(productType.medias?.[0]?.filePath || "/static/images/no-image.jpg").then((res) => {
             if(res.ok){
                console.log(res);
             }
@@ -63,7 +63,7 @@ export const ProductTypeCard = ({
             height="220"
             image={src}
             loading="lazy"
-            alt={productType.description}
+            alt={productType.name}
          />
          <CardContent>
             <Typography align="center" color="textPrimary" gutterBottom variant="h5">

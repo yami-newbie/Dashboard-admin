@@ -42,6 +42,8 @@ query($input: OrdersFilterInput, $skip: Int, $take: Int){
         }
        receiptDetails {
           id
+          price
+          amount
          products {
             id
            manufactureInfos {
