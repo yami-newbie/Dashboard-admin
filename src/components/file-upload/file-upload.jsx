@@ -119,10 +119,11 @@ const FileUpload = ({
    const addNewFiles = async newFiles => {
       const acceptedFiles = newFiles.map((file) => {
          let timestamp = Date.now().toString();
+         let filename = file.name.split('.')[0];
          let fileType = file.name.split('.')[1];
          let newFile = new File(
             [file],
-            `${timestamp}.${fileType}`,
+            `${filename}-${timestamp}.${fileType}`,
             {
                type: file.type,
                size: file.size

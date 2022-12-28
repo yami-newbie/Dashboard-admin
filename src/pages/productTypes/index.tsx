@@ -20,9 +20,9 @@ import DELETE_PRODUCT_TYPE from 'graphql/mutation/deleteProductType'
 const ProductTypes = () => {
    const { enqueueSnackbar } = useSnackbar()
    const [pagination, setPagination] = useState<PaginationParams>(DEFAULT_PAGINATION)
-   const [rowsPerPage, setRowsPerPage] = useState(10)
+   const [rowsPerPage, setRowsPerPage] = useState(8)
    const [filters, setFilters] = useState<Partial<ProductTypesFilterInput>>({})
-   const [paginationQuery, setPaginationQuery] = useState<Variables_Graphql>({})
+   const [paginationQuery, setPaginationQuery] = useState<Variables_Graphql>({ take: 8 })
    const [pageInfo, setPageInfo] = useState<PageInfo>()
    const router = useRouter()
 
