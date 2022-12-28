@@ -32,7 +32,7 @@ const CustomersListPage = () => {
       variables: { 
          ...Object.assign(variables, { 
             input: { 
-               isCustomer: true
+               isCustomer: true, isDeleted: false
             } 
          }) 
       } 
