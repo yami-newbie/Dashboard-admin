@@ -4,7 +4,7 @@ export class Payment {
    constructor(
       public id: string = '',
       public customerPaymentId: string = '',
-      public customerPayments: CustomerPayment = new CustomerPayment(),
+      public customerPayment: CustomerPayment = new CustomerPayment(),
       public paymentTotal: number = 0,
       public deletedAt: string = '',
       public createdAt: string = '',

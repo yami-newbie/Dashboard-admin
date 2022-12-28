@@ -113,7 +113,7 @@ export function OrderBasicInfoCard({ order, cancelOrder, updateOrder }: OrderBas
                      </Typography>
                      <Box sx={{ flex: 1 }}>
                         <Typography variant="body2" color="text">
-                           {order.receipts.payments.customerPayments.paymentMethods.name}
+                           {order.receipts?.payments?.customerPayment?.paymentMethods?.name}
                         </Typography>
                      </Box>
                   </ListItem>
@@ -129,7 +129,7 @@ export function OrderBasicInfoCard({ order, cancelOrder, updateOrder }: OrderBas
                      </Typography>
                      <Box sx={{ flex: 1 }}>
                         <Typography variant="body2" color="text">
-                           {order.receipts?.totalPrice.toFixed(2)}{order.receipts?.payments?.customerPayments?.paymentMethods?.currency}
+                           {order.receipts?.totalPrice.toFixed(2)}{order.receipts?.payments?.customerPayment?.paymentMethods?.currency}
                         </Typography>
                      </Box>
                   </ListItem>
