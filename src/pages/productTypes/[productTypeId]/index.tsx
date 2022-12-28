@@ -202,7 +202,7 @@ function ProductTypePage(props: ProductTypePageProps) {
                >
                   <Link href="/productTypes" passHref>
                      <Button variant="text" startIcon={<ArrowBackIcon />}>
-                        Product Types
+                        Danh sách loại sản phẩm
                      </Button>
                   </Link>
                </Box>

@@ -3,9 +3,9 @@ import { styled } from '@mui/material/styles'
 import { alpha } from '@mui/material/styles'
 
 const SeverityPillRoot = styled('span')(({ theme, ownerState }) => {
-   const backgroundColor = theme.palette[ownerState.color].main
-   const color = theme.palette[ownerState.color].main
-
+   const backgroundColor = ownerState.color
+   const color = ownerState.color
+   
    return {
       alignItems: 'center',
       backgroundColor: alpha(backgroundColor, 0.08),
@@ -42,9 +42,4 @@ export const SeverityPill = props => {
          {children}
       </SeverityPillRoot>
    )
-}
-
-SeverityPill.propTypes = {
-   children: PropTypes.node,
-   color: PropTypes.oneOf(['primary', 'secondary', 'error', 'info', 'warning', 'success'])
 }

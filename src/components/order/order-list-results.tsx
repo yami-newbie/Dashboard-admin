@@ -16,17 +16,19 @@ import {
 } from '@mui/material'
 import { SeverityPill } from 'components/severity-pill'
 import DeleteIcon from '@mui/icons-material/Delete';
-import PencilIcon from 'icons/pencil'
-import { HeadCell, Order, PaginationParams } from 'models'
+import CancelIcon from '@mui/icons-material/Cancel';
+import { HeadCell, Order, OrderStatus } from 'models'
 import { useState } from 'react'
 import Link from 'next/link'
 import moment from 'moment'
+import { ConfirmDialog } from 'components/productType/confirm-dialog';
+import ReportProblemIcon from '@mui/icons-material/ReportProblem'
 
 const headCells: HeadCell[] = [
    {
       id: 'name',
       align: 'left',
-      label: 'Customer',
+      label: 'Khách hàng',
       sortable: false
    },
    // {
@@ -38,31 +40,31 @@ const headCells: HeadCell[] = [
    {
       id: 'createdAt',
       align: 'center',
-      label: 'Ordered Date',
+      label: 'Ngày tạo đơn',
       sortable: false
    },
    {
       id: 'amount',
       align: 'center',
-      label: 'Price',
+      label: 'Tổng tiền',
       sortable: false
    },
    {
       id: 'payment',
       align: 'center',
-      label: 'Payment',
+      label: 'Phương thức thanh toán',
       sortable: false
    },
    {
       id: 'status',
       align: 'center',
-      label: 'Status',
+      label: 'Trạng thái',
       sortable: false
    },
    {
       id: 'actions',
       align: 'center',
-      label: 'Actions',
+      label: 'Hành động',
       sortable: false
    }
 ]
@@ -80,6 +82,8 @@ export const OrderListResults = ({
 }) => {
    const [order, setOrder] = useState<'asc' | 'desc'>('asc')
    const [orderBy, setOrderBy] = useState('')
+   const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
+   const [deleteId, setDeleteId] = useState<string | null>(null)
 
    const handleSort = (property: string) => async (event: React.MouseEvent) => {
       if (onSortByColumn) {
@@ -89,156 +93,159 @@ export const OrderListResults = ({
          onSortByColumn(`${property}-${isAsc ? 'desc' : 'asc'}`)
       }
    }
+
+   const handleDeleteOrder = () => {
+      if(deleteId) {
+         onDeleteOrder(deleteId)
+      }
+      setOpenConfirmDialog(false)
+   }
+
    return (
-      <Table {...rest}>
-         <TableHead>
-            <TableRow>
-               {headCells.map(cell => (
-                  <TableCell
-                     key={cell.id}
-                     align={cell.align}
-                     sortDirection={orderBy === cell.id ? order : false}
-                  >
-                     {cell.sortable && onSortByColumn ? (
-                        <TableSortLabel
-                           active={orderBy === cell.id}
-                           direction={orderBy === cell.id ? order : 'asc'}
-                           onClick={handleSort(cell.id)}
-                        >
-                           {cell.label}
-                        </TableSortLabel>
-                     ) : (
-                        cell.label
-                     )}
-                  </TableCell>
-               ))}
-            </TableRow>
-         </TableHead>
-         <TableBody>
-            {orderList
-               ? (
-                  orderList.length > 0 ? 
-                  orderList.map((order: Order) => (
-                     <TableRow hover key={order.id}>
-                        <TableCell align="left" sx={{ minWidth: 200 }}>
-                           <Stack spacing={2} alignItems="center" direction="row">
-                              <Link href={`/users/${order?.user?.id}`} passHref>
-                                 <Avatar src={order.user?.medias?.[0]?.filePath} alt="/static/images/no-image.jpg"/>
-                              </Link>
-                              <Typography
-                                 sx={{
-                                    cursor: 'pointer',
-                                    ':hover': {
-                                       textDecoration: 'underline'
-                                    },
-                                    fontWeight: 500
-                                 }}
-                                 variant="body2"
+      <>
+         <Table {...rest}>
+            <TableHead>
+               <TableRow>
+                  {headCells.map(cell => (
+                     <TableCell
+                        key={cell.id}
+                        align={cell.align}
+                        sortDirection={orderBy === cell.id ? order : false}
+                     >
+                        {cell.sortable && onSortByColumn ? (
+                           <TableSortLabel
+                              active={orderBy === cell.id}
+                              direction={orderBy === cell.id ? order : 'asc'}
+                              onClick={handleSort(cell.id)}
+                           >
+                              {cell.label}
+                           </TableSortLabel>
+                        ) : (
+                           cell.label
+                        )}
+                     </TableCell>
+                  ))}
+               </TableRow>
+            </TableHead>
+            <TableBody>
+               {orderList
+                  ? (
+                     orderList.length > 0 ? 
+                     orderList.map((order: Order) => (
+                        <TableRow hover key={order.id}>
+                           <TableCell align="left" sx={{ minWidth: 200 }}>
+                              <Stack spacing={2} alignItems="center" direction="row">
+                                 <Link href={`/users/${order?.user?.id}`} passHref>
+                                    <Avatar src={order?.user?.medias?.[0]?.filePath} />
+                                 </Link>
+                                 <Typography
+                                    sx={{
+                                       cursor: 'pointer',
+                                       ':hover': {
+                                          textDecoration: 'underline'
+                                       },
+                                       fontWeight: 500
+                                    }}
+                                    variant="body2"
+                                 >
+                                    {order?.user?.fullname}
+                                 </Typography>
+                              </Stack>
+                           </TableCell>
+                           <TableCell align="center" sx={{ pr: 5 }}>
+                              {moment(order.createdAt || undefined).format('DD/MM/YYYY')}
+                           </TableCell>
+                           <TableCell align="center" sx={{ pr: 5 }}>
+                              {order?.receipts?.totalPrice.toFixed(2)}{order?.receipts?.payments?.customerPayment?.paymentMethods?.currency}
+                           </TableCell>
+                           <TableCell align="center">{order?.receipts?.payments?.customerPayment?.paymentMethods?.name}</TableCell>
+                           <TableCell align="center" sx={{ minWidth: 200 }}>
+                              <SeverityPill
+                                 color={
+                                    {
+                                       accept: '#2196f3',
+                                       packaging: '#ffc400',
+                                       shipping: '#00e5ff',
+                                       receive: '#76ff03',
+                                       done: '#f50057',
+                                       cancel: '#d500f9'
+                                    }[order.status || '#2196f3']
+                                 }
                               >
-                                 {order.user?.fullname}
-                              </Typography>
+                                 {OrderStatus[order?.status].label}
+                              </SeverityPill>
+                           </TableCell>
+                           <TableCell align="center">
+                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                 {/* <Tooltip title="Hủy đơn" placement="top">
+                                    <IconButton size="small" disabled={(order?.status === OrderStatus.cancel.value) || (order?.status === OrderStatus.done.value)}>
+                                       <CancelIcon width={20} />
+                                    </IconButton>
+                                 </Tooltip> */}
+
+                                 <Tooltip title="Xóa đơn hàng" placement="top">
+                                    <IconButton size="small" onClick={() => { setOpenConfirmDialog(true); setDeleteId(order.id) }}>
+                                       <DeleteIcon fontSize="small" />
+                                    </IconButton>
+                                 </Tooltip>
+
+                                 <Link href={`/orders/${order.id}`} passHref>
+                                    <Tooltip title="Xem chi tiết" placement="top">
+                                       <IconButton size="small">
+                                          <ArrowForwardIcon fontSize="small" />
+                                       </IconButton>
+                                    </Tooltip>
+                                 </Link>
+                              </Box>
+                           </TableCell>
+                        </TableRow>
+                     )) : (
+                        <TableCell colSpan={6}>
+                           <Stack alignItems="center">
+                              <Typography variant="h6" component="div">Không có đơn hàng nào</Typography>
                            </Stack>
                         </TableCell>
-                        {/* <TableCell align="left">
-                             <Box sx={{ display: 'flex', alignItems: 'end', gap: 1 }}>
-                                {order.slice(0, 3).map(product => (
-                                   <Tooltip
-                                      key={product.productId}
-                                      title={product.title}
-                                      placement="top"
-                                   >
-                                      <Avatar variant="rounded" src={product.img} />
-                                   </Tooltip>
-                                ))}
-                                {order.products.length > 3 && (
-                                   <Tooltip title="and more..." placement="top">
-                                      <Box sx={{ height: '100%' }}>
-                                         <Typography>...</Typography>
-                                      </Box>
-                                   </Tooltip>
-                                )}
-                             </Box>
-                          </TableCell> */}
-                        <TableCell align="center" sx={{ pr: 5 }}>
-                           {moment().format('DD/MM/YYYY')}
+                     )
+                  )
+                  : Array.from(new Array(10)).map((item, idx) => (
+                     <TableRow hover key={idx}>
+                        <TableCell align="left">
+                           <Skeleton variant="text" />
                         </TableCell>
-                        <TableCell align="center" sx={{ pr: 5 }}>
-                           {order.receipts.totalPrice.toFixed(2)}{order?.receipts?.payments?.customerPayments?.paymentMethods?.currency}
-                        </TableCell>
-                        <TableCell align="center">{order?.receipts?.payments?.customerPayments?.paymentMethods?.name}</TableCell>
-                        <TableCell align="center" sx={{ minWidth: 200 }}>
-                           <SeverityPill
-                              color={
-                                 {
-                                    PENDING: 'info',
-                                    DELIVERIED: 'secondary',
-                                    REFUNDED: 'error',
-                                    PROCESSING: 'primary',
-                                    CANCELED: 'warning'
-                                 }[order.status || 'PENDING']
-                              }
-                           >
-                              {order?.status}
-                           </SeverityPill>
+                        <TableCell align="left">
+                           <Skeleton variant="text" />
                         </TableCell>
                         <TableCell align="center">
-                           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                              {/* <Link href={`/orders/${order.id}/edit`} passHref>
-                                 <Tooltip title="Edit Order" placement="top">
-                                    <IconButton size="small">
-                                       <PencilIcon width={20} />
-                                    </IconButton>
-                                 </Tooltip>
-                              </Link> */}
-                              <Link href={`/orders/${order.id}`} passHref>
-                                 <Tooltip title="View Details" placement="top">
-                                    <IconButton size="small">
-                                       <ArrowForwardIcon fontSize="small" />
-                                    </IconButton>
-                                 </Tooltip>
-                              </Link>
-                              <Tooltip title="Delete Order" placement="top">
-                                 <IconButton size="small" onClick={() => { onDeleteOrder(order.id) }}>
-                                    <DeleteIcon fontSize="small" />
-                                 </IconButton>
-                              </Tooltip>
-                           </Box>
+                           <Skeleton variant="text" />
+                        </TableCell>
+                        <TableCell align="center">
+                           <Skeleton variant="text" />
+                        </TableCell>
+                        <TableCell align="center">
+                           <Skeleton variant="text" />
+                        </TableCell>
+                        <TableCell align="center">
+                           <Skeleton variant="text" />
+                        </TableCell>
+                        <TableCell align="center">
+                           <Skeleton variant="text" />
                         </TableCell>
                      </TableRow>
-                  )) : (
-                     <TableCell colSpan={6}>
-                        <Stack alignItems="center">
-                           <Typography variant="h6" component="div">Không có đơn hàng nào</Typography>
-                        </Stack>
-                     </TableCell>
-                  )
-               )
-               : Array.from(new Array(10)).map((item, idx) => (
-                  <TableRow hover key={idx}>
-                     <TableCell align="left">
-                        <Skeleton variant="text" />
-                     </TableCell>
-                     <TableCell align="left">
-                        <Skeleton variant="text" />
-                     </TableCell>
-                     <TableCell align="center">
-                        <Skeleton variant="text" />
-                     </TableCell>
-                     <TableCell align="center">
-                        <Skeleton variant="text" />
-                     </TableCell>
-                     <TableCell align="center">
-                        <Skeleton variant="text" />
-                     </TableCell>
-                     <TableCell align="center">
-                        <Skeleton variant="text" />
-                     </TableCell>
-                     <TableCell align="center">
-                        <Skeleton variant="text" />
-                     </TableCell>
-                  </TableRow>
-               ))}
-         </TableBody>
-      </Table>
+                  ))}
+            </TableBody>
+         </Table>
+         <ConfirmDialog
+            icon={
+               <Avatar sx={{ bgcolor: 'rgba(209, 67, 67, 0.08)', color: 'rgb(209, 67, 67)' }}>
+                  <ReportProblemIcon />
+               </Avatar>
+            }
+            isOpen={openConfirmDialog}
+            title="Bạn chắc chưa?"
+            body="Bạn có chắc chắn muốn xóa đơn hàng?"
+            onSubmit={handleDeleteOrder}
+            onClose={() => setOpenConfirmDialog(false)}
+         />
+      </>
    )
 }

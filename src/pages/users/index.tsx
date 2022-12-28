@@ -38,7 +38,7 @@ const Users = () => {
       variables: { 
          ...Object.assign(variables, { 
             input: { 
-               isCustomer: isCustomer === "null" ? null : ( isCustomer === "true" ? true : false )
+               isCustomer: isCustomer === "null" ? null : (isCustomer === "true" ? true : false), isDeleted: false
             } 
          }) 
       } 
