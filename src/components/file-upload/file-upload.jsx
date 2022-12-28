@@ -122,7 +122,7 @@ const FileUpload = ({
          let fileType = file.name.split('.')[1];
          let newFile = new File(
             [file],
-            `${timestamp}.${fileType} `,
+            `${timestamp}.${fileType}`,
             {
                type: file.type,
                size: file.size
