@@ -44,7 +44,7 @@ export function OrderBasicInfoCard({ order, cancelOrder, updateOrder }: OrderBas
    return (
       <Card>
          <CardHeader title="Thông tin cơ bản" action={
-            <Button variant="outlined" onClick={() => { if (order) cancelOrder(order.id) }} disabled={(order?.status === OrderStatus.cancel.value) || (order?.status === OrderStatus.done.value)}>Huỷ đơn hàng</Button>
+            <Button variant="outlined" onClick={() => { if (order) cancelOrder(order.id) }} disabled={(order?.status === OrderStatus.cancel.value)}>Huỷ đơn hàng</Button>
          } />
          <Divider />
          <CardContent sx={{ p: 0 }}>
@@ -160,7 +160,7 @@ export function OrderBasicInfoCard({ order, cancelOrder, updateOrder }: OrderBas
                            {status?.label}
                         </Typography>
                         {
-                           OrderStatus[StatusList[status?._key % 6]].value !== 'cancel' ?
+                           OrderStatus[StatusList[status?._key % 6]].value !== 'accept' ?
                               <>
                                  <ArrowForwardIcon fontSize="small" />
 

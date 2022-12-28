@@ -183,11 +183,11 @@ export const OrderListResults = ({
                                     </IconButton>
                                  </Tooltip> */}
 
-                                 <Tooltip title="Xóa đơn hàng" placement="top">
+                                 {/* <Tooltip title="Xóa đơn hàng" placement="top">
                                     <IconButton size="small" onClick={() => { setOpenConfirmDialog(true); setDeleteId(order.id) }}>
                                        <DeleteIcon fontSize="small" />
                                     </IconButton>
-                                 </Tooltip>
+                                 </Tooltip> */}
 
                                  <Link href={`/orders/${order.id}`} passHref>
                                     <Tooltip title="Xem chi tiết" placement="top">
