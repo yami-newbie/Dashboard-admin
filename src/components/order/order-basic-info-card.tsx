@@ -60,9 +60,9 @@ export function OrderBasicInfoCard({ order, cancelOrder, updateOrder }: OrderBas
                      </Typography>
                      <Box sx={{ flex: 1 }}>
                         <Typography variant="body2" color="primary">
-                           {order.user ? (
-                              <Link href={`/customers/${order.user.id}`} passHref>
-                                 {order.user?.fullname}
+                           {order.users ? (
+                              <Link href={`/customers/${order.users.id}`} passHref>
+                                 {order.users?.fullname}
                               </Link>
                            ) : "Không có thông tin khách hàng"} - {order.addressTo || "Không có địa chỉ giao hàng"}
                         </Typography>
@@ -113,7 +113,7 @@ export function OrderBasicInfoCard({ order, cancelOrder, updateOrder }: OrderBas
                      </Typography>
                      <Box sx={{ flex: 1 }}>
                         <Typography variant="body2" color="text">
-                           {order.receipts?.payments?.customerPayment?.paymentMethods?.name}
+                           {order.receipts?.payments?.customerPayments?.paymentMethods?.name}
                         </Typography>
                      </Box>
                   </ListItem>
@@ -129,7 +129,7 @@ export function OrderBasicInfoCard({ order, cancelOrder, updateOrder }: OrderBas
                      </Typography>
                      <Box sx={{ flex: 1 }}>
                         <Typography variant="body2" color="text">
-                           {order.receipts?.totalPrice.toFixed(2)}{order.receipts?.payments?.customerPayment?.paymentMethods?.currency}
+                           {order.receipts?.totalPrice.toFixed(2)}{order.receipts?.payments?.customerPayments?.paymentMethods?.currency}
                         </Typography>
                      </Box>
                   </ListItem>
