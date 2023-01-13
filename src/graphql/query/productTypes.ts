@@ -76,7 +76,7 @@ export interface ProductTypesFilterInput extends FilterInput {
    descriptions?: string
    ids?: string
    isDelete?: boolean
-   names?: string
+   names?: string[]
    priceFrom?: number
    proceTo?: number
    updateFrom?: string
