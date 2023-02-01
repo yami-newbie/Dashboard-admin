@@ -12,7 +12,7 @@ type Props = {
    data?: Manufacturer
    isOpen: boolean
    onClose: () => void
-   onSubmit: (values: ManufacturerPayLoad, medias: Media[]) => Promise<void>
+   onSubmit: (values: ManufacturerPayLoad) => Promise<void>
 }
 
 const schema = yup.object().shape({
@@ -35,7 +35,7 @@ const ManufacturerCreateEditModal = (props: Props) => {
    } = form
 
    const handleSaveManufacturer = async (values: ManufacturerPayLoad) => {
-      if (onSubmit) await onSubmit(values, medias || [])
+      if (onSubmit) await onSubmit(values)
    }
 
    useEffect(() => {
@@ -78,14 +78,6 @@ const ManufacturerCreateEditModal = (props: Props) => {
                   name="address"
                   label="Địa chỉ"
                />
-
-               <FileUpload 
-                  multiple 
-                  value={medias}
-                  updateFilesCb={(vals: any) => {
-                     setMedias(vals.newFiles as Media[]);
-                     console.log(vals.newFiles, vals.newestfiles);
-                  }} />
 
                <CustomTextField
                   disabled={isSubmitting}
