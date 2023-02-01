@@ -49,7 +49,7 @@ export function OrderLineItemsCard({ order }: OrderLineItemsCardProps) {
                            <TableCell align="center">{item?.products?.productTypes?.name}</TableCell>
                            <TableCell align="center">{item?.products?.manufactureInfos?.manufacturers?.name}</TableCell>
                            <TableCell align="center">{item?.amount}</TableCell>
-                           <TableCell align="center">{item?.price * item?.amount}{order?.receipts?.payments?.customerPayment?.paymentMethods?.currency}</TableCell>
+                           <TableCell align="center">{item?.price * item?.amount}{order?.receipts?.payments?.customerPayments?.paymentMethods?.currency}</TableCell>
                         </TableRow>
                      ))
                      : Array.from(new Array(5)).map((i, idx) => (

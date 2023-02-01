@@ -89,8 +89,8 @@ export function CustomerOrderListCard(props: CustomerOrderListCardProps) {
                                          )}
                                     </Box>
                                  </TableCell>
-                                 <TableCell align="center">{order?.receipts?.totalPrice.toFixed(2)}{order?.receipts?.payments?.customerPayment?.paymentMethods?.name}</TableCell>
-                                 <TableCell align="center">{order?.receipts?.payments?.customerPayment?.paymentMethods?.name}</TableCell>
+                                 <TableCell align="center">{order?.receipts?.totalPrice.toFixed(2)}{order?.receipts?.payments?.customerPayments?.paymentMethods?.name}</TableCell>
+                                 <TableCell align="center">{order?.receipts?.payments?.customerPayments?.paymentMethods?.name}</TableCell>
                                  <TableCell align="center" sx={{ minWidth: 200 }}>
                                     <SeverityPill
                                        color={

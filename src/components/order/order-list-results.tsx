@@ -135,8 +135,8 @@ export const OrderListResults = ({
                         <TableRow hover key={order.id}>
                            <TableCell align="left" sx={{ minWidth: 200 }}>
                               <Stack spacing={2} alignItems="center" direction="row">
-                                 <Link href={`/users/${order?.user?.id}`} passHref>
-                                    <Avatar src={order?.user?.medias?.[0]?.filePath} />
+                                 <Link href={`/users/${order?.users?.id}`} passHref>
+                                    <Avatar src={order?.users?.medias?.[0]?.filePath} />
                                  </Link>
                                  <Typography
                                     sx={{
@@ -148,7 +148,7 @@ export const OrderListResults = ({
                                     }}
                                     variant="body2"
                                  >
-                                    {order?.user?.fullname}
+                                    {order?.users?.fullname}
                                  </Typography>
                               </Stack>
                            </TableCell>
@@ -156,9 +156,9 @@ export const OrderListResults = ({
                               {moment(order.createdAt || undefined).format('DD/MM/YYYY')}
                            </TableCell>
                            <TableCell align="center" sx={{ pr: 5 }}>
-                              {order?.receipts?.totalPrice.toFixed(2)}{order?.receipts?.payments?.customerPayment?.paymentMethods?.currency}
+                              {order?.receipts?.totalPrice.toFixed(2)}{order?.receipts?.payments?.customerPayments?.paymentMethods?.currency}
                            </TableCell>
-                           <TableCell align="center">{order?.receipts?.payments?.customerPayment?.paymentMethods?.name}</TableCell>
+                           <TableCell align="center">{order?.receipts?.payments?.customerPayments?.paymentMethods?.name}</TableCell>
                            <TableCell align="center" sx={{ minWidth: 200 }}>
                               <SeverityPill
                                  color={
