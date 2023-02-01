@@ -114,8 +114,11 @@ const ProductTypes = () => {
    }
 
    const handleSearch = (search: string) => {
+      let searchNames = [];
+      if(search !== "") searchNames.push(search)
       setFilters({
-         ...filters
+         ...filters,
+         names: searchNames
       })
    }
    const handleChangeSorting = (categoriesIds: string[]) => {

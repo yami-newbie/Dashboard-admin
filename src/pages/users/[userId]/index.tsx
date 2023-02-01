@@ -147,7 +147,7 @@ function UserDetailPage(props: UserDetailPageProps) {
                   <UserBasicInfoCard user={user} />
                </Box>
 
-               <Box sx={{ ml: 1, mt: 4 }}>{/* <UserOrderListCard /> */}</Box>
+               {/* <Box sx={{ ml: 1, mt: 4 }}><UserOrderListCard /></Box> */}
 
                <Box hidden sx={{ ml: 1, mt: 4 }}>
                   <Card>

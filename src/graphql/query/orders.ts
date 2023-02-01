@@ -18,6 +18,10 @@ query($input: OrdersFilterInput, $skip: Int, $take: Int){
       createdAt
       updatedAt
       deletedAt
+      users {
+        id
+        fullname
+      }
        receipts {
         id
         hashed

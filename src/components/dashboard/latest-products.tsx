@@ -35,27 +35,27 @@ const ProductSkeleton = ({ numberProducts }: { numberProducts: number }) => (
 )
 
 export const LatestProducts = (props: any) => {
-   const { data: products } = useSWR(
-      `products?page=1&pageSize=${NUMBER_PRODUCTS}&orderBy=updatedAt-desc`,
-      {
-         revalidateOnFocus: true
-      }
-   )
+   // const { data: products } = useSWR(
+   //    `products?page=1&pageSize=${NUMBER_PRODUCTS}&orderBy=updatedAt-desc`,
+   //    {
+   //       revalidateOnFocus: true
+   //    }
+   // )
 
    return (
       <Card {...props}>
          <CardHeader
-            subtitle={`${products ? products.length : 0} in total`}
+            subtitle={`${props.products ? props.products.length : 0} in total`}
             title="Latest Products"
          />
          <Divider />
-         {products ? (
+         {props.products ? (
             <List>
-               {products.map((product: ProductType, i: number) => (
-                  <ListItem divider={i < products.length - 1} key={product.id}>
+               {props.products.map((product: ProductType, i: number) => (
+                  <ListItem divider={i < props.products.length - 1} key={product.id}>
                      <ListItemAvatar>
                         <img
-                           alt={product?.description}
+                           alt="no image"
                            src={product?.medias?.[0]?.filePath || ""}
                            style={{
                               height: 48,
@@ -64,7 +64,7 @@ export const LatestProducts = (props: any) => {
                         />
                      </ListItemAvatar>
                      <ListItemText
-                        primary={product?.description}
+                        primary={product?.name}
                         secondary={`Updated ${formatDistance(
                            parseISO(product?.updatedAt),
                            new Date(),

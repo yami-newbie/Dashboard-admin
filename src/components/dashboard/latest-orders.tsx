@@ -27,12 +27,12 @@ import Link from 'next/link'
 const NUMBER_ORDERS: number = 6
 
 export const LatestOrders = (props: any) => {
-   const { data: orders } = useSWR(
-      `orders?page=1&pageSize=${NUMBER_ORDERS}&orderBy=createdAt-desc`,
-      {
-         revalidateOnFocus: true
-      }
-   )
+   // const { data: orders } = useSWR(
+   //    `orders?page=1&pageSize=${NUMBER_ORDERS}&orderBy=createdAt-desc`,
+   //    {
+   //       revalidateOnFocus: true
+   //    }
+   // )
 
    return (
       <Card {...props}>
@@ -43,18 +43,17 @@ export const LatestOrders = (props: any) => {
                   <TableHead>
                      <TableRow>
                         <TableCell align="left">Customer</TableCell>
-                        <TableCell align="center">Products</TableCell>
                         <TableCell align="center">Total</TableCell>
                         <TableCell align="center">Status</TableCell>
                         <TableCell align="center">Actions</TableCell>
                      </TableRow>
                   </TableHead>
                   <TableBody>
-                     {orders
-                        ? orders.map((order: Order) => (
+                     {props.orders
+                        ? props.orders.map((order: Order) => (
                              <TableRow hover key={order.id}>
                                 <TableCell align="left">
-                                   <Link href={`customers/${order.user.id}`} passHref>
+                                   <Link href={`customers/${order.users.id}`} passHref>
                                       <Typography
                                          sx={{
                                             cursor: 'pointer',
@@ -64,11 +63,11 @@ export const LatestOrders = (props: any) => {
                                          }}
                                          variant="body2"
                                       >
-                                         {order.user.fullname}
+                                         {order.users.fullname}
                                       </Typography>
                                    </Link>
                                 </TableCell>
-                                <TableCell align="center">
+                                {/* <TableCell align="center">
                                    <Box
                                       sx={{
                                          display: 'flex',
@@ -76,7 +75,7 @@ export const LatestOrders = (props: any) => {
                                          gap: 1
                                       }}
                                    >
-                                      {/* {order.products.slice(0, 3).map(product => (
+                                      {order.products.slice(0, 3).map(product => (
                                          <Tooltip
                                             key={product.productId}
                                             title={product.title}
@@ -91,20 +90,21 @@ export const LatestOrders = (props: any) => {
                                                <Typography>...</Typography>
                                             </Box>
                                          </Tooltip>
-                                      )} */}
+                                      )}
                                    </Box>
-                                </TableCell>
-                                {/* <TableCell align="center">${order.amount.toFixed(2)}</TableCell> */}
+                                </TableCell> */}
+                                <TableCell align="center">${order.receipts.totalPrice.toFixed(2)}</TableCell>
                                 <TableCell align="center">
                                    <SeverityPill
                                       color={
                                          {
-                                            PENDING: 'info',
-                                            DELIVERIED: 'secondary',
-                                            REFUNDED: 'error',
-                                            PROCESSING: 'primary',
-                                            CANCELED: 'warning'
-                                         }[order.status || 'PENDING']
+                                          accept: '#2196f3',
+                                          packaging: '#ffc400',
+                                          shipping: '#00e5ff',
+                                          receive: '#76ff03',
+                                          done: '#f50057',
+                                          cancel: '#d500f9'
+                                         }[order.status || 'accept']
                                       }
                                    >
                                       {order.status}
