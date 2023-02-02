@@ -168,15 +168,15 @@ const Manufacturers = () => {
       enqueueSnackbar('Success', { variant: 'success' })
    }
 
-   const onHandleCreateEditManufacture = async (data: ManufacturerPayLoad, medias: Media[]) => {
+   const onHandleCreateEditManufacture = async (data: ManufacturerPayLoad) => {
       if (data && data.id) {
-         await updateManufacturer({ variables: { input: data, medias } })
+         await updateManufacturer({ variables: { input: data } })
 
          refetch()
 
          enqueueSnackbar('Success', { variant: 'success' })
       } else {
-         await createManufacturer({ variables: { input: data, medias } })
+         await createManufacturer({ variables: { input: data} })
 
          refetch()
 
